@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require("webpack");
+
 /*
     To ensure that our JSX and ES6 code works in any environment,
     we will use a transpiler called Babel to convert our code into ES5. 
@@ -14,25 +15,19 @@ var webpack = require("webpack");
 */
 
 var plugins = []; // if using any plugins for both dev and production
-// var devPlugins = []; // if using any plugins for development
+var devPlugins = []; // if using any plugins for development
 
-// var prodPlugins = [
-//     new webpack.DefinePlugin({
-//         'process.env': {
-//             'NODE_ENV': JSON.stringify('production')
-//         }
-//     }),
-//     new webpack.optimize.UglifyJsPlugin({
-//         compress: {
-//             warnings: true
-//         }
-//     })
-// ];
+var prodPlugins = [
+    new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify('production')
+        }
+    })
+];
 
-// plugins = plugins.concat(
-//     process.env.NODE_ENV === 'production' ? prodPlugins : devPlugins
-// )
-
+plugins = plugins.concat(
+    process.env.NODE_ENV === 'production' ? prodPlugins : devPlugins
+)
 
 module.exports = {
     entry: './client/index.jsx',
