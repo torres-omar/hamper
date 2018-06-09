@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_09_184649) do
+ActiveRecord::Schema.define(version: 2018_06_09_190039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "business_types", force: :cascade do |t|
+    t.string "type_name", null: false
+    t.string "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "businesses", force: :cascade do |t|
     t.string "name", null: false
@@ -36,6 +43,32 @@ ActiveRecord::Schema.define(version: 2018_06_09_184649) do
     t.string "phone_number", null: false
     t.string "street_address", null: false
     t.string "zip_code", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dry_cleaning_items", force: :cascade do |t|
+    t.string "item_name", null: false
+    t.integer "business_id", null: false
+    t.integer "business_user_id", null: false
+  end
+
+  create_table "notes", force: :cascade do |t|
+    t.integer "ticket_id", null: false
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.string "status_name", null: false
+    t.string "status_description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ticket_types", force: :cascade do |t|
+    t.string "type_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
