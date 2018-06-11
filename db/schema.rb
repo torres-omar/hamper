@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_10_121247) do
+ActiveRecord::Schema.define(version: 2018_06_11_004429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,13 +26,15 @@ ActiveRecord::Schema.define(version: 2018_06_10_121247) do
     t.string "name", null: false
     t.integer "user_id", null: false
     t.string "business_type_id", null: false
-    t.decimal "longtitude", null: false
     t.decimal "latitude", null: false
-    t.integer "zipcode", null: false
     t.string "street_address", null: false
     t.float "price_per_pound"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "zip_code", null: false
+    t.string "city", null: false
+    t.string "state", null: false
+    t.decimal "longitude", null: false
     t.index ["name"], name: "index_businesses_on_name"
   end
 
@@ -40,9 +42,17 @@ ActiveRecord::Schema.define(version: 2018_06_10_121247) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "email_address", null: false
-    t.string "phone_number", null: false
-    t.string "street_address", null: false
-    t.string "zip_code", null: false
+    t.string "phone_number"
+    t.string "street_address"
+    t.string "zip_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "apt_number"
+    t.index ["email_address"], name: "index_customers_on_email_address", unique: true
+  end
+
+  create_table "delivery_methods", force: :cascade do |t|
+    t.string "method_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,6 +97,7 @@ ActiveRecord::Schema.define(version: 2018_06_10_121247) do
     t.integer "ticket_type_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "deliver_method_id", null: false
   end
 
   create_table "users", force: :cascade do |t|
