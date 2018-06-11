@@ -1,7 +1,10 @@
 class WeightValidator < ActiveModel::EachValidator
+    # if ticket type involves a Laundry Bag, ensure that bag_wieght is not blank
     def validate_each(record, attribute, value) 
-        unless TicketType.find(record.ticket_type_id).type_name != "Dry Cleaning"
-            record.errors[attribute] << "bag weight can't be blank"
+        unless TicketType.find(record.ticket_type_id).type_name == "Dry Cleaning"
+            if record[attribute].blank?
+                record.errors[attribute] << "bag weight can't be blank" 
+            end   
         end
     end
 end
