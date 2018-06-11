@@ -20,4 +20,24 @@ class Ticket < ApplicationRecord
               presence:true
     
     validates :bag_weight, weight: true
+
+    belongs_to :business, 
+        class_name: 'Business', 
+        foreign_key: :business_id, 
+        primary_key: :id 
+
+    belongs_to :customer, 
+        class_name: 'Customer', 
+        foreign_key: :customer_id, 
+        primary_key: :id
+    
+    belongs_to :status,
+        class_name: 'Status',
+        foreign_key: :status_id,
+        primary_key: :id 
+    
+    belongs_to :ticket_type, 
+        class_name: 'TicketType', 
+        foreign_key: :ticket_type_id, 
+        primary_key: :id 
 end 
