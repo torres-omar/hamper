@@ -27,8 +27,8 @@ Rails.application.routes.draw do
       resources :tickets, only: [:index, :create] do 
         collection do 
           get 'search/:q', to: 'tickets#search'
-          get 'search/id/:q', to: 'ticket#id_search'
-          get 'search/cname/:q', to: 'ticket#customer_search'
+          get 'search/id/:q', to: 'tickets#id_search'
+          get 'search/cname/:q', to: 'tickets#customer_search'
         end
       end
     end

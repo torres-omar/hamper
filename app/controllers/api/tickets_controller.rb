@@ -33,7 +33,7 @@ class Api::TicketsController < ApplicationController
     end
 
     def id_search 
-        @tickets = Ticket.search_by_id_scope(params[:business_id], params[:id])
+        @tickets = Ticket.search_by_id_scope(params[:business_id], params[:q])
         if @tickets
             render 'api/tickets/index'
         else 
@@ -42,7 +42,7 @@ class Api::TicketsController < ApplicationController
     end 
 
     def customer_search 
-        @tickets = Ticket.search_by_customer_scope(params[:business_id], params[:id])
+        @tickets = Ticket.search_by_customer_scope(params[:business_id], params[:q])
         if @tickets 
             render 'api/tickets/index'
         else

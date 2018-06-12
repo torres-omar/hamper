@@ -21,7 +21,7 @@ class Ticket < ApplicationRecord
     pg_search_scope :global_scope, 
                      :associated_against => {
                          :customer => [:first_name, :last_name],
-                         :ticket_type => [:ticket_name],
+                         :ticket_type => [:type_name],
                          :status => [:status_name], 
                          :delivery_method => [:method_name]
                      },
@@ -33,6 +33,9 @@ class Ticket < ApplicationRecord
     pg_search_scope :customer_name_scope, 
                      :associated_against => {
                          :customer => [:first_name, :last_name]
+                     },
+                     :using => {
+                         :tsearch => {:prefix => true}
                      }
 
     
@@ -77,15 +80,15 @@ class Ticket < ApplicationRecord
         class_name: 'Note',
         foreign_key: :ticket_id 
 
-    def search_by_global_scope(business_id, query)
+    def self.search_by_global_scope(business_id, query)
         return Ticket.where("business_id = ?", business_id).global_scope(query)
     end
 
-    def search_by_id_scope(business_id, query)
+    def self.search_by_id_scope(business_id, query)
         return Ticket.where("business_id = ?", business_id).id_scope(query) 
     end
 
-    def search_by_customer_scope(business_id, query)
+    def self.search_by_customer_scope(business_id, query)
         return Ticket.where("business_id = ?", business_id).customer_name_scope(query)
     end
 end 
