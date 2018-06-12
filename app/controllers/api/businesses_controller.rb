@@ -19,6 +19,10 @@ class Api::BusinessesController < ApplicationController
         render 'api/businesses/show'
     end
 
+    def search 
+        # @business = Business.includes(:owner.where("name = ? AND ", )
+    end
+
     private 
 
     def business_params
