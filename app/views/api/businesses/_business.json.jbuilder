@@ -8,4 +8,6 @@ json.set! business.id do
         :latitude, 
         :longitude, 
         :price_per_pound
+    json.owner_first_name business.owner.first_name 
+    json.owner_last_name business.owner.last_name
 end

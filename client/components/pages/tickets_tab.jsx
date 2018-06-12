@@ -22,7 +22,7 @@ class TicketsTab extends React.Component{
         return(
             <div>
                 <h1>Logged in!</h1> 
-                <input type="button" onClick={this.handleSubmit} />
+                <input type="button" onClick={this.handleSubmit} value="sign out"/>
             </div> 
         )
     }

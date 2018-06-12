@@ -31,7 +31,7 @@ business_type_1.save
 business_type_2.save 
 business_type_3.save
 # default businesses
-Business.create(name:"Your Cleaners", 
+business_1 = Business.new(name:"Your Cleaners", 
                 user_id: user.id, 
                 business_type_id: business_type_1.id,
                 latitude: 40.7468686,
@@ -42,7 +42,7 @@ Business.create(name:"Your Cleaners",
                 state: "NY", 
                 price_per_pound: "1.20")
 
-Business.create(name: "Their Cleaners",
+business_2 = Business.new(name: "Their Cleaners",
                 user_id: user.id, 
                 business_type_id: business_type_2.id, 
                 latitude: 40.75113669999999, 
@@ -53,7 +53,7 @@ Business.create(name: "Their Cleaners",
                 state: "NY"
                 )
 
-Business.create(name: "Our Cleaners",
+business_2 = Business.new(name: "Our Cleaners",
                 user_id: user.id, 
                 business_type_id: business_type_3.id, 
                 latitude: 40.7489742,
@@ -64,6 +64,10 @@ Business.create(name: "Our Cleaners",
                 state: "NY",
                 price_per_pound: "1.10"
                 )
+
+business_1.save
+business_2.save
+busienss_3.save
 # delivery methods
 DeliveryMethod.create(method_name: "Pick-up")
 DeliveryMethod.create(method_name: "Drop-off")
@@ -78,7 +82,8 @@ TicketType.create(type_name: "Laundry Bag")
 TicketType.create(type_name: "Dry Cleaning")
 TicketType.create(type_name: "Dry Cleaning + Laundry Bag")
 
-
+# tickets 
+Ticket.create(business_id: )
 
 
 # change zipcode to string for business table

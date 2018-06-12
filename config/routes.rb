@@ -16,14 +16,15 @@ Rails.application.routes.draw do
     # :users => name of controller, map to controller actions
     resource :sessions, only: [:create, :destroy]
     resources :users, only: [:show, :index] do 
-      resources :businesses, only: [:index, :create]
+      resources :businesses, only: [:index, :create] do 
+        collection do 
+          get 'search/:q', to: 'businesses#search'
+        end
+      end
     end
 
     resources :businesses, only: [:show] do 
       resources :tickets, only: [:index, :create]
-      collection do 
-        get 'search/:q', to: 'businesses#search'
-      end
     end
 
   end

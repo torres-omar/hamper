@@ -325,7 +325,7 @@ var TicketsTab = function (_React$Component) {
                     null,
                     'Logged in!'
                 ),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit })
+                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' })
             );
         }
     }]);

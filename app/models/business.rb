@@ -1,4 +1,8 @@
 class Business < ApplicationRecord 
+    include PgSearch
+
+    pg_search_scope :name_search, :against => [:name]
+
     validates :name,
               :user_id, 
               :business_type_id, 
