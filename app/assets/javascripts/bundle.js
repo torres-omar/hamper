@@ -302,7 +302,10 @@ var TicketsTab = function (_React$Component) {
     function TicketsTab(props) {
         _classCallCheck(this, TicketsTab);
 
-        return _possibleConstructorReturn(this, (TicketsTab.__proto__ || Object.getPrototypeOf(TicketsTab)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (TicketsTab.__proto__ || Object.getPrototypeOf(TicketsTab)).call(this, props));
+
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        return _this;
     }
 
     _createClass(TicketsTab, [{
@@ -894,7 +897,7 @@ var login = exports.login = function login(email) {
 var logout = exports.logout = function logout() {
     return $.ajax({
         method: "DELETE",
-        url: 'api/session'
+        url: 'api/sessions'
     });
 };
 

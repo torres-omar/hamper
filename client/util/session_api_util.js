@@ -9,7 +9,7 @@ export const login = (email) => {
 export const logout = () => {
     return $.ajax({
         method: "DELETE",
-        url: 'api/session'
+        url: 'api/sessions'
     })
 }
 
