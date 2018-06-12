@@ -72,6 +72,10 @@ class Ticket < ApplicationRecord
         class_name: 'DeliveryMethod', 
         foreign_key: :delivery_method_id, 
         primary_key: :id
+ 
+    has_one :note, 
+        class_name: 'Note',
+        foreign_key: :ticket_id 
     
     def search_by_scope(scope, query)
         if scope == 'global_scope'

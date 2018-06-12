@@ -15,7 +15,7 @@ class Api::TicketsController < ApplicationController
     end 
 
     def show
-        @ticket = Ticket.find_by(id: params[:id])
+        @ticket = Ticket.includes(:customer, :status, :ticket_type, :delivery_method, :note).find_by(id: params[:id])
         if @ticket 
             render 'api/tickets/show'
         else 
@@ -42,7 +42,6 @@ class Api::TicketsController < ApplicationController
             :time_dropped_off, 
             :date_fulfilled, 
             :time_fulfilled, 
-            :note_id, 
             :bag_weight, 
             :grand_total, 
             :ticket_type_id, 

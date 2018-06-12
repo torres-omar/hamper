@@ -18,10 +18,14 @@ class Business < ApplicationRecord
 
     has_many :tickets, 
         class_name: 'Ticket', 
-        foreign_key: 'business_id',
+        foreign_key: :business_id,
         dependent: :destroy
 
     belongs_to :owner, 
         class_name: 'User', 
-        foreign_key: 'user_id'
+        foreign_key: :user_id
+    
+    belongs_to :business_type, 
+        class_name: 'BusinessType', 
+        foreign_key: :business_type_id
 end
