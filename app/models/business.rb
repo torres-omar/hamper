@@ -1,7 +1,11 @@
 class Business < ApplicationRecord 
     include PgSearch
 
-    pg_search_scope :name_search, :against => [:name]
+    pg_search_scope :name_search, 
+                    :against => [:name], 
+                    :using => {
+                        :tsearch => {:prefix => true}
+                    }
 
     validates :name,
               :user_id, 

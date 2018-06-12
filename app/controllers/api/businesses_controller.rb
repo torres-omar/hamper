@@ -20,7 +20,7 @@ class Api::BusinessesController < ApplicationController
     end
 
     def search 
-        @businesses = Business.includes(:owner).where("name LIKE ? AND user_id = ?", params[:q], params[:user_id])
+        @businesses = Business.where("user_id = ?", params[:user_id]).name_search(params[:q])
         render 'api/businesses/index'
     end
 
