@@ -7,7 +7,7 @@ import LoginPage from './pages/login_page';
 const App = () => (
     <div> 
         <Switch>
-            <AuthRoute exact path="/login" component={LoginPage} />
+            <AuthRoute exact path="/" component={LoginPage} />
         </Switch>
     </div> 
 );

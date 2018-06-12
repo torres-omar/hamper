@@ -5,14 +5,6 @@ import configureStore from './store/store';
 /*
 Entry file 
 */
-
-/*
-Rendering components in the browser: 
-=> We need to wait until the DOM is fully loaded. 
-=> then we use ReactDOM.render() to replace entire content of 
-target HTML element
-*/
-
 document.addEventListener('DOMContentLoaded', () => {
     let store;
     /* 
@@ -26,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         store = configureStore();
     }
-    
+
     const root = document.getElementById('root');
     ReactDOM.render(<Root store={store}/>, root);
 });
