@@ -16,13 +16,13 @@ export const receiveSessionErrors = (errors) => ({
 
 
 // functional action creators (return functions that themselves dispatch actions)
-export const login = (user) => (dispatch) => (
-    APIUtil.login(user)
+export const login = (email) => (dispatch) => (
+    APIUtil.login(email)
         .then((user) => dispatch(receiveCurrentUser(user)),
         (errors) => dispatch(receiveSessionErrors(errors.responseJSON)))
 );
 
-export const logout = (user) => (dispatch) => (
+export const logout = () => (dispatch) => (
     APIUtil.logout()
         .then((user) => dispatch(receiveCurrentUser(null)),
         (errors) => dispatch(receiveSessionErrors(errors.responseJSON)))

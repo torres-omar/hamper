@@ -1,6 +1,7 @@
 import React from 'react'; 
+import LogInForm from '../sessions/login_form';
 
-class LoginPage extends React.Component{
+class LogInPage extends React.Component{
     constructor(props){
         super(props)
     }
@@ -8,10 +9,10 @@ class LoginPage extends React.Component{
     render(){
         return(
             <div> 
-                <h1>Hello from login</h1>
+                <LogInForm />
             </div>
         )
     }
 }
 
-export default LoginPage;
+export default LogInPage;

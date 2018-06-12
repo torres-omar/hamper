@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+    # protect_from_forgery with: :exception
     protect_from_forgery with: :null_session
     # helper methods available to views
     helper_method :current_user, :logged_in?
@@ -21,7 +22,7 @@ class ApplicationController < ActionController::Base
     # modifying user object so, use bang (!) by convention
     def logout! 
         # change (reset) the current_user's session token 
-        current_user.reset_session_token! unless current_user.nil?
+        current_user.reset_session_token! 
         # set :session_token cookie to nil
         session[:session_token] = nil 
         # set @current_user instance variable to nil

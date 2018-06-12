@@ -1,20 +1,15 @@
 export const login = (email) => {
-    let init = {
+    return $.ajax({
         method: "POST", 
-        body: new URLSearchParams(`email=${email}`)
-    }
-    return fetch('api/session', init).then(
-        function(response){
-            return response.json
-        }
-    )
+        url: 'api/sessions', 
+        data: {email : email}
+    })
 }
 
 export const logout = () => {
-    return fetch('api/session', {method: "DELETE"}).then(
-        function(response){
-            return response.json 
-        }
-    )
+    return $.ajax({
+        method: "DELETE",
+        url: 'api/session'
+    })
 }
 

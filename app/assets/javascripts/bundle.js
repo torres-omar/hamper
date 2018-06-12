@@ -126,9 +126,9 @@ var receiveSessionErrors = exports.receiveSessionErrors = function receiveSessio
 };
 
 // functional action creators (return functions that themselves dispatch actions)
-var login = exports.login = function login(user) {
+var login = exports.login = function login(email) {
     return function (dispatch) {
-        return APIUtil.login(user).then(function (user) {
+        return APIUtil.login(email).then(function (user) {
             return dispatch(receiveCurrentUser(user));
         }, function (errors) {
             return dispatch(receiveSessionErrors(errors.responseJSON));
@@ -136,7 +136,7 @@ var login = exports.login = function login(user) {
     };
 };
 
-var logout = exports.logout = function logout(user) {
+var logout = exports.logout = function logout() {
     return function (dispatch) {
         return APIUtil.logout().then(function (user) {
             return dispatch(receiveCurrentUser(null));
@@ -174,6 +174,10 @@ var _login_page = __webpack_require__(/*! ./pages/login_page */ "./client/compon
 
 var _login_page2 = _interopRequireDefault(_login_page);
 
+var _tickets_tab = __webpack_require__(/*! ./pages/tickets_tab */ "./client/components/pages/tickets_tab.jsx");
+
+var _tickets_tab2 = _interopRequireDefault(_tickets_tab);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App() {
@@ -183,7 +187,8 @@ var App = function App() {
         _react2.default.createElement(
             _reactRouterDom.Switch,
             null,
-            _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/', component: _login_page2.default })
+            _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/', component: _login_page2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_tab2.default })
         )
     );
 };
@@ -212,6 +217,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _login_form = __webpack_require__(/*! ../sessions/login_form */ "./client/components/sessions/login_form.jsx");
+
+var _login_form2 = _interopRequireDefault(_login_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -220,16 +229,89 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LoginPage = function (_React$Component) {
-    _inherits(LoginPage, _React$Component);
+var LogInPage = function (_React$Component) {
+    _inherits(LogInPage, _React$Component);
 
-    function LoginPage(props) {
-        _classCallCheck(this, LoginPage);
+    function LogInPage(props) {
+        _classCallCheck(this, LogInPage);
 
-        return _possibleConstructorReturn(this, (LoginPage.__proto__ || Object.getPrototypeOf(LoginPage)).call(this, props));
+        return _possibleConstructorReturn(this, (LogInPage.__proto__ || Object.getPrototypeOf(LogInPage)).call(this, props));
     }
 
-    _createClass(LoginPage, [{
+    _createClass(LogInPage, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_login_form2.default, null)
+            );
+        }
+    }]);
+
+    return LogInPage;
+}(_react2.default.Component);
+
+exports.default = LogInPage;
+
+/***/ }),
+
+/***/ "./client/components/pages/tickets_tab.jsx":
+/*!*************************************************!*\
+  !*** ./client/components/pages/tickets_tab.jsx ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        logout: function logout() {
+            return dispatch((0, _session_actions.logout)());
+        }
+    };
+};
+
+var TicketsTab = function (_React$Component) {
+    _inherits(TicketsTab, _React$Component);
+
+    function TicketsTab(props) {
+        _classCallCheck(this, TicketsTab);
+
+        return _possibleConstructorReturn(this, (TicketsTab.__proto__ || Object.getPrototypeOf(TicketsTab)).call(this, props));
+    }
+
+    _createClass(TicketsTab, [{
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            event.preventDefault();
+            this.props.logout();
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -238,16 +320,17 @@ var LoginPage = function (_React$Component) {
                 _react2.default.createElement(
                     'h1',
                     null,
-                    'Hello from login'
-                )
+                    'Logged in!'
+                ),
+                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit })
             );
         }
     }]);
 
-    return LoginPage;
+    return TicketsTab;
 }(_react2.default.Component);
 
-exports.default = LoginPage;
+exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(TicketsTab);
 
 /***/ }),
 
@@ -299,6 +382,191 @@ exports.default = Root;
 
 /***/ }),
 
+/***/ "./client/components/sessions/login_form.jsx":
+/*!***************************************************!*\
+  !*** ./client/components/sessions/login_form.jsx ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _errors = __webpack_require__(/*! ../shared/errors */ "./client/components/shared/errors.jsx");
+
+var _errors2 = _interopRequireDefault(_errors);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        login: function login(email) {
+            return dispatch((0, _session_actions.login)(email));
+        }
+    };
+};
+
+var LogInForm = function (_React$Component) {
+    _inherits(LogInForm, _React$Component);
+
+    function LogInForm(props) {
+        _classCallCheck(this, LogInForm);
+
+        var _this = _possibleConstructorReturn(this, (LogInForm.__proto__ || Object.getPrototypeOf(LogInForm)).call(this, props));
+
+        _this.state = {
+            email: '',
+            show_errors: false,
+            errors: []
+        };
+
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.renderErrors = _this.renderErrors.bind(_this);
+        return _this;
+    }
+
+    _createClass(LogInForm, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ email: event.target.value });
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(event) {
+            var _this2 = this;
+
+            event.preventDefault();
+            this.props.login(this.state.email).then(function () {
+                return _this2.props.history.push('/tickets');
+            }, function (response) {
+                return _this2.setState({ show_errors: true, errors: Object.values(response.errors) });
+            });
+        }
+    }, {
+        key: 'renderErrors',
+        value: function renderErrors() {
+            if (this.state.show_errors) {
+                return _react2.default.createElement(_errors2.default, { errors: this.state.errors });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'form',
+                { onSubmit: this.handleSubmit },
+                _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, value: this.state.email }),
+                _react2.default.createElement('input', { type: 'submit' }),
+                this.renderErrors()
+            );
+        }
+    }]);
+
+    return LogInForm;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(null, mapDispatchToProps)(LogInForm));
+
+/***/ }),
+
+/***/ "./client/components/shared/errors.jsx":
+/*!*********************************************!*\
+  !*** ./client/components/shared/errors.jsx ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Errors = function (_React$Component) {
+    _inherits(Errors, _React$Component);
+
+    function Errors(props) {
+        _classCallCheck(this, Errors);
+
+        var _this = _possibleConstructorReturn(this, (Errors.__proto__ || Object.getPrototypeOf(Errors)).call(this, props));
+
+        _this.renderErrors = _this.renderErrors.bind(_this);
+        return _this;
+    }
+
+    _createClass(Errors, [{
+        key: 'renderErrors',
+        value: function renderErrors() {
+            var errors = [];
+            this.props.errors.forEach(function (error, i) {
+                errors.push(_react2.default.createElement(
+                    'li',
+                    { key: i },
+                    error
+                ));
+            });
+            return errors;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    this.renderErrors()
+                )
+            );
+        }
+    }]);
+
+    return Errors;
+}(_react2.default.Component);
+
+exports.default = Errors;
+
+/***/ }),
+
 /***/ "./client/index.jsx":
 /*!**************************!*\
   !*** ./client/index.jsx ***!
@@ -337,13 +605,14 @@ document.addEventListener('DOMContentLoaded', function () {
      * if there is a current_user (method that returns a current user)  
      */
     if (window.currentUser) {
-        var preloadedState = { session: { currentUser: window.currentUser } };
+        var preloadedState = { session: { current_user: window.currentUser } };
         store = (0, _store2.default)(preloadedState);
         delete window.currentUser;
     } else {
         store = (0, _store2.default)();
     }
 
+    window.store = store;
     var root = document.getElementById('root');
     _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 });
@@ -593,7 +862,7 @@ var Protected = function Protected(_ref2) {
 };
 
 var mapStateToProps = function mapStateToProps(state) {
-    return { loggedIn: Boolean(state.session.currentUser) };
+    return { loggedIn: Boolean(state.session.current_user) };
 };
 
 var AuthRoute = exports.AuthRoute = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, null)(Auth));
@@ -615,18 +884,17 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var login = exports.login = function login(email) {
-    var init = {
+    return $.ajax({
         method: "POST",
-        body: new URLSearchParams('email=' + email)
-    };
-    return fetch('api/session', init).then(function (response) {
-        return response.json;
+        url: 'api/sessions',
+        data: { email: email }
     });
 };
 
 var logout = exports.logout = function logout() {
-    return fetch('api/session', { method: "DELETE" }).then(function (response) {
-        return response.json;
+    return $.ajax({
+        method: "DELETE",
+        url: 'api/session'
     });
 };
 
