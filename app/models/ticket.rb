@@ -76,15 +76,16 @@ class Ticket < ApplicationRecord
     has_one :note, 
         class_name: 'Note',
         foreign_key: :ticket_id 
-    
-    def search_by_scope(scope, query)
-        if scope == 'global_scope'
-            return Ticket.global_scope(query)
-        elsif scope == 'id_scope'
-            return Ticket.id_scope(query) 
-        elsif scope == 'customer_name_scope'
-            return Ticket.customer_name_scope(query)
-        end
-        return nil
+
+    def search_by_global_scope(business_id, query)
+        return Ticket.where("business_id = ?", business_id).global_scope(query)
+    end
+
+    def search_by_id_scope(business_id, query)
+        return Ticket.where("business_id = ?", business_id).id_scope(query) 
+    end
+
+    def search_by_customer_scope(business_id, query)
+        return Ticket.where("business_id = ?", business_id).customer_name_scope(query)
     end
 end 

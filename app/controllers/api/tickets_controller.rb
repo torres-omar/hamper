@@ -24,12 +24,30 @@ class Api::TicketsController < ApplicationController
     end
 
     def search 
-        @tickets = Ticket.search_by_scope(params[:search_scope], params[:q])
+        @tickets = Ticket.search_by_global_scope(params[:business_id], params[:q])
         if @tickets
             render 'api/tickets/index'
         else
             render json: {:errors => ["No records found in db."]}
         end
+    end
+
+    def id_search 
+        @tickets = Ticket.search_by_id_scope(params[:business_id], params[:id])
+        if @tickets
+            render 'api/tickets/index'
+        else 
+            render json: {:erros => ["No records found in db."]}
+        end 
+    end 
+
+    def customer_search 
+        @tickets = Ticket.search_by_customer_scope(params[:business_id], params[:id])
+        if @tickets 
+            render 'api/tickets/index'
+        else
+            render json: {:erros => ["No records found in db."]}
+        end 
     end
 
     private 
