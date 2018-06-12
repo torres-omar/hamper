@@ -10,6 +10,33 @@ class WeightValidator < ActiveModel::EachValidator
 end
 
 class Ticket < ApplicationRecord
+    include PgSearch 
+
+    pg_search_scope :id_scope, 
+                    :against => [:id], 
+                    :using => {
+                        :tsearch => {:prefix => true}
+                    }
+
+    pg_search_scopre :global_scope, 
+                     :associated_against => {
+                         :customer => [:first_name, :last_name],
+                         :ticket_type => [:ticket_name],
+                         :status => [:status_name], 
+                         :delivery_method => [:method_name]
+                     },
+                     :against => [:id],
+                     :using => {
+                         :tsearch => {:prefix => true}
+                     }
+
+    pg_search_scope :customer_name_scope, 
+                     :associated_against => {
+                         :customer => [:first_name, :last_name]
+                     }
+
+    
+
     validates :business_id, 
               :customer_id, 
               :status_id,
@@ -39,5 +66,21 @@ class Ticket < ApplicationRecord
     belongs_to :ticket_type, 
         class_name: 'TicketType', 
         foreign_key: :ticket_type_id, 
-        primary_key: :id 
+        primary_key: :id
+        
+    belong_to :delivery_method, 
+        class_name: 'DeliveryMethod', 
+        foreign_key: :delivery_method_id, 
+        primary_key: :id
+    
+    def search_by_scope(scope, query)
+        if scope == 'global_scope'
+            return Ticket.global_scope(query)
+        elsif scope == 'id_scope'
+            return Ticket.id_scope(query) 
+        elsif scope == 'customer_name_scope'
+            return Ticket.customer_name_scope(query)
+        end
+        return nil
+    end
 end 

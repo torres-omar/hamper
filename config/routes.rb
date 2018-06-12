@@ -24,8 +24,14 @@ Rails.application.routes.draw do
     end
 
     resources :businesses, only: [:show] do 
-      resources :tickets, only: [:index, :create]
+      resources :tickets, only: [:index, :create] do 
+        collection do 
+          get 'search/:q', to: 'tickets#search'
+        end
+      end
     end
+
+    resources :tickets, only: [:show]
 
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
