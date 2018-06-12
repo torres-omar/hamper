@@ -18,7 +18,7 @@ class Ticket < ApplicationRecord
                         :tsearch => {:prefix => true}
                     }
 
-    pg_search_scopre :global_scope, 
+    pg_search_scope :global_scope, 
                      :associated_against => {
                          :customer => [:first_name, :last_name],
                          :ticket_type => [:ticket_name],
@@ -68,7 +68,7 @@ class Ticket < ApplicationRecord
         foreign_key: :ticket_type_id, 
         primary_key: :id
         
-    belong_to :delivery_method, 
+    belongs_to :delivery_method, 
         class_name: 'DeliveryMethod', 
         foreign_key: :delivery_method_id, 
         primary_key: :id
