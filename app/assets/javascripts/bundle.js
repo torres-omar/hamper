@@ -367,10 +367,14 @@ var TicketSearchBar = function (_React$Component) {
 
         _this.state = {
             query: '',
-            timer_id: null
+            timer_id: null,
+            show_scope_options: false,
+            search_scope: "Global"
         };
 
         _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
+        _this.renderScopeOptions = _this.renderScopeOptions.bind(_this);
+        _this.toggleScopeOptions = _this.toggleScopeOptions.bind(_this);
         return _this;
     }
 
@@ -386,30 +390,93 @@ var TicketSearchBar = function (_React$Component) {
                     clearTimeout(this.state.timer_id);
                 }
                 var timer_id = setTimeout(function () {
-                    _this2.props.fetchGlobalSearchTickets(_this2.props.user.startup_business_id, _this2.state.query);
+                    if (_this2.state.query.length > 0) {
+                        search_scope = _this2.state.search_scope;
+                        if (search_scope == "Global") {
+                            _this2.props.fetchGlobalSearchTickets(_this2.props.user.startup_business_id, _this2.state.query);
+                        } else if (search_scope == "id") {
+                            _this2.props.fetchIdSearchTickets();
+                        } else if (search_scope == "name") {
+                            _this2.props.fetchNameSearchTickets();
+                        }
+                    } else {
+                        // come back to this. not the best solution
+                        _this2.props.fetchGlobalSearchTickets(_this2.props.user.startup_business_id, 'empty-query');
+                    }
                     _this2.setState({ timer_id: null });
-                }, 2000);
+                }, 1000);
                 this.setState({ timer_id: timer_id });
             }.bind(this)();
         }
     }, {
+        key: 'handleSelect',
+        value: function handleSelect() {
+            alert("ticket was selected");
+        }
+    }, {
+        key: 'renderScopeOptions',
+        value: function renderScopeOptions() {
+            if (this.state.show_scope_options) {
+                return _react2.default.createElement(
+                    'ul',
+                    null,
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'Global'
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'By id'
+                    ),
+                    _react2.default.createElement(
+                        'li',
+                        null,
+                        'By customer name'
+                    )
+                );
+            }
+        }
+    }, {
+        key: 'toggleScopeOptions',
+        value: function toggleScopeOptions() {
+            this.setState({ show_scope_options: this.state.show_scope_options ? false : true });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(_reactAutocomplete2.default, {
-                getItemValue: function getItemValue(item) {
-                    return item.id;
-                },
-                items: this.props.search_tickets,
-                renderItem: function renderItem(item, isHighlighted) {
-                    return _react2.default.createElement(
-                        'div',
-                        { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
-                        item.id
-                    );
-                },
-                value: this.state.query,
-                onChange: this.handleChangeDebounced
-            });
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_reactAutocomplete2.default, {
+                    getItemValue: function getItemValue(item) {
+                        return item.date_dropped_off;
+                    },
+                    items: this.props.search_tickets,
+                    renderItem: function renderItem(item, isHighlighted) {
+                        return _react2.default.createElement(
+                            'div',
+                            { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
+                            item.date_dropped_off
+                        );
+                    },
+                    value: this.state.query,
+                    onChange: this.handleChangeDebounced,
+                    onSelect: this.handleSelect,
+                    menuStyle: {
+                        position: 'static',
+                        zIndex: 2,
+                        overflow: 'visible'
+                    }
+                }),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement('input', { type: 'button', value: 'search scope', onClick: this.toggleScopeOptions }),
+                    this.renderScopeOptions()
+                )
+            );
         }
     }]);
 

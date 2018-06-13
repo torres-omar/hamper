@@ -1,7 +1,7 @@
 import React from 'react'; 
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
-import { fetchGlobalSearchTickets } from '../../actions/tickets_actions';
+import { fetchGlobalSearchTickets, fetchIdSearchTickets, fetchNameSearchTickets } from '../../actions/tickets_actions';
 
 const mapStateToProps = (state) => ({
     tickets: state.entities.tickets,
@@ -18,10 +18,14 @@ class TicketSearchBar extends React.Component{
         super(props);
         this.state = {
             query: '',
-            timer_id: null
+            timer_id: null, 
+            show_scope_options: false,
+            search_scope: "Global" 
         }
 
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
+        this.renderScopeOptions = this.renderScopeOptions.bind(this)
+        this.toggleScopeOptions = this.toggleScopeOptions.bind(this)
     }
 
 
@@ -34,27 +38,72 @@ class TicketSearchBar extends React.Component{
                 clearTimeout(this.state.timer_id)
             }
             let timer_id = setTimeout(() => {
-                this.props.fetchGlobalSearchTickets(this.props.user.startup_business_id, this.state.query)
+                if(this.state.query.length > 0 ){
+                    search_scope = this.state.search_scope
+                    if(search_scope == "Global"){
+                        this.props.fetchGlobalSearchTickets(this.props.user.startup_business_id, this.state.query)
+                    }else if(search_scope == "id"){
+                        this.props.fetchIdSearchTickets()
+                    }else if(search_scope == "name"){
+                        this.props.fetchNameSearchTickets()
+                    }
+                }else{
+                    // come back to this. not the best solution
+                    this.props.fetchGlobalSearchTickets(this.props.user.startup_business_id, 'empty-query')
+                }
                 this.setState({timer_id: null})
-            }, 2000);
+            }, 1000);
             this.setState({timer_id: timer_id})
         }.bind(this)()
     }
 
+    handleSelect(){
+        alert("ticket was selected")
+    }
+
+    renderScopeOptions(){
+        if(this.state.show_scope_options){
+            return(
+                <ul> 
+                    <li>Global</li>
+                    <li>By id</li>
+                    <li>By customer name</li>
+                </ul>
+            )
+        }
+    }
+
+    toggleScopeOptions(){
+        this.setState({show_scope_options: this.state.show_scope_options ? false : true})
+    }
 
     render(){
         return(
-            <Autocomplete 
-                getItemValue = {(item) => item.id}
-                items = {this.props.search_tickets}
-                renderItem={(item, isHighlighted) =>
-                    <div style={{ background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }} key={item.id}>
-                        {item.id}
-                    </div>
-                }
-                value={this.state.query}
-                onChange={this.handleChangeDebounced}
-            /> 
+            <div> 
+                <Autocomplete 
+                    getItemValue = {(item) => {
+                        return item.date_dropped_off
+                    }}
+                    items = {this.props.search_tickets}
+                    renderItem={(item, isHighlighted) =>
+                        <div style={{ background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }} key={item.id}>
+                            {item.date_dropped_off}
+                        </div>
+                    }
+                    value={this.state.query}
+                    onChange={this.handleChangeDebounced}
+                    onSelect={this.handleSelect}
+                    menuStyle={{
+                        position: 'static',
+                        zIndex: 2,
+                        overflow: 'visible'
+                    }}
+                /> 
+                <div> 
+                    <input type="button" value="search scope" onClick={this.toggleScopeOptions}/>
+                    {this.renderScopeOptions()}
+                </div>
+            </div>
         )
     }
 }
