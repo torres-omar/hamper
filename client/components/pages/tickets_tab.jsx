@@ -3,6 +3,7 @@ import { logout } from '../../actions/session_actions';
 import { fetchUnfulfilledTickets } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
 import TicketsView from '../dashboard/tickets_view';
+import TicketsSearchBar from '../dashboard/ticket_search_bar';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
@@ -33,8 +34,9 @@ class TicketsTab extends React.Component{
     render(){
         return(
             <div>
-                <h1>Logged in!</h1> 
+                <h1>Tickets</h1> 
                 <input type="button" onClick={this.handleSubmit} value="sign out"/>
+                <TicketsSearchBar />
                 <TicketsView />
             </div> 
         )
