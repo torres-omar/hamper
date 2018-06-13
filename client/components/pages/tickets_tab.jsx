@@ -34,10 +34,20 @@ class TicketsTab extends React.Component{
         this.props.logout();
     }
 
+    handleStatusChange(e, status){
+        e.preventDefault()
+        this.setState({ticket_status: status})
+    }
+
     render(){
         return(
             <div>
                 <h1>Tickets</h1> 
+                <div> 
+                    <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>Unfulfilled</button>
+                    <button onClick={(e) => this.handleStatusChange(e, "notified")}>Notified</button>
+                    <button onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
+                </div> 
                 <input type="button" onClick={this.handleSubmit} value="sign out"/>
                 <TicketsSearchBar status={this.state.ticket_status}/>
                 <TicketsView />

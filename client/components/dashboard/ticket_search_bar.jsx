@@ -1,7 +1,7 @@
 import React from 'react'; 
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
-import { fetchGlobalSearchTickets, fetchIdSearchTickets, fetchNameSearchTickets } from '../../actions/tickets_actions';
+import { fetchGlobalSearchTickets, fetchIdSearchTickets, fetchNameSearchTickets, clearSearchTickets } from '../../actions/tickets_actions';
 
 const mapStateToProps = (state) => ({
     tickets: state.entities.tickets,
@@ -12,7 +12,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     fetchGlobalSearchTickets: (business_id, query, status) => dispatch(fetchGlobalSearchTickets(business_id, query, status)),
     fetchIdSearchTickets: (business_id, query, status) => dispatch(fetchIdSearchTickets(business_id, query, status)),
-    fetchNameSearchTickets: (business_id, query, status) => dispatch(fetchNameSearchTickets(business_id, query, status))
+    fetchNameSearchTickets: (business_id, query, status) => dispatch(fetchNameSearchTickets(business_id, query, status)),
+    clearSearchTickets: () => dispatch(clearSearchTickets())
 })
 
 class TicketSearchBar extends React.Component{
@@ -30,6 +31,13 @@ class TicketSearchBar extends React.Component{
         this.renderScopeOptions = this.renderScopeOptions.bind(this)
         this.toggleScopeOptions = this.toggleScopeOptions.bind(this)
         this.handleScopeChange = this.handleScopeChange.bind(this)
+    }
+
+    componentDidUpdate(prevProps){
+        if(this.props.status != prevProps.status){
+            this.setState({ticket_status: this.props.status, query: ""})
+            this.props.clearSearchTickets()
+        }
     }
 
     handleChangeDebounced(event){
@@ -67,7 +75,9 @@ class TicketSearchBar extends React.Component{
     }
 
     handleScopeChange(event){
-        this.setState({search_scope: event.target.attributes.value.value})
+        this.setState({search_scope: event.target.attributes.value.value, query: ""})
+        // come back to this. we need some way to clear searched tickets in redux store
+        this.props.clearSearchTickets()
     }
 
     renderScopeOptions(){

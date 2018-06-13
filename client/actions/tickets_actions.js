@@ -13,6 +13,11 @@ export const receiveSearchTickets = (tickets) => ({
     search_tickets: tickets
 })
 
+export const clearSearchTickets = () => ({
+    type: RECEIVE_SEARCH_TICKETS, 
+    search_tickets: []
+})
+
 export const fetchUnfulfilledTickets = (business_id, page) => (dispatch) => (
     APIUtil.fetchUnfulfilledTickets(business_id,page).then(
         (tickets) => dispatch(receiveTickets(tickets))   

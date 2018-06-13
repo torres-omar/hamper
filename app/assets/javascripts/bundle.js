@@ -161,7 +161,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchUnfulfilledTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchUnfulfilledTickets = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -183,6 +183,13 @@ var receiveSearchTickets = exports.receiveSearchTickets = function receiveSearch
     return {
         type: RECEIVE_SEARCH_TICKETS,
         search_tickets: tickets
+    };
+};
+
+var clearSearchTickets = exports.clearSearchTickets = function clearSearchTickets() {
+    return {
+        type: RECEIVE_SEARCH_TICKETS,
+        search_tickets: []
     };
 };
 
@@ -375,6 +382,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         fetchNameSearchTickets: function fetchNameSearchTickets(business_id, query, status) {
             return dispatch((0, _tickets_actions.fetchNameSearchTickets)(business_id, query, status));
+        },
+        clearSearchTickets: function clearSearchTickets() {
+            return dispatch((0, _tickets_actions.clearSearchTickets)());
         }
     };
 };
@@ -403,6 +413,14 @@ var TicketSearchBar = function (_React$Component) {
     }
 
     _createClass(TicketSearchBar, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.status != prevProps.status) {
+                this.setState({ ticket_status: this.props.status, query: "" });
+                this.props.clearSearchTickets();
+            }
+        }
+    }, {
         key: 'handleChangeDebounced',
         value: function handleChangeDebounced(event) {
             event.preventDefault();
@@ -443,7 +461,9 @@ var TicketSearchBar = function (_React$Component) {
     }, {
         key: 'handleScopeChange',
         value: function handleScopeChange(event) {
-            this.setState({ search_scope: event.target.attributes.value.value });
+            this.setState({ search_scope: event.target.attributes.value.value, query: "" });
+            // come back to this. we need some way to clear searched tickets in redux store
+            this.props.clearSearchTickets();
         }
     }, {
         key: 'renderScopeOptions',
@@ -767,8 +787,16 @@ var TicketsTab = function (_React$Component) {
             this.props.logout();
         }
     }, {
+        key: 'handleStatusChange',
+        value: function handleStatusChange(e, status) {
+            e.preventDefault();
+            this.setState({ ticket_status: status });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -776,6 +804,31 @@ var TicketsTab = function (_React$Component) {
                     'h1',
                     null,
                     'Tickets'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: function onClick(e) {
+                                return _this2.handleStatusChange(e, "unfulfilled");
+                            } },
+                        'Unfulfilled'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: function onClick(e) {
+                                return _this2.handleStatusChange(e, "notified");
+                            } },
+                        'Notified'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: function onClick(e) {
+                                return _this2.handleStatusChange(e, "fulfilled");
+                            } },
+                        'Fulfilled'
+                    )
                 ),
                 _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' }),
                 _react2.default.createElement(_ticket_search_bar2.default, { status: this.state.ticket_status }),
