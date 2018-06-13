@@ -12,6 +12,8 @@ end
 class Ticket < ApplicationRecord
     include PgSearch 
 
+    # default_scope {order(created_at: :asc)}
+
     pg_search_scope :id_scope, 
                     :against => [:id], 
                     :using => {
@@ -63,8 +65,7 @@ class Ticket < ApplicationRecord
     
     belongs_to :status,
         class_name: 'Status',
-        foreign_key: :status_id,
-        primary_key: :id 
+        foreign_key: :status_id
     
     belongs_to :ticket_type, 
         class_name: 'TicketType', 
@@ -90,5 +91,19 @@ class Ticket < ApplicationRecord
 
     def self.search_by_customer_scope(business_id, query)
         return Ticket.where("business_id = ?", business_id).customer_name_scope(query)
+    end
+
+    def self.unfulfilled_tickets_by_page_number(business_id, page)
+        # gets the unfulfilled tickets for a specified business & page.
+        # first page ( page = 0 ) returns the first 10 unfulfilled tickets 
+        # ordered by date_dropped_off, in descending order 
+        return nil unless page >= 0
+        ticket_per_page = 10
+        tickets_offset = page * ticket_per_page
+        status = Status.where("status_name = ?", "Unfulfilled").first
+        return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
+                     .limit(ticket_per_page)
+                     .offset(tickets_offset)
+                     .order(created_at: :desc)
     end
 end 

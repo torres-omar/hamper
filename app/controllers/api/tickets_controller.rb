@@ -39,6 +39,13 @@ class Api::TicketsController < ApplicationController
     end
 
     def unfulfilled_page
+        page_number = Integer(params[:p])
+        @tickets = Ticket.unfulfilled_tickets_by_page_number(params[:business_id], page_number)
+        if @tickets
+            render 'api/tickets/index'
+        else
+            render json: {:errors => ["Invalid parameters"]}, status: 422
+        end
     end
 
     private 
@@ -54,7 +61,9 @@ class Api::TicketsController < ApplicationController
             :bag_weight, 
             :grand_total, 
             :ticket_type_id, 
-            :delivery_method_id
+            :delivery_method_id,
+            :business_id, 
+            :p
         )
     end
 end
