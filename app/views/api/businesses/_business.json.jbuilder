@@ -1,12 +1,11 @@
-json.set! business.id do 
-    json.extract! business, 
-        :name, 
-        :street_address, 
-        :city, 
-        :zip_code, 
-        :state, 
-        :latitude, 
-        :longitude, 
-        :price_per_pound,
-        :user_id
-end
+json.extract! business, 
+    :id,
+    :name, 
+    :street_address, 
+    :city, 
+    :zip_code, 
+    :state, 
+    :latitude, 
+    :longitude, 
+    :price_per_pound,
+    :user_id

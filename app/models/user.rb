@@ -6,6 +6,12 @@ class User < ApplicationRecord
         foreign_key: :user_id, 
         dependent: :destroy
 
+    has_one :settings, 
+        class_name: 'Setting', 
+        foreign_key: :user_id, 
+        dependent: :destroy 
+    
+
     after_initialize :ensure_session_token
 
     def self.generate_session_token

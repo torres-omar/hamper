@@ -17,7 +17,8 @@ class TicketsTab extends React.Component{
     }
 
     componentDidMount(){
-        this.props.fetchTickets()
+        // call fetchUnfulfilledTickets method with page 0
+        this.props.fetchUnfulfilledTickets(0)
     }
 
     handleSubmit(event){

@@ -104,6 +104,6 @@ class Ticket < ApplicationRecord
         return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
                      .limit(ticket_per_page)
                      .offset(tickets_offset)
-                     .order(created_at: :desc)
+                     .order(time_dropped_off: :desc)
     end
 end 

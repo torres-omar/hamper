@@ -328,7 +328,8 @@ var TicketsTab = function (_React$Component) {
     _createClass(TicketsTab, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.fetchTickets();
+            // call fetchUnfulfilledTickets method with page 0
+            this.props.fetchUnfulfilledTickets(0);
         }
     }, {
         key: 'handleSubmit',
