@@ -29,8 +29,10 @@ class LogInForm extends React.Component{
 
     handleSubmit(event){
         event.preventDefault(); 
+        // no need to redirect upon succesful login
+        // AUthRoute makes sure to redirect as soon as user is logged in
         this.props.login(this.state.email).then(
-            () => this.props.history.push('/tickets'), 
+            () => {return}, 
             (response) => this.setState({show_errors: true, errors: Object.values(response.errors)})
         )
     }

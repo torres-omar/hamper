@@ -292,8 +292,25 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         logout: function logout() {
             return dispatch((0, _session_actions.logout)());
-        }
+        },
+        fetchTickets: function (_fetchTickets) {
+            function fetchTickets() {
+                return _fetchTickets.apply(this, arguments);
+            }
+
+            fetchTickets.toString = function () {
+                return _fetchTickets.toString();
+            };
+
+            return fetchTickets;
+        }(function () {
+            return dispatch(fetchTickets());
+        })
     };
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {};
 };
 
 var TicketsTab = function (_React$Component) {
@@ -309,6 +326,11 @@ var TicketsTab = function (_React$Component) {
     }
 
     _createClass(TicketsTab, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchTickets();
+        }
+    }, {
         key: 'handleSubmit',
         value: function handleSubmit(event) {
             event.preventDefault();
@@ -462,8 +484,10 @@ var LogInForm = function (_React$Component) {
             var _this2 = this;
 
             event.preventDefault();
+            // no need to redirect upon succesful login
+            // AUthRoute makes sure to redirect as soon as user is logged in
             this.props.login(this.state.email).then(function () {
-                return _this2.props.history.push('/tickets');
+                return;
             }, function (response) {
                 return _this2.setState({ show_errors: true, errors: Object.values(response.errors) });
             });

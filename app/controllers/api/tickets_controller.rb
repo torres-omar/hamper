@@ -38,6 +38,9 @@ class Api::TicketsController < ApplicationController
         render 'api/tickets/index'
     end
 
+    def unfulfilled_page
+    end
+
     private 
 
     def ticket_params 

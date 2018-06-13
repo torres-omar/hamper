@@ -29,6 +29,9 @@ Rails.application.routes.draw do
           get 'search/:q', to: 'tickets#search'
           get 'search/id/:q', to: 'tickets#id_search'
           get 'search/cname/:q', to: 'tickets#customer_search'
+          # this route takes a page number as a param 
+          # multiplies page number by offset to facilitate pagination
+          get 'unfulfilled/:p', to: 'tickets#unfulfilled_page'
         end
       end
 

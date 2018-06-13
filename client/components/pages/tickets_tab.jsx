@@ -3,14 +3,21 @@ import { logout } from '../../actions/session_actions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => ({
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
+    fetchTickets: () => dispatch(fetchTickets())
 })
 
+const mapStateToProps = (state) => ({
+})
 
 class TicketsTab extends React.Component{
     constructor(props){
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    componentDidMount(){
+        this.props.fetchTickets()
     }
 
     handleSubmit(event){
