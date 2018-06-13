@@ -18,8 +18,8 @@ export const clearSearchTickets = () => ({
     search_tickets: []
 })
 
-export const fetchUnfulfilledTickets = (business_id, page) => (dispatch) => (
-    APIUtil.fetchUnfulfilledTickets(business_id,page).then(
+export const fetchStatusTickets = (business_id, page, status) => (dispatch) => (
+    APIUtil.fetchStatusTickets(business_id,page, status).then(
         (tickets) => dispatch(receiveTickets(tickets))   
     )
 )

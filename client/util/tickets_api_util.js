@@ -1,7 +1,7 @@
-export const fetchUnfulfilledTickets = (business_id,page) => {
+export const fetchStatusTickets = (business_id,page,status) => {
     return $.ajax({
         method: "GET", 
-        url: `/api/businesses/${business_id}/tickets/unfulfilled/${page}`
+        url: `/api/businesses/${business_id}/tickets/${status}/${page}`
     })
 }
 

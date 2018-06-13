@@ -96,14 +96,47 @@ class Ticket < ApplicationRecord
         return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id).customer_name_scope(query)
     end
 
-    def self.unfulfilled_tickets_by_page_number(business_id, page)
-        # gets the unfulfilled tickets for a specified business & page.
-        # first page ( page = 0 ) returns the first 10 unfulfilled tickets 
-        # ordered by date_dropped_off, in descending order 
+    # def self.unfulfilled_tickets_by_page_number(business_id, page)
+    #     # gets the unfulfilled tickets for a specified business & page.
+    #     # first page ( page = 0 ) returns the first 10 unfulfilled tickets 
+    #     # ordered by date_dropped_off, in descending order 
+    #     return nil unless page >= 0
+    #     ticket_per_page = 10
+    #     tickets_offset = page * ticket_per_page
+    #     status = Status.where("status_name = ?", "Unfulfilled").first
+    #     return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
+    #                  .limit(ticket_per_page)
+    #                  .offset(tickets_offset)
+    #                  .order(time_dropped_off: :desc)
+    # end
+
+    # def self.notified_tickets_by_page_number(business_id, page)
+    #     return nil unless page >= 0
+    #     ticket_per_page = 10
+    #     tickets_offset = page * ticket_per_page
+    #     status = Status.where("status_name = ?", "Notified").first
+    #     return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
+    #                  .limit(ticket_per_page)
+    #                  .offset(tickets_offset)
+    #                  .order(time_dropped_off: :desc)
+    # end
+
+    # def self.fulfilled_tickets_by_page_number(business_id, page)
+    #     return nil unless page >= 0
+    #     ticket_per_page = 10
+    #     tickets_offset = page * ticket_per_page
+    #     status = Status.where("status_name = ?", "Fulfilled").first
+    #     return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
+    #                  .limit(ticket_per_page)
+    #                  .offset(tickets_offset)
+    #                  .order(time_dropped_off: :desc)
+    # end
+
+    def self.status_tickets_by_page_number(business_id, page, status)
         return nil unless page >= 0
         ticket_per_page = 10
         tickets_offset = page * ticket_per_page
-        status = Status.where("status_name = ?", "Unfulfilled").first
+        status = Status.where("status_name = ?", status.capitalize).first
         return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
                      .limit(ticket_per_page)
                      .offset(tickets_offset)

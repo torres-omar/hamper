@@ -38,15 +38,45 @@ class Api::TicketsController < ApplicationController
         render 'api/tickets/index'
     end
 
-    def unfulfilled_page
+    def status_tickets
         page_number = Integer(params[:p])
-        @tickets = Ticket.unfulfilled_tickets_by_page_number(params[:business_id], page_number)
+        @tickets = Ticket.status_tickets_by_page_number(params[:business_id], page_number, params[:s])
         if @tickets
             render 'api/tickets/index'
         else
             render json: {:errors => ["Invalid parameters"]}, status: 422
         end
     end
+
+    # def unfulfilled_page
+    #     page_number = Integer(params[:p])
+    #     @tickets = Ticket.unfulfilled_tickets_by_page_number(params[:business_id], page_number)
+    #     if @tickets
+    #         render 'api/tickets/index'
+    #     else
+    #         render json: {:errors => ["Invalid parameters"]}, status: 422
+    #     end
+    # end
+
+    # def notified_page
+    #     page_number = Integer(params[:p])
+    #     @tickets = Ticket.notified_tickets_by_page_number(params[:business_id], page_number)
+    #     if @tickets
+    #         render 'api/tickets/index'
+    #     else
+    #         render json: {:errors => ["Invalid parameters"], status: 422}
+    #     end
+    # end
+
+    # def fulfilled_page
+    #     page_number = Integer(params[:p])
+    #     @tickets = Ticket.fulfilled_tickets_by_page_number(params[:business_id], page_number)
+    #     if @tickets
+    #         render 'api/tickets/index'
+    #     else
+    #         render json: {:errors => ["Invalid parameters"], status: 422}
+    #     end
+    # end 
 
     private 
 

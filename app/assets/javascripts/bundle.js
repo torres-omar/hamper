@@ -161,7 +161,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchUnfulfilledTickets = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -193,9 +193,9 @@ var clearSearchTickets = exports.clearSearchTickets = function clearSearchTicket
     };
 };
 
-var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUnfulfilledTickets(business_id, page) {
+var fetchStatusTickets = exports.fetchStatusTickets = function fetchStatusTickets(business_id, page, status) {
     return function (dispatch) {
-        return APIUtil.fetchUnfulfilledTickets(business_id, page).then(function (tickets) {
+        return APIUtil.fetchStatusTickets(business_id, page, status).then(function (tickets) {
             return dispatch(receiveTickets(tickets));
         });
     };
@@ -610,8 +610,15 @@ var TicketsView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketsView.__proto__ || Object.getPrototypeOf(TicketsView)).call(this, props));
 
         _this.renderTickets = _this.renderTickets.bind(_this);
+        // this.state ={
+        //     status: this.props.status
+        // }
         return _this;
     }
+
+    // componentDidUpdate(prevProps){
+    //     if()
+    // }
 
     _createClass(TicketsView, [{
         key: 'renderTickets',
@@ -746,8 +753,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         logout: function logout() {
             return dispatch((0, _session_actions.logout)());
         },
-        fetchUnfulfilledTickets: function fetchUnfulfilledTickets(busines_id, page) {
-            return dispatch((0, _tickets_actions.fetchUnfulfilledTickets)(busines_id, page));
+        fetchStatusTickets: function fetchStatusTickets(busines_id, page, status) {
+            return dispatch((0, _tickets_actions.fetchStatusTickets)(busines_id, page, status));
         }
     };
 };
@@ -774,11 +781,20 @@ var TicketsTab = function (_React$Component) {
     }
 
     _createClass(TicketsTab, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (this.state.ticket_status != prevState.ticket_status) {
+                var id = this.props.user.startup_business_id;
+                var status = this.state.ticket_status;
+                this.props.fetchStatusTickets(id, 0, status);
+            }
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // call fetchUnfulfilledTickets method with page 0
+            // call fetchStatusTickets method with page 0
             var business_id = this.props.user.startup_business_id;
-            this.props.fetchUnfulfilledTickets(business_id, 0);
+            this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
         }
     }, {
         key: 'handleSubmit',
@@ -1513,10 +1529,10 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUnfulfilledTickets(business_id, page) {
+var fetchStatusTickets = exports.fetchStatusTickets = function fetchStatusTickets(business_id, page, status) {
     return $.ajax({
         method: "GET",
-        url: "/api/businesses/" + business_id + "/tickets/unfulfilled/" + page
+        url: "/api/businesses/" + business_id + "/tickets/" + status + "/" + page
     });
 };
 

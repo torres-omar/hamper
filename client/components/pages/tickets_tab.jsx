@@ -1,13 +1,13 @@
 import React from 'react'; 
 import { logout } from '../../actions/session_actions';
-import { fetchUnfulfilledTickets } from '../../actions/tickets_actions';
+import { fetchStatusTickets } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
 import TicketsView from '../dashboard/tickets_view';
 import TicketsSearchBar from '../dashboard/ticket_search_bar';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
-    fetchUnfulfilledTickets: (busines_id, page) => dispatch(fetchUnfulfilledTickets(busines_id, page)), 
+    fetchStatusTickets: (busines_id, page, status) => dispatch(fetchStatusTickets(busines_id, page, status)), 
 })
 
 const mapStateToProps = (state) => ({
@@ -23,10 +23,18 @@ class TicketsTab extends React.Component{
         }
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if(this.state.ticket_status != prevState.ticket_status){
+            let id = this.props.user.startup_business_id
+            let status = this.state.ticket_status
+            this.props.fetchStatusTickets(id, 0, status)
+        }
+    }
+
     componentDidMount(){
-        // call fetchUnfulfilledTickets method with page 0
+        // call fetchStatusTickets method with page 0
         let business_id = this.props.user.startup_business_id;
-        this.props.fetchUnfulfilledTickets(business_id, 0);
+        this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
     }
 
     handleSubmit(event){
