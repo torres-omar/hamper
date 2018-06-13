@@ -10,7 +10,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchGlobalSearchTickets: (business_id, query) => dispatch(fetchGlobalSearchTickets(business_id, query))
+    fetchGlobalSearchTickets: (business_id, query, status) => dispatch(fetchGlobalSearchTickets(business_id, query, status)),
+    fetchIdSearchTickets: (business_id, query, status) => dispatch(fetchIdSearchTickets(business_id, query, status)),
+    fetchNameSearchTickets: (business_id, query, status) => dispatch(fetchNameSearchTickets(business_id, query, status))
 })
 
 class TicketSearchBar extends React.Component{
@@ -20,15 +22,14 @@ class TicketSearchBar extends React.Component{
             query: '',
             timer_id: null, 
             show_scope_options: false,
-            search_scope: "Global" 
+            search_scope: "Global", 
+            ticket_status: this.props.status
         }
 
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
         this.renderScopeOptions = this.renderScopeOptions.bind(this)
         this.toggleScopeOptions = this.toggleScopeOptions.bind(this)
     }
-
-
 
     handleChangeDebounced(event){
         event.preventDefault()
@@ -38,18 +39,21 @@ class TicketSearchBar extends React.Component{
                 clearTimeout(this.state.timer_id)
             }
             let timer_id = setTimeout(() => {
+                let search_scope = this.state.search_scope
+                let id = this.props.user.startup_business_id
+                let query = this.state.query
+                let status = this.state.ticket_status
                 if(this.state.query.length > 0 ){
-                    search_scope = this.state.search_scope
                     if(search_scope == "Global"){
-                        this.props.fetchGlobalSearchTickets(this.props.user.startup_business_id, this.state.query)
+                        this.props.fetchGlobalSearchTickets(id, query, status)
                     }else if(search_scope == "id"){
-                        this.props.fetchIdSearchTickets()
+                        this.props.fetchIdSearchTickets(id, query, status)
                     }else if(search_scope == "name"){
-                        this.props.fetchNameSearchTickets()
+                        this.props.fetchNameSearchTickets(id, query, status)
                     }
                 }else{
                     // come back to this. not the best solution
-                    this.props.fetchGlobalSearchTickets(this.props.user.startup_business_id, 'empty-query')
+                    this.props.fetchGlobalSearchTickets(id, 'empty-query', status)
                 }
                 this.setState({timer_id: null})
             }, 1000);

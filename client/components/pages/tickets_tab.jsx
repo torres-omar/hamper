@@ -7,7 +7,7 @@ import TicketsSearchBar from '../dashboard/ticket_search_bar';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
-    fetchUnfulfilledTickets: (busines_id, page) => dispatch(fetchUnfulfilledTickets(busines_id, page))
+    fetchUnfulfilledTickets: (busines_id, page) => dispatch(fetchUnfulfilledTickets(busines_id, page)), 
 })
 
 const mapStateToProps = (state) => ({
@@ -18,6 +18,9 @@ class TicketsTab extends React.Component{
     constructor(props){
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            ticket_status: 'unfulfilled'
+        }
     }
 
     componentDidMount(){
@@ -36,7 +39,7 @@ class TicketsTab extends React.Component{
             <div>
                 <h1>Tickets</h1> 
                 <input type="button" onClick={this.handleSubmit} value="sign out"/>
-                <TicketsSearchBar />
+                <TicketsSearchBar status={this.state.ticket_status}/>
                 <TicketsView />
             </div> 
         )

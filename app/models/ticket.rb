@@ -81,16 +81,19 @@ class Ticket < ApplicationRecord
         class_name: 'Note',
         foreign_key: :ticket_id 
 
-    def self.search_by_global_scope(business_id, query)
-        return Ticket.where("business_id = ?", business_id).global_scope(query)
+    def self.search_by_global_scope(business_id, query, status)
+        status = Status.where("status_name = ?", status.capitalize).first
+        return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id).global_scope(query)
     end
 
-    def self.search_by_id_scope(business_id, query)
-        return Ticket.where("business_id = ?", business_id).id_scope(query) 
+    def self.search_by_id_scope(business_id, query, status)
+        status = Status.where("status_name = ?", status.capitalize).first
+        return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id).id_scope(query) 
     end
 
-    def self.search_by_customer_scope(business_id, query)
-        return Ticket.where("business_id = ?", business_id).customer_name_scope(query)
+    def self.search_by_customer_scope(business_id, query, status)
+        status = Status.where("status_name = ?", status.capitalize).first
+        return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id).customer_name_scope(query)
     end
 
     def self.unfulfilled_tickets_by_page_number(business_id, page)

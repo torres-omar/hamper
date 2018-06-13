@@ -161,7 +161,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchGlobalSearchTickets = exports.fetchUnfulfilledTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchUnfulfilledTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -194,9 +194,25 @@ var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUn
     };
 };
 
-var fetchGlobalSearchTickets = exports.fetchGlobalSearchTickets = function fetchGlobalSearchTickets(business_id, query) {
+var fetchGlobalSearchTickets = exports.fetchGlobalSearchTickets = function fetchGlobalSearchTickets(business_id, query, status) {
     return function (dispatch) {
-        return APIUtil.fetchGlobalSearchTickets(business_id, query).then(function (tickets) {
+        return APIUtil.fetchGlobalSearchTickets(business_id, query, status).then(function (tickets) {
+            return dispatch(receiveSearchTickets(tickets));
+        });
+    };
+};
+
+var fetchIdSearchTickets = exports.fetchIdSearchTickets = function fetchIdSearchTickets(business_id, query, status) {
+    return function (dispatch) {
+        return APIUtil.fetchIdSearchTickets(business_id, query, status).then(function (tickets) {
+            return dispatch(receiveSearchTickets(tickets));
+        });
+    };
+};
+
+var fetchNameSearchTickets = exports.fetchNameSearchTickets = function fetchNameSearchTickets(business_id, query, status) {
+    return function (dispatch) {
+        return APIUtil.fetchNameSearchTickets(business_id, query, status).then(function (tickets) {
             return dispatch(receiveSearchTickets(tickets));
         });
     };
@@ -351,8 +367,14 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
-        fetchGlobalSearchTickets: function fetchGlobalSearchTickets(business_id, query) {
-            return dispatch((0, _tickets_actions.fetchGlobalSearchTickets)(business_id, query));
+        fetchGlobalSearchTickets: function fetchGlobalSearchTickets(business_id, query, status) {
+            return dispatch((0, _tickets_actions.fetchGlobalSearchTickets)(business_id, query, status));
+        },
+        fetchIdSearchTickets: function fetchIdSearchTickets(business_id, query, status) {
+            return dispatch((0, _tickets_actions.fetchIdSearchTickets)(business_id, query, status));
+        },
+        fetchNameSearchTickets: function fetchNameSearchTickets(business_id, query, status) {
+            return dispatch((0, _tickets_actions.fetchNameSearchTickets)(business_id, query, status));
         }
     };
 };
@@ -369,7 +391,8 @@ var TicketSearchBar = function (_React$Component) {
             query: '',
             timer_id: null,
             show_scope_options: false,
-            search_scope: "Global"
+            search_scope: "Global",
+            ticket_status: _this.props.status
         };
 
         _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
@@ -390,18 +413,21 @@ var TicketSearchBar = function (_React$Component) {
                     clearTimeout(this.state.timer_id);
                 }
                 var timer_id = setTimeout(function () {
+                    var search_scope = _this2.state.search_scope;
+                    var id = _this2.props.user.startup_business_id;
+                    var query = _this2.state.query;
+                    var status = _this2.state.ticket_status;
                     if (_this2.state.query.length > 0) {
-                        search_scope = _this2.state.search_scope;
                         if (search_scope == "Global") {
-                            _this2.props.fetchGlobalSearchTickets(_this2.props.user.startup_business_id, _this2.state.query);
+                            _this2.props.fetchGlobalSearchTickets(id, query, status);
                         } else if (search_scope == "id") {
-                            _this2.props.fetchIdSearchTickets();
+                            _this2.props.fetchIdSearchTickets(id, query, status);
                         } else if (search_scope == "name") {
-                            _this2.props.fetchNameSearchTickets();
+                            _this2.props.fetchNameSearchTickets(id, query, status);
                         }
                     } else {
                         // come back to this. not the best solution
-                        _this2.props.fetchGlobalSearchTickets(_this2.props.user.startup_business_id, 'empty-query');
+                        _this2.props.fetchGlobalSearchTickets(id, 'empty-query', status);
                     }
                     _this2.setState({ timer_id: null });
                 }, 1000);
@@ -715,6 +741,9 @@ var TicketsTab = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketsTab.__proto__ || Object.getPrototypeOf(TicketsTab)).call(this, props));
 
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.state = {
+            ticket_status: 'unfulfilled'
+        };
         return _this;
     }
 
@@ -743,7 +772,7 @@ var TicketsTab = function (_React$Component) {
                     'Tickets'
                 ),
                 _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' }),
-                _react2.default.createElement(_ticket_search_bar2.default, null),
+                _react2.default.createElement(_ticket_search_bar2.default, { status: this.state.ticket_status }),
                 _react2.default.createElement(_tickets_view2.default, null)
             );
         }
@@ -1432,10 +1461,24 @@ var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUn
     });
 };
 
-var fetchGlobalSearchTickets = exports.fetchGlobalSearchTickets = function fetchGlobalSearchTickets(business_id, query) {
+var fetchGlobalSearchTickets = exports.fetchGlobalSearchTickets = function fetchGlobalSearchTickets(business_id, query, status) {
     return $.ajax({
         method: "GET",
-        url: "api/businesses/" + business_id + "/tickets/search/" + query
+        url: "api/businesses/" + business_id + "/tickets/search/" + query + "/" + status
+    });
+};
+
+var fetchIdSearchTickets = exports.fetchIdSearchTickets = function fetchIdSearchTickets(business_id, query, status) {
+    return $.ajax({
+        method: "GET",
+        url: "api/businesses/" + business_id + "/tickets/search/id/" + query + "/" + status
+    });
+};
+
+var fetchNameSearchTickets = exports.fetchNameSearchTickets = function fetchNameSearchTickets(business_id, query, status) {
+    return $.ajax({
+        method: "GET",
+        url: "api/businesses/" + business_id + "/tickets/search/cname/" + query + "/" + status
     });
 };
 

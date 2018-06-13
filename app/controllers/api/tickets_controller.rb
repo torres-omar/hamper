@@ -24,17 +24,17 @@ class Api::TicketsController < ApplicationController
     end
 
     def search 
-        @tickets = Ticket.search_by_global_scope(params[:business_id], params[:q])
+        @tickets = Ticket.search_by_global_scope(params[:business_id], params[:q], params[:s])
         render 'api/tickets/index'
     end
 
     def id_search 
-        @tickets = Ticket.search_by_id_scope(params[:business_id], params[:q])
+        @tickets = Ticket.search_by_id_scope(params[:business_id], params[:q], params[:s])
         render 'api/tickets/index'
     end 
 
     def customer_search 
-        @tickets = Ticket.search_by_customer_scope(params[:business_id], params[:q])
+        @tickets = Ticket.search_by_customer_scope(params[:business_id], params[:q], params[:s])
         render 'api/tickets/index'
     end
 

@@ -26,9 +26,9 @@ Rails.application.routes.draw do
     resources :businesses, only: [:show] do 
       resources :tickets, only: [:index, :create] do 
         collection do 
-          get 'search/:q', to: 'tickets#search'
-          get 'search/id/:q', to: 'tickets#id_search'
-          get 'search/cname/:q', to: 'tickets#customer_search'
+          get 'search/:q/:s', to: 'tickets#search'
+          get 'search/id/:q/:s', to: 'tickets#id_search'
+          get 'search/cname/:q/:s', to: 'tickets#customer_search'
           # this route takes a page number as a param 
           # multiplies page number by offset to facilitate pagination
           get 'unfulfilled/:p', to: 'tickets#unfulfilled_page'

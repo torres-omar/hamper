@@ -19,8 +19,20 @@ export const fetchUnfulfilledTickets = (business_id, page) => (dispatch) => (
     )
 )
 
-export const fetchGlobalSearchTickets = (business_id, query) => (dispatch) => (
-    APIUtil.fetchGlobalSearchTickets(business_id, query).then(
+export const fetchGlobalSearchTickets = (business_id, query, status) => (dispatch) => (
+    APIUtil.fetchGlobalSearchTickets(business_id, query, status).then(
+        (tickets) => dispatch(receiveSearchTickets(tickets))
+    )
+)
+
+export const fetchIdSearchTickets = (business_id, query, status) => (dispatch) => (
+    APIUtil.fetchIdSearchTickets(business_id, query, status).then(
+        (tickets) => dispatch(receiveSearchTickets(tickets))
+    )
+)
+
+export const fetchNameSearchTickets = (business_id, query, status) => (dispatch) => (
+    APIUtil.fetchNameSearchTickets(business_id, query, status).then(
         (tickets) => dispatch(receiveSearchTickets(tickets))
     )
 )
