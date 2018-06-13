@@ -75,7 +75,7 @@ class TicketSearchBar extends React.Component{
     }
 
     handleScopeChange(event){
-        this.setState({search_scope: event.target.attributes.value.value, query: ""})
+        this.setState({search_scope: event.target.attributes.value.value, query: "", show_scope_options: false})
         // come back to this. we need some way to clear searched tickets in redux store
         this.props.clearSearchTickets()
     }
