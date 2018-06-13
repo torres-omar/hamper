@@ -6,7 +6,15 @@ class ContactInfo < ActiveModel::Validator
     end
 end
 
-class Customer < ApplicationRecord 
+class Customer < ApplicationRecord
+    include PgSearch
+
+    pg_search_scope :name_scope, 
+                    :against => [:first_name, :last_name],
+                    :using => {
+                        :tsearch => {:prefix => true}
+                    }
+    
     validates :first_name, 
               :last_name, 
               presence:true
@@ -17,4 +25,12 @@ class Customer < ApplicationRecord
         class_name: 'Ticket',
         foreign_key: :customer_id, 
         dependent: :destroy
+
+    belongs_to :business, 
+        class_name: 'Business', 
+        foreign_key: :business_id
+
+    def self.search_by_name(business_id, query)
+        return Customer.where("business_id = ?", business_id).name_scope(query)
+    end
 end

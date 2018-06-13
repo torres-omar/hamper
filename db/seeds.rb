@@ -91,9 +91,9 @@ ticket_type_3.save
 
 
 # customers
-customer_1 = Customer.new(first_name: "Erik",last_name: "Campos", email_address: "ecampos@gmail.com")
-customer_2 = Customer.new(first_name: "Cesar",last_name: "Garcia", email_address: "cgarcia@gmail.com")
-customer_3 = Customer.new(first_name: "Vinny",last_name: "Roca", email_address: "vroca@gmail.com")
+customer_1 = Customer.new(first_name: "Erik",last_name: "Campos", email_address: "ecampos@gmail.com", business_id: business_1.id)
+customer_2 = Customer.new(first_name: "Cesar",last_name: "Garcia", email_address: "cgarcia@gmail.com", business_id: business_1.id)
+customer_3 = Customer.new(first_name: "Vinny",last_name: "Roca", email_address: "vroca@gmail.com", business_id: business_1.id)
 customer_1.save 
 customer_2.save 
 customer_3.save 

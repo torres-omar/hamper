@@ -31,8 +31,15 @@ Rails.application.routes.draw do
           get 'search/cname/:q', to: 'tickets#customer_search'
         end
       end
+
+      resources :customers, only: [:index, :create] do 
+        collection do 
+          get 'search/:q', to: 'customers#search'
+        end
+      end
     end
 
+    resources :customers, only: [:show]
     resources :tickets, only: [:show]
 
   end

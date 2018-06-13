@@ -21,6 +21,10 @@ class Business < ApplicationRecord
         foreign_key: :business_id,
         dependent: :destroy
 
+    has_many :customers, 
+        class_name: 'Customer', 
+        foreign_key: :business_id
+
     belongs_to :owner, 
         class_name: 'User', 
         foreign_key: :user_id
