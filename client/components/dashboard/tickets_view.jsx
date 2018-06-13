@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import TicketItem from './ticket_item';
 
 const mapStateToProps = (state) => ({
     tickets: state.entities.tickets
@@ -13,8 +14,8 @@ class TicketsView extends React.Component{
 
     renderTickets(){
         let tickets = []
-        this.props.tickets.forEach( (ticket)=> {
-            tickets.push(<li>{ticket.id}</li>)
+        this.props.tickets.forEach( (ticket,i)=> {
+            tickets.push(<TicketItem ticket={ticket} key={i}/>)
         })
         return tickets
     }

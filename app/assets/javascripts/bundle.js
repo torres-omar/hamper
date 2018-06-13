@@ -237,6 +237,58 @@ exports.default = App;
 
 /***/ }),
 
+/***/ "./client/components/dashboard/ticket_item.jsx":
+/*!*****************************************************!*\
+  !*** ./client/components/dashboard/ticket_item.jsx ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TicketItem = function TicketItem(_ref) {
+    var ticket = _ref.ticket;
+    return _react2.default.createElement(
+        'li',
+        null,
+        _react2.default.createElement(
+            'p',
+            null,
+            ticket.id
+        ),
+        _react2.default.createElement(
+            'p',
+            null,
+            ticket.business_id
+        ),
+        _react2.default.createElement(
+            'p',
+            null,
+            ticket.date_dropped_off
+        ),
+        _react2.default.createElement(
+            'p',
+            null,
+            ticket.time_dropped_off
+        )
+    );
+};
+
+exports.default = TicketItem;
+
+/***/ }),
+
 /***/ "./client/components/dashboard/tickets_view.jsx":
 /*!******************************************************!*\
   !*** ./client/components/dashboard/tickets_view.jsx ***!
@@ -258,6 +310,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _ticket_item = __webpack_require__(/*! ./ticket_item */ "./client/components/dashboard/ticket_item.jsx");
+
+var _ticket_item2 = _interopRequireDefault(_ticket_item);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -289,12 +345,8 @@ var TicketsView = function (_React$Component) {
         key: 'renderTickets',
         value: function renderTickets() {
             var tickets = [];
-            this.props.tickets.forEach(function (ticket) {
-                tickets.push(_react2.default.createElement(
-                    'li',
-                    null,
-                    ticket.id
-                ));
+            this.props.tickets.forEach(function (ticket, i) {
+                tickets.push(_react2.default.createElement(_ticket_item2.default, { ticket: ticket, key: i }));
             });
             return tickets;
         }
