@@ -398,6 +398,7 @@ var TicketSearchBar = function (_React$Component) {
         _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
         _this.renderScopeOptions = _this.renderScopeOptions.bind(_this);
         _this.toggleScopeOptions = _this.toggleScopeOptions.bind(_this);
+        _this.handleScopeChange = _this.handleScopeChange.bind(_this);
         return _this;
     }
 
@@ -420,9 +421,9 @@ var TicketSearchBar = function (_React$Component) {
                     if (_this2.state.query.length > 0) {
                         if (search_scope == "Global") {
                             _this2.props.fetchGlobalSearchTickets(id, query, status);
-                        } else if (search_scope == "id") {
+                        } else if (search_scope == "Id") {
                             _this2.props.fetchIdSearchTickets(id, query, status);
-                        } else if (search_scope == "name") {
+                        } else if (search_scope == "Name") {
                             _this2.props.fetchNameSearchTickets(id, query, status);
                         }
                     } else {
@@ -440,6 +441,11 @@ var TicketSearchBar = function (_React$Component) {
             alert("ticket was selected");
         }
     }, {
+        key: 'handleScopeChange',
+        value: function handleScopeChange(event) {
+            this.setState({ search_scope: event.target.attributes.value.value });
+        }
+    }, {
         key: 'renderScopeOptions',
         value: function renderScopeOptions() {
             if (this.state.show_scope_options) {
@@ -448,17 +454,17 @@ var TicketSearchBar = function (_React$Component) {
                     null,
                     _react2.default.createElement(
                         'li',
-                        null,
+                        { onClick: this.handleScopeChange, value: "Global" },
                         'Global'
                     ),
                     _react2.default.createElement(
                         'li',
-                        null,
+                        { onClick: this.handleScopeChange, value: "Id" },
                         'By id'
                     ),
                     _react2.default.createElement(
                         'li',
-                        null,
+                        { onClick: this.handleScopeChange, value: "Name" },
                         'By customer name'
                     )
                 );

@@ -29,6 +29,7 @@ class TicketSearchBar extends React.Component{
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
         this.renderScopeOptions = this.renderScopeOptions.bind(this)
         this.toggleScopeOptions = this.toggleScopeOptions.bind(this)
+        this.handleScopeChange = this.handleScopeChange.bind(this)
     }
 
     handleChangeDebounced(event){
@@ -46,9 +47,9 @@ class TicketSearchBar extends React.Component{
                 if(this.state.query.length > 0 ){
                     if(search_scope == "Global"){
                         this.props.fetchGlobalSearchTickets(id, query, status)
-                    }else if(search_scope == "id"){
+                    }else if(search_scope == "Id"){
                         this.props.fetchIdSearchTickets(id, query, status)
-                    }else if(search_scope == "name"){
+                    }else if(search_scope == "Name"){
                         this.props.fetchNameSearchTickets(id, query, status)
                     }
                 }else{
@@ -65,14 +66,18 @@ class TicketSearchBar extends React.Component{
         alert("ticket was selected")
     }
 
+    handleScopeChange(event){
+        this.setState({search_scope: event.target.attributes.value.value})
+    }
+
     renderScopeOptions(){
         if(this.state.show_scope_options){
             return(
                 <ul> 
-                    <li>Global</li>
-                    <li>By id</li>
-                    <li>By customer name</li>
-                </ul>
+                    <li onClick={this.handleScopeChange} value={"Global"}>Global</li>
+                    <li onClick={this.handleScopeChange} value={"Id"}>By id</li>
+                    <li onClick={this.handleScopeChange} value={"Name"}>By customer name</li>
+                </ul> 
             )
         }
     }
