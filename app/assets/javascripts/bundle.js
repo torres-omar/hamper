@@ -329,7 +329,7 @@ var TicketsTab = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             // call fetchUnfulfilledTickets method with page 0
-            this.props.fetchUnfulfilledTickets(0);
+            // this.props.fetchUnfulfilledTickets(0)
         }
     }, {
         key: 'handleSubmit',
