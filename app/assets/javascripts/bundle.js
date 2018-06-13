@@ -237,6 +237,85 @@ exports.default = App;
 
 /***/ }),
 
+/***/ "./client/components/dashboard/tickets_view.jsx":
+/*!******************************************************!*\
+  !*** ./client/components/dashboard/tickets_view.jsx ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        tickets: state.entities.tickets
+    };
+};
+
+var TicketsView = function (_React$Component) {
+    _inherits(TicketsView, _React$Component);
+
+    function TicketsView(props) {
+        _classCallCheck(this, TicketsView);
+
+        var _this = _possibleConstructorReturn(this, (TicketsView.__proto__ || Object.getPrototypeOf(TicketsView)).call(this, props));
+
+        _this.renderTickets = _this.renderTickets.bind(_this);
+        return _this;
+    }
+
+    _createClass(TicketsView, [{
+        key: 'renderTickets',
+        value: function renderTickets() {
+            var tickets = [];
+            this.props.tickets.forEach(function (ticket) {
+                tickets.push(_react2.default.createElement(
+                    'li',
+                    null,
+                    ticket.id
+                ));
+            });
+            return tickets;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'ul',
+                null,
+                this.renderTickets()
+            );
+        }
+    }]);
+
+    return TicketsView;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(TicketsView);
+
+/***/ }),
+
 /***/ "./client/components/pages/login_page.jsx":
 /*!************************************************!*\
   !*** ./client/components/pages/login_page.jsx ***!
@@ -322,6 +401,10 @@ var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ 
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _tickets_view = __webpack_require__(/*! ../dashboard/tickets_view */ "./client/components/dashboard/tickets_view.jsx");
+
+var _tickets_view2 = _interopRequireDefault(_tickets_view);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -383,7 +466,8 @@ var TicketsTab = function (_React$Component) {
                     null,
                     'Logged in!'
                 ),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' })
+                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' }),
+                _react2.default.createElement(_tickets_view2.default, null)
             );
         }
     }]);
@@ -699,7 +783,7 @@ Object.defineProperty(exports, "__esModule", {
 var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
 
 var TicketsReducer = function TicketsReducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var action = arguments[1];
 
     switch (action.type) {

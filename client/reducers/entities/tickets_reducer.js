@@ -1,6 +1,6 @@
 import { RECEIVE_TICKETS } from '../../actions/tickets_actions';
 
-const TicketsReducer = (state = {}, action) => {
+const TicketsReducer = (state = [], action) => {
     switch(action.type){
         case RECEIVE_TICKETS:
             return action.tickets
