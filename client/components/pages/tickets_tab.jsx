@@ -1,24 +1,27 @@
 import React from 'react'; 
 import { logout } from '../../actions/session_actions';
+import { fetchUnfulfilledTickets } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
-    fetchTickets: () => dispatch(fetchTickets())
+    fetchUnfulfilledTickets: (busines_id, page) => dispatch(fetchUnfulfilledTickets(busines_id, page))
 })
 
 const mapStateToProps = (state) => ({
+    user: state.session.current_user
 })
 
 class TicketsTab extends React.Component{
     constructor(props){
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount(){
         // call fetchUnfulfilledTickets method with page 0
-        // this.props.fetchUnfulfilledTickets(0)
+        let business_id = this.props.user.startup_business_id;
+        this.props.fetchUnfulfilledTickets(business_id, 0);
     }
 
     handleSubmit(event){
@@ -36,4 +39,4 @@ class TicketsTab extends React.Component{
     }
 }
 
-export default connect(null, mapDispatchToProps)(TicketsTab);
+export default connect(mapStateToProps, mapDispatchToProps)(TicketsTab);

@@ -148,6 +148,46 @@ var logout = exports.logout = function logout() {
 
 /***/ }),
 
+/***/ "./client/actions/tickets_actions.js":
+/*!*******************************************!*\
+  !*** ./client/actions/tickets_actions.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fetchUnfulfilledTickets = exports.receiveTickets = exports.RECEIVE_TICKETS = undefined;
+
+var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
+
+var APIUtil = _interopRequireWildcard(_tickets_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_TICKETS = exports.RECEIVE_TICKETS = 'RECEIVE_TICKETS';
+
+var receiveTickets = exports.receiveTickets = function receiveTickets(tickets) {
+    return {
+        type: RECEIVE_TICKETS,
+        tickets: tickets
+    };
+};
+
+var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUnfulfilledTickets(business_id, page) {
+    return function (dispatch) {
+        return APIUtil.fetchUnfulfilledTickets(business_id, page).then(function (tickets) {
+            return dispatch(receiveTickets(tickets));
+        });
+    };
+};
+
+/***/ }),
+
 /***/ "./client/components/app.jsx":
 /*!***********************************!*\
   !*** ./client/components/app.jsx ***!
@@ -278,6 +318,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
 
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -293,24 +335,16 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         logout: function logout() {
             return dispatch((0, _session_actions.logout)());
         },
-        fetchTickets: function (_fetchTickets) {
-            function fetchTickets() {
-                return _fetchTickets.apply(this, arguments);
-            }
-
-            fetchTickets.toString = function () {
-                return _fetchTickets.toString();
-            };
-
-            return fetchTickets;
-        }(function () {
-            return dispatch(fetchTickets());
-        })
+        fetchUnfulfilledTickets: function fetchUnfulfilledTickets(busines_id, page) {
+            return dispatch((0, _tickets_actions.fetchUnfulfilledTickets)(busines_id, page));
+        }
     };
 };
 
 var mapStateToProps = function mapStateToProps(state) {
-    return {};
+    return {
+        user: state.session.current_user
+    };
 };
 
 var TicketsTab = function (_React$Component) {
@@ -329,7 +363,8 @@ var TicketsTab = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             // call fetchUnfulfilledTickets method with page 0
-            // this.props.fetchUnfulfilledTickets(0)
+            var business_id = this.props.user.startup_business_id;
+            this.props.fetchUnfulfilledTickets(business_id, 0);
         }
     }, {
         key: 'handleSubmit',
@@ -356,7 +391,7 @@ var TicketsTab = function (_React$Component) {
     return TicketsTab;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(TicketsTab);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketsTab);
 
 /***/ }),
 
@@ -647,6 +682,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./client/reducers/entities/tickets_reducer.js":
+/*!*****************************************************!*\
+  !*** ./client/reducers/entities/tickets_reducer.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
+var TicketsReducer = function TicketsReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _tickets_actions.RECEIVE_TICKETS:
+            return action.tickets;
+        default:
+            return state;
+    }
+};
+
+exports.default = TicketsReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities_reducer.js":
 /*!*********************************************!*\
   !*** ./client/reducers/entities_reducer.js ***!
@@ -656,6 +723,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+
+var _tickets_reducer = __webpack_require__(/*! ./entities/tickets_reducer */ "./client/reducers/entities/tickets_reducer.js");
+
+var _tickets_reducer2 = _interopRequireDefault(_tickets_reducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EntitiesReducer = (0, _redux.combineReducers)({
+    tickets: _tickets_reducer2.default
+});
+
+exports.default = EntitiesReducer;
 
 /***/ }),
 
@@ -752,6 +837,7 @@ var _errors_reducer2 = _interopRequireDefault(_errors_reducer);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RootReducer = (0, _redux.combineReducers)({
+    entities: _entities_reducer2.default,
     session: _session_reducer2.default,
     errors: _errors_reducer2.default
 });
@@ -923,6 +1009,28 @@ var logout = exports.logout = function logout() {
     return $.ajax({
         method: "DELETE",
         url: 'api/sessions'
+    });
+};
+
+/***/ }),
+
+/***/ "./client/util/tickets_api_util.js":
+/*!*****************************************!*\
+  !*** ./client/util/tickets_api_util.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var fetchUnfulfilledTickets = exports.fetchUnfulfilledTickets = function fetchUnfulfilledTickets(business_id, page) {
+    return $.ajax({
+        method: "GET",
+        url: "/api/businesses/" + business_id + "/tickets/unfulfilled/" + page
     });
 };
 
