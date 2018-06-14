@@ -70,3 +70,9 @@ export const notifyCustomer = (ticket_id) => (dispatch) => (
         (ticket) => dispatch(receiveShowTicket(ticket))
     )
 )
+
+export const createNewTicket = (data, business_id) => (dispatch) => (
+    APIUtil.createNewTicket(data, business_id).then(
+        (ticket) => dispatch(receiveShowTicket(ticket))
+    )
+)

@@ -1,35 +1,30 @@
 import React from 'react';
 import TicketsView from '../dashboard/tickets_view';
 import TicketsControl from '../dashboard/tickets_control';
-// import { connect } from 'react-redux';
-
-// const mapDispatchToProps = (dispatch) => ({
-//     fetchStatusTickets: (business_id, page, status) => dispatch(fetchStatusTickets(business_id, page, status))
-// })
-
-// const mapStateToProps = (state) => ({
-//     current_busines_id: state.entities.current_business_id
-// })
+import TicketSearchBar from '../dashboard/ticket_search_bar';
+import { withRouter } from 'react-router-dom';
 
 class TicketsViewTab extends React.Component{
     constructor(props){
         super(props)
+        this.handleNewTicketRedirect = this.handleNewTicketRedirect.bind(this)
     }
 
-    // componentDidMount() {
-    //     // call fetchStatusTickets method with page 0
-    //     let business_id = this.props.current_busines_id;
-    //     this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
-    // }
+    handleNewTicketRedirect(e) {
+        e.preventDefault()
+        this.props.history.push('/tickets/new')
+    }
 
     render(){
         return(
             <div>
                 <TicketsControl />
+                <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
+                <TicketSearchBar />
                 <TicketsView />
             </div>
         )
     }
 }
 
-export default TicketsViewTab;
+export default withRouter(TicketsViewTab);

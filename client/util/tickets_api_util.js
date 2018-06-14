@@ -39,3 +39,13 @@ export const notifyCustomer = (ticket_id) => {
         url: `api/tickets/${ticket_id}/notify`
     })
 }
+
+export const createNewTicket = (data, business_id) => {
+    return $.ajax({
+        method: "POST", 
+        url: `api/businesses/${business_id}/tickets`,
+        data: {
+            ticket: data
+        }
+    })
+}

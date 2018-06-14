@@ -13,7 +13,8 @@ const mapStateToProps = (state) => ({
     tickets: state.entities.tickets,
     search_tickets: state.entities.search_tickets,
     user: state.session.current_user,
-    current_ticket_status: state.ui.current_ticket_status
+    current_ticket_status: state.ui.current_ticket_status,
+    current_business_id: state.ui.current_business_id
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -57,7 +58,7 @@ class TicketSearchBar extends React.Component{
             }
             let timer_id = setTimeout(() => {
                 let search_scope = this.state.search_scope
-                let id = this.props.user.startup_business_id
+                let id = this.props.current_business_id
                 let query = this.state.query
                 let status = this.props.current_ticket_status
                 if(this.state.query.length > 0 ){

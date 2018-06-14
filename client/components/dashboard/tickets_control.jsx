@@ -2,7 +2,6 @@ import React from 'react';
 import { logout } from '../../actions/session_actions';
 import { fetchStatusTickets, changeTicketStatus } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
-import TicketsSearchBar from '../dashboard/ticket_search_bar';
 import { withRouter } from 'react-router-dom';
 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,9 +20,6 @@ class TicketsControl extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.state = {
-        //     ticket_status: 'unfulfilled'
-        // }
     }
     // fetch new status tickets upon changing state (ticket_status) 
     // new tickets will go through redux and be stored in entities.tickets
@@ -50,7 +46,6 @@ class TicketsControl extends React.Component {
 
     handleStatusChange(e, status) {
         e.preventDefault()
-        // this.setState({ ticket_status: status })
         this.props.changeTicketStatus(status)
         if(this.props.location.pathname != "/tickets"){
             this.props.history.push('/tickets')
@@ -66,7 +61,6 @@ class TicketsControl extends React.Component {
                     <button onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
                 </div>
                 <input type="button" onClick={this.handleSubmit} value="sign out" />
-                <TicketsSearchBar status={this.props.ticket_status} />
             </div>
         )
     }
