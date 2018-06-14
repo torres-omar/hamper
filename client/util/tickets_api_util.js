@@ -25,3 +25,10 @@ export const fetchNameSearchTickets = (business_id, query, status) => {
         url: `api/businesses/${business_id}/tickets/search/cname/${query}/${status}`
     })
 }
+
+export const fetchShowTicket = (ticket_id) => {
+    return $.ajax({
+        method: "GET",
+        url: `api/tickets/${ticket_id}`
+    })
+}

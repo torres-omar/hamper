@@ -80,7 +80,9 @@ class TicketSearchBar extends React.Component{
     }
 
     handleSelect(value, item){
-        this.props.history.push(`/tickets/${item.id}`)
+        // exposes all tickets to any user.
+        // fix this later to only show tickets that belong to the current user
+        this.props.history.push(`tickets/${item.id}`)
     }
 
     handleScopeChange(event){

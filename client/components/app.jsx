@@ -9,7 +9,7 @@ const App = () => (
     <div> 
         <Switch>
             <AuthRoute exact path="/" component={LogInPage} />
-            <ProtectedRoute exact path="/tickets/" component={TicketsViewTab} />
+            <ProtectedRoute exact path="/tickets" component={TicketsViewTab} />
             <ProtectedRoute exact path="/tickets/:ticket_id" component={TicketViewTab} />
         </Switch>
     </div> 

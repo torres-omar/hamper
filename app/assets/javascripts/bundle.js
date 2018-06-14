@@ -161,7 +161,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -171,6 +171,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_TICKETS = exports.RECEIVE_TICKETS = 'RECEIVE_TICKETS';
 var RECEIVE_SEARCH_TICKETS = exports.RECEIVE_SEARCH_TICKETS = 'RECEIVE_SEARCH_TICKETS';
+var RECEIVE_SHOW_TICKET = exports.RECEIVE_SHOW_TICKET = 'RECEIVE_SHOW_TICKET';
 
 var receiveTickets = exports.receiveTickets = function receiveTickets(tickets) {
     return {
@@ -190,6 +191,20 @@ var clearSearchTickets = exports.clearSearchTickets = function clearSearchTicket
     return {
         type: RECEIVE_SEARCH_TICKETS,
         search_tickets: []
+    };
+};
+
+var receiveShowTicket = exports.receiveShowTicket = function receiveShowTicket(ticket) {
+    return {
+        type: RECEIVE_SHOW_TICKET,
+        ticket: ticket
+    };
+};
+
+var clearShowTicket = exports.clearShowTicket = function clearShowTicket() {
+    return {
+        type: RECEIVE_SHOW_TICKET,
+        ticket: null
     };
 };
 
@@ -221,6 +236,14 @@ var fetchNameSearchTickets = exports.fetchNameSearchTickets = function fetchName
     return function (dispatch) {
         return APIUtil.fetchNameSearchTickets(business_id, query, status).then(function (tickets) {
             return dispatch(receiveSearchTickets(tickets));
+        });
+    };
+};
+
+var fetchShowTicket = exports.fetchShowTicket = function fetchShowTicket(ticket_id) {
+    return function (dispatch) {
+        return APIUtil.fetchShowTicket(ticket_id).then(function (ticket) {
+            return dispatch(receiveShowTicket(ticket));
         });
     };
 };
@@ -271,7 +294,7 @@ var App = function App() {
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/', component: _login_page2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/', component: _tickets_view_tab2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default })
         )
     );
@@ -468,7 +491,9 @@ var TicketSearchBar = function (_React$Component) {
     }, {
         key: 'handleSelect',
         value: function handleSelect(value, item) {
-            this.props.history.push('/tickets/' + item.id);
+            // exposes all tickets to any user.
+            // fix this later to only show tickets that belong to the current user
+            this.props.history.push('tickets/' + item.id);
         }
     }, {
         key: 'handleScopeChange',
@@ -570,6 +595,12 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -578,26 +609,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        show_ticket: state.entities.show_ticket
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchShowTicket: function fetchShowTicket(ticket_id) {
+            return dispatch((0, _tickets_actions.fetchShowTicket)(ticket_id));
+        },
+        clearShowTicket: function clearShowTicket() {
+            return dispatch((0, _tickets_actions.clearShowTicket)());
+        }
+    };
+};
+
 var TicketView = function (_React$Component) {
     _inherits(TicketView, _React$Component);
 
     function TicketView(props) {
         _classCallCheck(this, TicketView);
 
-        return _possibleConstructorReturn(this, (TicketView.__proto__ || Object.getPrototypeOf(TicketView)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (TicketView.__proto__ || Object.getPrototypeOf(TicketView)).call(this, props));
+
+        _this.renderTicket = _this.renderTicket.bind(_this);
+        return _this;
     }
 
     _createClass(TicketView, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchShowTicket(this.props.match.params.ticket_id);
+        }
+    }, {
+        key: 'renderTicket',
+        value: function renderTicket() {
+            if (this.props.show_ticket) {
+                return _react2.default.createElement(
+                    'h1',
+                    null,
+                    this.props.show_ticket.customer_first_name
+                );
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.props.clearShowTicket();
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(
-                    'h1',
-                    null,
-                    'Ticket view'
-                )
+                this.renderTicket()
             );
         }
     }]);
@@ -605,7 +673,7 @@ var TicketView = function (_React$Component) {
     return TicketView;
 }(_react2.default.Component);
 
-exports.default = TicketView;
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketView));
 
 /***/ }),
 
@@ -1343,6 +1411,38 @@ exports.default = SearchTicketsReducer;
 
 /***/ }),
 
+/***/ "./client/reducers/entities/show_ticket_reducer.js":
+/*!*********************************************************!*\
+  !*** ./client/reducers/entities/show_ticket_reducer.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
+var ShowTicketReducer = function ShowTicketReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _tickets_actions.RECEIVE_SHOW_TICKET:
+            return action.ticket;
+        default:
+            return state;
+    }
+};
+
+exports.default = ShowTicketReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/tickets_reducer.js":
 /*!*****************************************************!*\
   !*** ./client/reducers/entities/tickets_reducer.js ***!
@@ -1399,11 +1499,16 @@ var _search_tickets_reducer = __webpack_require__(/*! ./entities/search_tickets_
 
 var _search_tickets_reducer2 = _interopRequireDefault(_search_tickets_reducer);
 
+var _show_ticket_reducer = __webpack_require__(/*! ./entities/show_ticket_reducer */ "./client/reducers/entities/show_ticket_reducer.js");
+
+var _show_ticket_reducer2 = _interopRequireDefault(_show_ticket_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
     tickets: _tickets_reducer2.default,
-    search_tickets: _search_tickets_reducer2.default
+    search_tickets: _search_tickets_reducer2.default,
+    show_ticket: _show_ticket_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -1719,6 +1824,13 @@ var fetchNameSearchTickets = exports.fetchNameSearchTickets = function fetchName
     return $.ajax({
         method: "GET",
         url: "api/businesses/" + business_id + "/tickets/search/cname/" + query + "/" + status
+    });
+};
+
+var fetchShowTicket = exports.fetchShowTicket = function fetchShowTicket(ticket_id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/tickets/" + ticket_id
     });
 };
 
