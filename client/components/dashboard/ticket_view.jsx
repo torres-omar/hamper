@@ -16,6 +16,7 @@ class TicketView extends React.Component{
     constructor(props){
         super(props);
         this.renderTicket = this.renderTicket.bind(this);
+        this.goBack = this.goBack.bind(this)
     }
 
     componentDidMount(){
@@ -34,9 +35,14 @@ class TicketView extends React.Component{
         this.props.clearShowTicket()
     }
 
+    goBack(){
+        this.props.history.push('/tickets')
+    }
+
     render(){
         return(
-            <div> 
+            <div>
+                <button onClick={this.goBack}>back</button>
                 {this.renderTicket()}
             </div>
         )

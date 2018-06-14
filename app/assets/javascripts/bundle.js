@@ -493,7 +493,8 @@ var TicketSearchBar = function (_React$Component) {
         value: function handleSelect(value, item) {
             // exposes all tickets to any user.
             // fix this later to only show tickets that belong to the current user
-            this.props.history.push('tickets/' + item.id);
+            this.props.clearSearchTickets();
+            this.props.history.push('/tickets/' + item.id);
         }
     }, {
         key: 'handleScopeChange',
@@ -635,6 +636,7 @@ var TicketView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketView.__proto__ || Object.getPrototypeOf(TicketView)).call(this, props));
 
         _this.renderTicket = _this.renderTicket.bind(_this);
+        _this.goBack = _this.goBack.bind(_this);
         return _this;
     }
 
@@ -660,11 +662,21 @@ var TicketView = function (_React$Component) {
             this.props.clearShowTicket();
         }
     }, {
+        key: 'goBack',
+        value: function goBack() {
+            this.props.history.push('/tickets');
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.goBack },
+                    'back'
+                ),
                 this.renderTicket()
             );
         }
