@@ -32,3 +32,10 @@ export const fetchShowTicket = (ticket_id) => {
         url: `api/tickets/${ticket_id}`
     })
 }
+
+export const notifyCustomer = (ticket_id) => {
+    return $.ajax({
+        method: "GET", 
+        url: `api/tickets/${ticket_id}/notify`
+    })
+}

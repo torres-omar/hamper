@@ -161,7 +161,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -243,6 +243,14 @@ var fetchNameSearchTickets = exports.fetchNameSearchTickets = function fetchName
 var fetchShowTicket = exports.fetchShowTicket = function fetchShowTicket(ticket_id) {
     return function (dispatch) {
         return APIUtil.fetchShowTicket(ticket_id).then(function (ticket) {
+            return dispatch(receiveShowTicket(ticket));
+        });
+    };
+};
+
+var notifyCustomer = exports.notifyCustomer = function notifyCustomer(ticket_id) {
+    return function (dispatch) {
+        return APIUtil.notifyCustomer(ticket_id).then(function (ticket) {
             return dispatch(receiveShowTicket(ticket));
         });
     };
@@ -623,6 +631,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         clearShowTicket: function clearShowTicket() {
             return dispatch((0, _tickets_actions.clearShowTicket)());
+        },
+        notifyCustomer: function notifyCustomer(ticket_id) {
+            return dispatch((0, _tickets_actions.notifyCustomer)(ticket_id));
         }
     };
 };
@@ -635,8 +646,12 @@ var TicketView = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TicketView.__proto__ || Object.getPrototypeOf(TicketView)).call(this, props));
 
+        _this.state = {
+            notification_response: null
+        };
         _this.renderTicket = _this.renderTicket.bind(_this);
         _this.goBack = _this.goBack.bind(_this);
+        _this.sendNotification = _this.sendNotification.bind(_this);
         return _this;
     }
 
@@ -650,9 +665,18 @@ var TicketView = function (_React$Component) {
         value: function renderTicket() {
             if (this.props.show_ticket) {
                 return _react2.default.createElement(
-                    'h1',
+                    'div',
                     null,
-                    this.props.show_ticket.customer_first_name
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        this.props.show_ticket.customer_first_name
+                    ),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        this.props.show_ticket.customer_last_name
+                    )
                 );
             }
         }
@@ -667,6 +691,28 @@ var TicketView = function (_React$Component) {
             this.props.history.push('/tickets');
         }
     }, {
+        key: 'sendNotification',
+        value: function sendNotification() {
+            var _this2 = this;
+
+            this.props.notifyCustomer(this.props.show_ticket.id).then(function () {
+                _this2.setState({ notification_response: 'Notified customer!' }), function () {
+                    _this2.setState({ notification_response: 'An error occured' });
+                };
+            });
+        }
+    }, {
+        key: 'renderNotificationResponse',
+        value: function renderNotificationResponse() {
+            if (this.state.notification_response) {
+                return _react2.default.createElement(
+                    'p',
+                    null,
+                    this.state.notification_response
+                );
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -677,6 +723,14 @@ var TicketView = function (_React$Component) {
                     { onClick: this.goBack },
                     'back'
                 ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.sendNotification, style: {
+                            display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
+                        } },
+                    'notify'
+                ),
+                this.renderNotificationResponse(),
                 this.renderTicket()
             );
         }
@@ -1843,6 +1897,13 @@ var fetchShowTicket = exports.fetchShowTicket = function fetchShowTicket(ticket_
     return $.ajax({
         method: "GET",
         url: "api/tickets/" + ticket_id
+    });
+};
+
+var notifyCustomer = exports.notifyCustomer = function notifyCustomer(ticket_id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/tickets/" + ticket_id + "/notify"
     });
 };
 

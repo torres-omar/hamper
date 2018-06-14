@@ -49,14 +49,14 @@ class Api::TicketsController < ApplicationController
     end
 
     def notify_customer
-        ticket = Ticket.find_by(id: params[:ticket_id])
-        if ticket
-            ticket.change_status_to_notified!
-            customer = Customer.find(ticket.customer_id)
+        @ticket = Ticket.find_by(id: params[:ticket_id])
+        if @ticket
+            @ticket.change_status_to_notified!
+            customer = Customer.find(@ticket.customer_id)
             customer.send_notification(ticket.id)
-            render json: {:success => ['Notification sent']}, status: 202
+            render 'api/tickets/show'
         else
-            render json: {:errors => ['No record found']}, status: 422
+            render json: {:error => ['No record found']}, status: 422
         end 
     end
 

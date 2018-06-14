@@ -58,3 +58,10 @@ export const fetchShowTicket = (ticket_id) => (dispatch) => (
         (ticket) => dispatch(receiveShowTicket(ticket))
     )
 )
+
+
+export const notifyCustomer = (ticket_id) => (dispatch) => (
+    APIUtil.notifyCustomer(ticket_id).then(
+        (ticket) => dispatch(receiveShowTicket(ticket))
+    )
+)
