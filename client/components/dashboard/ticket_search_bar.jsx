@@ -1,7 +1,13 @@
 import React from 'react'; 
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
-import { fetchGlobalSearchTickets, fetchIdSearchTickets, fetchNameSearchTickets, clearSearchTickets } from '../../actions/tickets_actions';
+import { fetchGlobalSearchTickets, 
+         fetchIdSearchTickets, 
+         fetchNameSearchTickets, 
+         clearSearchTickets } from '../../actions/tickets_actions';
+
+import { withRouter } from 'react-router-dom';
+
 
 const mapStateToProps = (state) => ({
     tickets: state.entities.tickets,
@@ -27,10 +33,11 @@ class TicketSearchBar extends React.Component{
             ticket_status: this.props.status
         }
 
-        this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
-        this.renderScopeOptions = this.renderScopeOptions.bind(this)
-        this.toggleScopeOptions = this.toggleScopeOptions.bind(this)
-        this.handleScopeChange = this.handleScopeChange.bind(this)
+        this.handleChangeDebounced = this.handleChangeDebounced.bind(this);
+        this.renderScopeOptions = this.renderScopeOptions.bind(this);
+        this.toggleScopeOptions = this.toggleScopeOptions.bind(this);
+        this.handleScopeChange = this.handleScopeChange.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
     }
 
     componentDidUpdate(prevProps){
@@ -39,7 +46,8 @@ class TicketSearchBar extends React.Component{
             this.props.clearSearchTickets()
         }
     }
-
+    // handles change but only if user stops typing
+    // avoids having to send multiple, continuous requests 
     handleChangeDebounced(event){
         event.preventDefault()
         this.setState({query: event.target.value})
@@ -62,6 +70,7 @@ class TicketSearchBar extends React.Component{
                     }
                 }else{
                     // come back to this. not the best solution
+                    // maybe just clear tickets in redux ? 
                     this.props.fetchGlobalSearchTickets(id, 'empty-query', status)
                 }
                 this.setState({timer_id: null})
@@ -71,12 +80,12 @@ class TicketSearchBar extends React.Component{
     }
 
     handleSelect(){
+        debugger
         alert("ticket was selected")
     }
 
     handleScopeChange(event){
         this.setState({search_scope: event.target.attributes.value.value, query: "", show_scope_options: false})
-        // come back to this. we need some way to clear searched tickets in redux store
         this.props.clearSearchTickets()
     }
 
@@ -127,26 +136,4 @@ class TicketSearchBar extends React.Component{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketSearchBar);
-
-// wrapperStyle = {{
-//     position: 'absolute',
-//         top: '1rem',
-//             left: '1rem',
-//                 zIndex: '1',
-//                 }}
-// inputProps = {{
-//     style: {
-//         backgroundColor: 'white',
-//             height: '2rem',
-//                 width: '16rem',
-//                     border: '1px solid #f3f3f3',
-//                         fontSize: '.9rem',
-//                             padding: '1rem 1rem'
-//     },
-//     placeholder: "Search..",
-//         autoFocus: true
-// }}
-// menuStyle = {{
-//     width: '16rem',
-//                 }}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketSearchBar));

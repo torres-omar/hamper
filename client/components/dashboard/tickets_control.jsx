@@ -2,7 +2,6 @@ import React from 'react';
 import { logout } from '../../actions/session_actions';
 import { fetchStatusTickets } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
-import TicketsView from '../dashboard/tickets_view';
 import TicketsSearchBar from '../dashboard/ticket_search_bar';
 
 const mapDispatchToProps = (dispatch) => ({
@@ -22,7 +21,10 @@ class TicketsControl extends React.Component {
             ticket_status: 'unfulfilled'
         }
     }
-
+    // fetch new status tickets upon changing state (ticket_status) 
+    // new tickets will go through redux and be stored in entities.tickets
+    // other components react to this change in the store.
+    // such as tickets view, which renders tickets stored in the store (entities.tickets)
     componentDidUpdate(prevProps, prevState) {
         if (this.state.ticket_status != prevState.ticket_status) {
             let id = this.props.user.startup_business_id
@@ -50,7 +52,6 @@ class TicketsControl extends React.Component {
     render() {
         return (
             <div>
-                <h1>Tickets</h1>
                 <div>
                     <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>Unfulfilled</button>
                     <button onClick={(e) => this.handleStatusChange(e, "notified")}>Notified</button>

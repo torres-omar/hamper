@@ -10,14 +10,7 @@ class TicketsView extends React.Component{
     constructor(props){
         super(props);
         this.renderTickets = this.renderTickets.bind(this)
-        // this.state ={
-        //     status: this.props.status
-        // }
     }
-
-    // componentDidUpdate(prevProps){
-    //     if()
-    // }
 
     renderTickets(){
         let tickets = []

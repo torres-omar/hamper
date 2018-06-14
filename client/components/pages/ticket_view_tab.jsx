@@ -1,7 +1,8 @@
 import React from 'react';
 import TicketsControl from '../dashboard/tickets_control';
+import TicketView from '../dashboard/tickets_view';
 
-class TicketView extends React.Component{
+class TicketViewTab extends React.Component{
     constructor(props){
         super(props);
     }
@@ -9,8 +10,9 @@ class TicketView extends React.Component{
     render(){
         <div>
             <TicketsControl />
+            <TicketView />
         </div>
     }
 }
 
-export default TicketView;
+export default TicketViewTab;
