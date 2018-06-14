@@ -3,6 +3,7 @@ import * as APIUtil from '../util/tickets_api_util';
 export const RECEIVE_TICKETS = 'RECEIVE_TICKETS';
 export const RECEIVE_SEARCH_TICKETS = 'RECEIVE_SEARCH_TICKETS';
 export const RECEIVE_SHOW_TICKET = 'RECEIVE_SHOW_TICKET';
+export const RECEIVE_TICKET_STATUS = 'RECEIVE_TICKET_STATUS';
 
 export const receiveTickets = (tickets) => ({
     type: RECEIVE_TICKETS, 
@@ -22,6 +23,11 @@ export const clearSearchTickets = () => ({
 export const receiveShowTicket = (ticket) => ({
     type: RECEIVE_SHOW_TICKET,
     ticket: ticket
+})
+
+export const changeTicketStatus = (status) => ({
+    type: RECEIVE_TICKET_STATUS, 
+    status: status
 })
 
 export const clearShowTicket = () => ({
@@ -58,7 +64,6 @@ export const fetchShowTicket = (ticket_id) => (dispatch) => (
         (ticket) => dispatch(receiveShowTicket(ticket))
     )
 )
-
 
 export const notifyCustomer = (ticket_id) => (dispatch) => (
     APIUtil.notifyCustomer(ticket_id).then(

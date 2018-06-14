@@ -42,7 +42,7 @@ class Customer < ApplicationRecord
         content = Content.new(type: 'text/plain', value: "Ticket ID: #{ticket_id}")
         mail = Mail.new(from, subject, to, content)
         # find out how to store API in environment variable
-        # add api env variable
+        # sg = SendGrid::API.new(api_key:)
         response = sg.client.mail._('send').post(request_body: mail.to_json)
     end
 end

@@ -12,7 +12,8 @@ import { withRouter } from 'react-router-dom';
 const mapStateToProps = (state) => ({
     tickets: state.entities.tickets,
     search_tickets: state.entities.search_tickets,
-    user: state.session.current_user
+    user: state.session.current_user,
+    current_ticket_status: state.ui.current_ticket_status
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -29,8 +30,7 @@ class TicketSearchBar extends React.Component{
             query: '',
             timer_id: null, 
             show_scope_options: false,
-            search_scope: "Global", 
-            ticket_status: this.props.status
+            search_scope: "Global"
         }
 
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this);
@@ -42,7 +42,7 @@ class TicketSearchBar extends React.Component{
 
     componentDidUpdate(prevProps){
         if(this.props.status != prevProps.status){
-            this.setState({ticket_status: this.props.status, query: ""})
+            this.setState({query: ""})
             this.props.clearSearchTickets()
         }
     }
@@ -59,7 +59,7 @@ class TicketSearchBar extends React.Component{
                 let search_scope = this.state.search_scope
                 let id = this.props.user.startup_business_id
                 let query = this.state.query
-                let status = this.state.ticket_status
+                let status = this.props.current_ticket_status
                 if(this.state.query.length > 0 ){
                     if(search_scope == "Global"){
                         this.props.fetchGlobalSearchTickets(id, query, status)

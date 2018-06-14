@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * if there is a current_user (method that returns a current user)  
      */
     if (window.currentUser) {
-        const preloadedState = { session: { current_user: window.currentUser } };
+        const preloadedState = { session: { current_user: window.currentUser },
+                                 ui: { current_business_id: window.currentUser.startup_business_id,
+                                       current_ticket_status: 'Unfulfilled'}};
         store = configureStore(preloadedState);
         delete window.currentUser;
     } else {

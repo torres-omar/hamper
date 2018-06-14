@@ -1,42 +1,46 @@
 import React from 'react';
 import { logout } from '../../actions/session_actions';
-import { fetchStatusTickets } from '../../actions/tickets_actions';
+import { fetchStatusTickets, changeTicketStatus } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
 import TicketsSearchBar from '../dashboard/ticket_search_bar';
+import { withRouter } from 'react-router-dom';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
     fetchStatusTickets: (busines_id, page, status) => dispatch(fetchStatusTickets(busines_id, page, status)),
+    changeTicketStatus: (status) => dispatch(changeTicketStatus(status))
 })
 
 const mapStateToProps = (state) => ({
-    user: state.session.current_user
+    user: state.session.current_user,
+    current_business_id: state.ui.current_business_id,
+    current_ticket_status: state.ui.current_ticket_status
 })
 
 class TicketsControl extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {
-            ticket_status: 'unfulfilled'
-        }
+        // this.state = {
+        //     ticket_status: 'unfulfilled'
+        // }
     }
     // fetch new status tickets upon changing state (ticket_status) 
     // new tickets will go through redux and be stored in entities.tickets
     // other components react to this change in the store.
     // such as tickets view, which renders tickets stored in the store (entities.tickets)
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.ticket_status != prevState.ticket_status) {
+    componentDidUpdate(prevProps) {
+        if (this.props.current_ticket_status != prevProps.current_ticket_status) {
             let id = this.props.user.startup_business_id
-            let status = this.state.ticket_status
+            let status = this.props.current_ticket_status
             this.props.fetchStatusTickets(id, 0, status)
         }
     }
 
     componentDidMount() {
         // call fetchStatusTickets method with page 0
-        let business_id = this.props.user.startup_business_id;
-        this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
+        let business_id = this.props.current_business_id;
+        this.props.fetchStatusTickets(business_id, 0, this.props.current_ticket_status);
     }
 
     handleSubmit(event) {
@@ -46,7 +50,11 @@ class TicketsControl extends React.Component {
 
     handleStatusChange(e, status) {
         e.preventDefault()
-        this.setState({ ticket_status: status })
+        // this.setState({ ticket_status: status })
+        this.props.changeTicketStatus(status)
+        if(this.props.location.pathname != "/tickets"){
+            this.props.history.push('/tickets')
+        } 
     }
 
     render() {
@@ -58,10 +66,10 @@ class TicketsControl extends React.Component {
                     <button onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
                 </div>
                 <input type="button" onClick={this.handleSubmit} value="sign out" />
-                <TicketsSearchBar status={this.state.ticket_status} />
+                <TicketsSearchBar status={this.props.ticket_status} />
             </div>
         )
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketsControl);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketsControl));

@@ -86,6 +86,30 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./client/actions/businesses_actions.js":
+/*!**********************************************!*\
+  !*** ./client/actions/businesses_actions.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var RECEIVE_CURRENT_BUSINESS_ID = exports.RECEIVE_CURRENT_BUSINESS_ID = 'RECEIVE_CURRENT_BUSINESS_ID';
+
+var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function receiveCurrentBusinessId(id) {
+    return {
+        type: RECEIVE_CURRENT_BUSINESS_ID,
+        id: id
+    };
+};
+
+/***/ }),
+
 /***/ "./client/actions/session_actions.js":
 /*!*******************************************!*\
   !*** ./client/actions/session_actions.js ***!
@@ -161,7 +185,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.changeTicketStatus = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_TICKET_STATUS = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -172,6 +196,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var RECEIVE_TICKETS = exports.RECEIVE_TICKETS = 'RECEIVE_TICKETS';
 var RECEIVE_SEARCH_TICKETS = exports.RECEIVE_SEARCH_TICKETS = 'RECEIVE_SEARCH_TICKETS';
 var RECEIVE_SHOW_TICKET = exports.RECEIVE_SHOW_TICKET = 'RECEIVE_SHOW_TICKET';
+var RECEIVE_TICKET_STATUS = exports.RECEIVE_TICKET_STATUS = 'RECEIVE_TICKET_STATUS';
 
 var receiveTickets = exports.receiveTickets = function receiveTickets(tickets) {
     return {
@@ -198,6 +223,13 @@ var receiveShowTicket = exports.receiveShowTicket = function receiveShowTicket(t
     return {
         type: RECEIVE_SHOW_TICKET,
         ticket: ticket
+    };
+};
+
+var changeTicketStatus = exports.changeTicketStatus = function changeTicketStatus(status) {
+    return {
+        type: RECEIVE_TICKET_STATUS,
+        status: status
     };
 };
 
@@ -406,7 +438,8 @@ var mapStateToProps = function mapStateToProps(state) {
     return {
         tickets: state.entities.tickets,
         search_tickets: state.entities.search_tickets,
-        user: state.session.current_user
+        user: state.session.current_user,
+        current_ticket_status: state.ui.current_ticket_status
     };
 };
 
@@ -439,8 +472,7 @@ var TicketSearchBar = function (_React$Component) {
             query: '',
             timer_id: null,
             show_scope_options: false,
-            search_scope: "Global",
-            ticket_status: _this.props.status
+            search_scope: "Global"
         };
 
         _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
@@ -455,7 +487,7 @@ var TicketSearchBar = function (_React$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps) {
             if (this.props.status != prevProps.status) {
-                this.setState({ ticket_status: this.props.status, query: "" });
+                this.setState({ query: "" });
                 this.props.clearSearchTickets();
             }
         }
@@ -477,7 +509,7 @@ var TicketSearchBar = function (_React$Component) {
                     var search_scope = _this2.state.search_scope;
                     var id = _this2.props.user.startup_business_id;
                     var query = _this2.state.query;
-                    var status = _this2.state.ticket_status;
+                    var status = _this2.props.current_ticket_status;
                     if (_this2.state.query.length > 0) {
                         if (search_scope == "Global") {
                             _this2.props.fetchGlobalSearchTickets(id, query, status);
@@ -773,6 +805,8 @@ var _ticket_search_bar = __webpack_require__(/*! ../dashboard/ticket_search_bar 
 
 var _ticket_search_bar2 = _interopRequireDefault(_ticket_search_bar);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -788,13 +822,18 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         fetchStatusTickets: function fetchStatusTickets(busines_id, page, status) {
             return dispatch((0, _tickets_actions.fetchStatusTickets)(busines_id, page, status));
+        },
+        changeTicketStatus: function changeTicketStatus(status) {
+            return dispatch((0, _tickets_actions.changeTicketStatus)(status));
         }
     };
 };
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        user: state.session.current_user
+        user: state.session.current_user,
+        current_business_id: state.ui.current_business_id,
+        current_ticket_status: state.ui.current_ticket_status
     };
 };
 
@@ -807,9 +846,9 @@ var TicketsControl = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketsControl.__proto__ || Object.getPrototypeOf(TicketsControl)).call(this, props));
 
         _this.handleSubmit = _this.handleSubmit.bind(_this);
-        _this.state = {
-            ticket_status: 'unfulfilled'
-        };
+        // this.state = {
+        //     ticket_status: 'unfulfilled'
+        // }
         return _this;
     }
     // fetch new status tickets upon changing state (ticket_status) 
@@ -820,10 +859,10 @@ var TicketsControl = function (_React$Component) {
 
     _createClass(TicketsControl, [{
         key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps, prevState) {
-            if (this.state.ticket_status != prevState.ticket_status) {
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.current_ticket_status != prevProps.current_ticket_status) {
                 var id = this.props.user.startup_business_id;
-                var status = this.state.ticket_status;
+                var status = this.props.current_ticket_status;
                 this.props.fetchStatusTickets(id, 0, status);
             }
         }
@@ -831,8 +870,8 @@ var TicketsControl = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             // call fetchStatusTickets method with page 0
-            var business_id = this.props.user.startup_business_id;
-            this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
+            var business_id = this.props.current_business_id;
+            this.props.fetchStatusTickets(business_id, 0, this.props.current_ticket_status);
         }
     }, {
         key: 'handleSubmit',
@@ -844,7 +883,11 @@ var TicketsControl = function (_React$Component) {
         key: 'handleStatusChange',
         value: function handleStatusChange(e, status) {
             e.preventDefault();
-            this.setState({ ticket_status: status });
+            // this.setState({ ticket_status: status })
+            this.props.changeTicketStatus(status);
+            if (this.props.location.pathname != "/tickets") {
+                this.props.history.push('/tickets');
+            }
         }
     }, {
         key: 'render',
@@ -880,7 +923,7 @@ var TicketsControl = function (_React$Component) {
                     )
                 ),
                 _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' }),
-                _react2.default.createElement(_ticket_search_bar2.default, { status: this.state.ticket_status })
+                _react2.default.createElement(_ticket_search_bar2.default, { status: this.props.ticket_status })
             );
         }
     }]);
@@ -888,7 +931,7 @@ var TicketsControl = function (_React$Component) {
     return TicketsControl;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketsControl);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketsControl));
 
 /***/ }),
 
@@ -1130,6 +1173,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import { connect } from 'react-redux';
+
+// const mapDispatchToProps = (dispatch) => ({
+//     fetchStatusTickets: (business_id, page, status) => dispatch(fetchStatusTickets(business_id, page, status))
+// })
+
+// const mapStateToProps = (state) => ({
+//     current_busines_id: state.entities.current_business_id
+// })
+
 var TicketsViewTab = function (_React$Component) {
     _inherits(TicketsViewTab, _React$Component);
 
@@ -1138,6 +1191,12 @@ var TicketsViewTab = function (_React$Component) {
 
         return _possibleConstructorReturn(this, (TicketsViewTab.__proto__ || Object.getPrototypeOf(TicketsViewTab)).call(this, props));
     }
+
+    // componentDidMount() {
+    //     // call fetchStatusTickets method with page 0
+    //     let business_id = this.props.current_busines_id;
+    //     this.props.fetchStatusTickets(business_id, 0, this.state.ticket_status);
+    // }
 
     _createClass(TicketsViewTab, [{
         key: 'render',
@@ -1431,7 +1490,9 @@ document.addEventListener('DOMContentLoaded', function () {
      * if there is a current_user (method that returns a current user)  
      */
     if (window.currentUser) {
-        var preloadedState = { session: { current_user: window.currentUser } };
+        var preloadedState = { session: { current_user: window.currentUser },
+            ui: { current_business_id: window.currentUser.startup_business_id,
+                current_ticket_status: 'Unfulfilled' } };
         store = (0, _store2.default)(preloadedState);
         delete window.currentUser;
     } else {
@@ -1442,38 +1503,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var root = document.getElementById('root');
     _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 });
-
-/***/ }),
-
-/***/ "./client/reducers/entities/current_business_id_reducer.js":
-/*!*****************************************************************!*\
-  !*** ./client/reducers/entities/current_business_id_reducer.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
-
-var CurrentBusinessIdReducer = function CurrentBusinessIdReducer() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var action = arguments[1];
-
-    switch (action.type) {
-        case _session_actions.RECEIVE_CURRENT_USER:
-            return action.current_user.startup_business_id;
-        default:
-            return state;
-    }
-};
-
-exports.default = CurrentBusinessIdReducer;
 
 /***/ }),
 
@@ -1601,17 +1630,12 @@ var _show_ticket_reducer = __webpack_require__(/*! ./entities/show_ticket_reduce
 
 var _show_ticket_reducer2 = _interopRequireDefault(_show_ticket_reducer);
 
-var _current_business_id_reducer = __webpack_require__(/*! ./entities/current_business_id_reducer */ "./client/reducers/entities/current_business_id_reducer.js");
-
-var _current_business_id_reducer2 = _interopRequireDefault(_current_business_id_reducer);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
     tickets: _tickets_reducer2.default,
     search_tickets: _search_tickets_reducer2.default,
-    show_ticket: _show_ticket_reducer2.default,
-    current_businesses_id: _current_business_id_reducer2.default
+    show_ticket: _show_ticket_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -1708,10 +1732,15 @@ var _errors_reducer = __webpack_require__(/*! ./errors_reducer */ "./client/redu
 
 var _errors_reducer2 = _interopRequireDefault(_errors_reducer);
 
+var _ui_reducer = __webpack_require__(/*! ./ui_reducer */ "./client/reducers/ui_reducer.js");
+
+var _ui_reducer2 = _interopRequireDefault(_ui_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RootReducer = (0, _redux.combineReducers)({
     entities: _entities_reducer2.default,
+    ui: _ui_reducer2.default,
     session: _session_reducer2.default,
     errors: _errors_reducer2.default
 });
@@ -1749,6 +1778,113 @@ var SessionReducer = function SessionReducer() {
 };
 
 exports.default = SessionReducer;
+
+/***/ }),
+
+/***/ "./client/reducers/ui/current_business_id_reducer.js":
+/*!***********************************************************!*\
+  !*** ./client/reducers/ui/current_business_id_reducer.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
+
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var CurrentBusinessIdReducer = function CurrentBusinessIdReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _session_actions.RECEIVE_CURRENT_USER:
+            if (action.current_user) {
+                return action.current_user.startup_business_id;
+            } else {
+                return null;
+            }
+        case _businesses_actions.RECEIVE_CURRENT_BUSINESS_ID:
+            return action.id;
+        default:
+            return state;
+    }
+};
+
+exports.default = CurrentBusinessIdReducer;
+
+/***/ }),
+
+/***/ "./client/reducers/ui/current_ticket_status_reducer.js":
+/*!*************************************************************!*\
+  !*** ./client/reducers/ui/current_ticket_status_reducer.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
+var CurrentTicketStatusReducer = function CurrentTicketStatusReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "Unfulfilled";
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _tickets_actions.RECEIVE_TICKET_STATUS:
+            return action.status;
+        default:
+            return state;
+    }
+};
+
+exports.default = CurrentTicketStatusReducer;
+
+/***/ }),
+
+/***/ "./client/reducers/ui_reducer.js":
+/*!***************************************!*\
+  !*** ./client/reducers/ui_reducer.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _redux = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+
+var _current_business_id_reducer = __webpack_require__(/*! ./ui/current_business_id_reducer */ "./client/reducers/ui/current_business_id_reducer.js");
+
+var _current_business_id_reducer2 = _interopRequireDefault(_current_business_id_reducer);
+
+var _current_ticket_status_reducer = __webpack_require__(/*! ./ui/current_ticket_status_reducer */ "./client/reducers/ui/current_ticket_status_reducer.js");
+
+var _current_ticket_status_reducer2 = _interopRequireDefault(_current_ticket_status_reducer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var UIReducer = (0, _redux.combineReducers)({
+    current_business_id: _current_business_id_reducer2.default,
+    current_ticket_status: _current_ticket_status_reducer2.default
+});
+
+exports.default = UIReducer;
 
 /***/ }),
 
