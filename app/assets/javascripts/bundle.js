@@ -467,9 +467,8 @@ var TicketSearchBar = function (_React$Component) {
         }
     }, {
         key: 'handleSelect',
-        value: function handleSelect() {
-            debugger;
-            alert("ticket was selected");
+        value: function handleSelect(value, item) {
+            this.props.history.push('/tickets/' + item.id);
         }
     }, {
         key: 'handleScopeChange',
@@ -548,6 +547,65 @@ var TicketSearchBar = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketSearchBar));
+
+/***/ }),
+
+/***/ "./client/components/dashboard/ticket_view.jsx":
+/*!*****************************************************!*\
+  !*** ./client/components/dashboard/ticket_view.jsx ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TicketView = function (_React$Component) {
+    _inherits(TicketView, _React$Component);
+
+    function TicketView(props) {
+        _classCallCheck(this, TicketView);
+
+        return _possibleConstructorReturn(this, (TicketView.__proto__ || Object.getPrototypeOf(TicketView)).call(this, props));
+    }
+
+    _createClass(TicketView, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    'Ticket view'
+                )
+            );
+        }
+    }]);
+
+    return TicketView;
+}(_react2.default.Component);
+
+exports.default = TicketView;
 
 /***/ }),
 
@@ -862,9 +920,9 @@ var _tickets_control = __webpack_require__(/*! ../dashboard/tickets_control */ "
 
 var _tickets_control2 = _interopRequireDefault(_tickets_control);
 
-var _tickets_view = __webpack_require__(/*! ../dashboard/tickets_view */ "./client/components/dashboard/tickets_view.jsx");
+var _ticket_view = __webpack_require__(/*! ../dashboard/ticket_view */ "./client/components/dashboard/ticket_view.jsx");
 
-var _tickets_view2 = _interopRequireDefault(_tickets_view);
+var _ticket_view2 = _interopRequireDefault(_ticket_view);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -886,11 +944,11 @@ var TicketViewTab = function (_React$Component) {
     _createClass(TicketViewTab, [{
         key: 'render',
         value: function render() {
-            _react2.default.createElement(
+            return _react2.default.createElement(
                 'div',
                 null,
                 _react2.default.createElement(_tickets_control2.default, null),
-                _react2.default.createElement(_tickets_view2.default, null)
+                _react2.default.createElement(_ticket_view2.default, null)
             );
         }
     }]);
@@ -938,16 +996,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TicketsTab = function (_React$Component) {
-    _inherits(TicketsTab, _React$Component);
+var TicketsViewTab = function (_React$Component) {
+    _inherits(TicketsViewTab, _React$Component);
 
-    function TicketsTab(props) {
-        _classCallCheck(this, TicketsTab);
+    function TicketsViewTab(props) {
+        _classCallCheck(this, TicketsViewTab);
 
-        return _possibleConstructorReturn(this, (TicketsTab.__proto__ || Object.getPrototypeOf(TicketsTab)).call(this, props));
+        return _possibleConstructorReturn(this, (TicketsViewTab.__proto__ || Object.getPrototypeOf(TicketsViewTab)).call(this, props));
     }
 
-    _createClass(TicketsTab, [{
+    _createClass(TicketsViewTab, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -959,10 +1017,10 @@ var TicketsTab = function (_React$Component) {
         }
     }]);
 
-    return TicketsTab;
+    return TicketsViewTab;
 }(_react2.default.Component);
 
-exports.default = TicketsTab;
+exports.default = TicketsViewTab;
 
 /***/ }),
 

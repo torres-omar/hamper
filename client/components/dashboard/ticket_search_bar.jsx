@@ -79,9 +79,8 @@ class TicketSearchBar extends React.Component{
         }.bind(this)()
     }
 
-    handleSelect(){
-        debugger
-        alert("ticket was selected")
+    handleSelect(value, item){
+        this.props.history.push(`/tickets/${item.id}`)
     }
 
     handleScopeChange(event){
