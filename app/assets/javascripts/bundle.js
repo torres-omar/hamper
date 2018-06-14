@@ -1445,6 +1445,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./client/reducers/entities/current_business_id_reducer.js":
+/*!*****************************************************************!*\
+  !*** ./client/reducers/entities/current_business_id_reducer.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
+
+var CurrentBusinessIdReducer = function CurrentBusinessIdReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _session_actions.RECEIVE_CURRENT_USER:
+            return action.current_user.startup_business_id;
+        default:
+            return state;
+    }
+};
+
+exports.default = CurrentBusinessIdReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/search_tickets_reducer.js":
 /*!************************************************************!*\
   !*** ./client/reducers/entities/search_tickets_reducer.js ***!
@@ -1569,12 +1601,17 @@ var _show_ticket_reducer = __webpack_require__(/*! ./entities/show_ticket_reduce
 
 var _show_ticket_reducer2 = _interopRequireDefault(_show_ticket_reducer);
 
+var _current_business_id_reducer = __webpack_require__(/*! ./entities/current_business_id_reducer */ "./client/reducers/entities/current_business_id_reducer.js");
+
+var _current_business_id_reducer2 = _interopRequireDefault(_current_business_id_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
     tickets: _tickets_reducer2.default,
     search_tickets: _search_tickets_reducer2.default,
-    show_ticket: _show_ticket_reducer2.default
+    show_ticket: _show_ticket_reducer2.default,
+    current_businesses_id: _current_business_id_reducer2.default
 });
 
 exports.default = EntitiesReducer;
