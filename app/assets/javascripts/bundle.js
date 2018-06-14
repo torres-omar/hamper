@@ -332,9 +332,13 @@ var _ticket_view_tab = __webpack_require__(/*! ./pages/ticket_view_tab */ "./cli
 
 var _ticket_view_tab2 = _interopRequireDefault(_ticket_view_tab);
 
-var _new_ticket_tab = __webpack_require__(/*! ./pages/new_ticket_tab */ "./client/components/pages/new_ticket_tab.jsx");
+var _customer_info_tab = __webpack_require__(/*! ./pages/new_ticket/customer_info_tab */ "./client/components/pages/new_ticket/customer_info_tab.jsx");
 
-var _new_ticket_tab2 = _interopRequireDefault(_new_ticket_tab);
+var _customer_info_tab2 = _interopRequireDefault(_customer_info_tab);
+
+var _ticket_info_tab = __webpack_require__(/*! ./pages/new_ticket/ticket_info_tab */ "./client/components/pages/new_ticket/ticket_info_tab.jsx");
+
+var _ticket_info_tab2 = _interopRequireDefault(_ticket_info_tab);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -346,7 +350,8 @@ var App = function App() {
             _reactRouterDom.Switch,
             null,
             _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/', component: _login_page2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new', component: _new_ticket_tab2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s1', component: _customer_info_tab2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s2', component: _ticket_info_tab2.default }),
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default })
         )
@@ -354,6 +359,18 @@ var App = function App() {
 };
 
 exports.default = App;
+
+/***/ }),
+
+/***/ "./client/components/dashboard/customer_search_bar.jsx":
+/*!*************************************************************!*\
+  !*** ./client/components/dashboard/customer_search_bar.jsx ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ }),
 
@@ -1078,10 +1095,10 @@ exports.default = LogInPage;
 
 /***/ }),
 
-/***/ "./client/components/pages/new_ticket_tab.jsx":
-/*!****************************************************!*\
-  !*** ./client/components/pages/new_ticket_tab.jsx ***!
-  \****************************************************/
+/***/ "./client/components/pages/new_ticket/customer_info_tab.jsx":
+/*!******************************************************************!*\
+  !*** ./client/components/pages/new_ticket/customer_info_tab.jsx ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1098,9 +1115,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tickets_control = __webpack_require__(/*! ../dashboard/tickets_control */ "./client/components/dashboard/tickets_control.jsx");
+var _tickets_control = __webpack_require__(/*! ../../dashboard/tickets_control */ "./client/components/dashboard/tickets_control.jsx");
 
 var _tickets_control2 = _interopRequireDefault(_tickets_control);
+
+var _customer_search_bar = __webpack_require__(/*! ../../dashboard/customer_search_bar */ "./client/components/dashboard/customer_search_bar.jsx");
+
+var _customer_search_bar2 = _interopRequireDefault(_customer_search_bar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1110,16 +1131,28 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var NewTicketTab = function (_React$Component) {
-    _inherits(NewTicketTab, _React$Component);
+var CustomerInfoTab = function (_React$Component) {
+    _inherits(CustomerInfoTab, _React$Component);
 
-    function NewTicketTab(props) {
-        _classCallCheck(this, NewTicketTab);
+    function CustomerInfoTab(props) {
+        _classCallCheck(this, CustomerInfoTab);
 
-        return _possibleConstructorReturn(this, (NewTicketTab.__proto__ || Object.getPrototypeOf(NewTicketTab)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (CustomerInfoTab.__proto__ || Object.getPrototypeOf(CustomerInfoTab)).call(this, props));
+
+        _this.state = {
+            customer_status: "existing"
+        };
+
+        _this.handleRadioChange = _this.handleRadioChange.bind(_this);
+        return _this;
     }
 
-    _createClass(NewTicketTab, [{
+    _createClass(CustomerInfoTab, [{
+        key: 'handleRadioChange',
+        value: function handleRadioChange(e) {
+            this.setState({ customer_status: e.target.value });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -1130,15 +1163,58 @@ var NewTicketTab = function (_React$Component) {
                     'h1',
                     null,
                     'New ticket'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Customer Info'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Existing customer',
+                        _react2.default.createElement('input', {
+                            type: 'radio',
+                            value: 'existing',
+                            checked: this.state.customer_status == 'existing',
+                            onChange: this.handleRadioChange
+                        })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'New customer',
+                        _react2.default.createElement('input', {
+                            type: 'radio',
+                            value: 'new',
+                            checked: this.state.customer_status == 'new',
+                            onChange: this.handleRadioChange
+                        })
+                    )
                 )
             );
         }
     }]);
 
-    return NewTicketTab;
+    return CustomerInfoTab;
 }(_react2.default.Component);
 
-exports.default = NewTicketTab;
+exports.default = CustomerInfoTab;
+
+/***/ }),
+
+/***/ "./client/components/pages/new_ticket/ticket_info_tab.jsx":
+/*!****************************************************************!*\
+  !*** ./client/components/pages/new_ticket/ticket_info_tab.jsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ }),
 
@@ -1200,7 +1276,7 @@ var TicketViewTab = function (_React$Component) {
         key: 'handleNewTicketRedirect',
         value: function handleNewTicketRedirect(e) {
             e.preventDefault();
-            this.props.history.push('/tickets/new');
+            this.props.history.push('/tickets/new/s1');
         }
     }, {
         key: 'render',
@@ -1281,7 +1357,7 @@ var TicketsViewTab = function (_React$Component) {
         key: 'handleNewTicketRedirect',
         value: function handleNewTicketRedirect(e) {
             e.preventDefault();
-            this.props.history.push('/tickets/new');
+            this.props.history.push('/tickets/new/s1');
         }
     }, {
         key: 'render',

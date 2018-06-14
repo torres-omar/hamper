@@ -12,7 +12,7 @@ class TicketViewTab extends React.Component{
 
     handleNewTicketRedirect(e) {
         e.preventDefault()
-        this.props.history.push('/tickets/new')
+        this.props.history.push('/tickets/new/s1')
     }
 
     render(){
