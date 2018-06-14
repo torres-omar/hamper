@@ -35,12 +35,13 @@ class Customer < ApplicationRecord
         return Customer.where("business_id = ?", business_id).name_scope(query)
     end
 
-    def self.send_notification
+    def send_notification(ticket_id)
         from = Email.new(email: 'omar.torres@plated.com')
-        to = Email.new(email: '01omartorres@gmail.com')
-        subject = 'Sending with SendGrid is Fun'
-        content = Content.new(type: 'text/plain', value: 'and easy to do anywhere, even with Ruby')
+        to = Email.new(email: self.email_address)
+        subject = 'FROM: Hamper - ready for pick up!'
+        content = Content.new(type: 'text/plain', value: "Ticket ID: #{ticket_id}")
         mail = Mail.new(from, subject, to, content)
+        # find out how to store API in environment variable
         sg = SendGrid::API.new(api_key: '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')
         response = sg.client.mail._('send').post(request_body: mail.to_json)
     end

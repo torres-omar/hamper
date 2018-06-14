@@ -48,35 +48,17 @@ class Api::TicketsController < ApplicationController
         end
     end
 
-    # def unfulfilled_page
-    #     page_number = Integer(params[:p])
-    #     @tickets = Ticket.unfulfilled_tickets_by_page_number(params[:business_id], page_number)
-    #     if @tickets
-    #         render 'api/tickets/index'
-    #     else
-    #         render json: {:errors => ["Invalid parameters"]}, status: 422
-    #     end
-    # end
-
-    # def notified_page
-    #     page_number = Integer(params[:p])
-    #     @tickets = Ticket.notified_tickets_by_page_number(params[:business_id], page_number)
-    #     if @tickets
-    #         render 'api/tickets/index'
-    #     else
-    #         render json: {:errors => ["Invalid parameters"], status: 422}
-    #     end
-    # end
-
-    # def fulfilled_page
-    #     page_number = Integer(params[:p])
-    #     @tickets = Ticket.fulfilled_tickets_by_page_number(params[:business_id], page_number)
-    #     if @tickets
-    #         render 'api/tickets/index'
-    #     else
-    #         render json: {:errors => ["Invalid parameters"], status: 422}
-    #     end
-    # end 
+    def notify_customer
+        ticket = Ticket.find_by(id: params[:ticket_id])
+        if ticket
+            ticket.change_status_to_notified!
+            customer = Customer.find(ticket.customer_id)
+            customer.send_notification(ticket.id)
+            render json: {:success => ['Notification sent']}, status: 202
+        else
+            render json: {:errors => ['No record found']}, status: 422
+        end 
+    end
 
     private 
 

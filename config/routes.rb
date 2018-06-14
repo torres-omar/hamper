@@ -43,7 +43,9 @@ Rails.application.routes.draw do
     end
 
     resources :customers, only: [:show]
-    resources :tickets, only: [:show]
+    resources :tickets, only: [:show] do 
+      get '/notify', to: 'tickets#notify_customer'
+    end
 
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
