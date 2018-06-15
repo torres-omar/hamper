@@ -6,12 +6,22 @@ class Gmap extends React.PureComponent {
         super(props);
         this.state = {
             map: null,
-            default_center: { lat: 40.7484, lng: -73.9967 },
-            center: { lat: 40.7484, lng: -73.9967 },
-            markers: []
+            // default_center: { lat: 40.7484, lng: -73.9967 },
+            // center: { lat: 40.7484, lng: -73.9967 },
+            // markers: []
         }
 
     }
+
+    // componentDidUpdate(prevProps) {
+    //     if(this.props.business_on_map &&         
+    //         (this.props.business_on_map.id != prevProps.business_on_map.id)){
+    //         this.setState({ center: {
+    //             lat: Number(this.props.business_on_map.latitude), 
+    //             lng: Number(this.props.business_on_map.longitude)
+    //         }})
+    //     }
+    // }
 
     mapLoaded(map) {
         if (this.state.map == null) {
@@ -21,14 +31,14 @@ class Gmap extends React.PureComponent {
 
     render() {
         let marker_view = <Marker
-            position={{ lat: 40.7484, lng: -73.9967 }}
+            position={{ lat: Number(this.props.business_on_map.latitude), lng: Number(this.props.business_on_map.longitude) }}
         />
         return (
             <GoogleMap
                 ref={this.mapLoaded.bind(this)}
                 defaultZoom={13}
                 defaultCenter={this.state.default_center}
-                center={this.state.center}
+                center={this.props.center}
                 defaultOptions={{
                     styles: [{
                         featureType: "poi",

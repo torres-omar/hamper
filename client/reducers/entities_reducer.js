@@ -6,6 +6,7 @@ import CustomersReducer from './entities/customers_reducer';
 import SearchCustomersReducer from './entities/search_customers_reducer';
 import ShowCustomerReducer from './entities/show_customer_reducer';
 import CurrentBusinessReducer from './entities/current_business_reducer';
+import BusinessesReducer from './entities/businesses_reducer';
 
 const EntitiesReducer = combineReducers({
     tickets: TicketsReducer,
@@ -14,7 +15,8 @@ const EntitiesReducer = combineReducers({
     customers: CustomersReducer,
     search_customers: SearchCustomersReducer,
     show_customer: ShowCustomerReducer,
-    current_business: CurrentBusinessReducer
+    current_business: CurrentBusinessReducer,
+    businesses: BusinessesReducer
 })
 
 export default EntitiesReducer;

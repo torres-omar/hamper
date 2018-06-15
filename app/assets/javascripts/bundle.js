@@ -99,7 +99,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchCurrentBusinessInfo = exports.receiveCurrentBusiness = exports.receiveCurrentBusinessId = exports.RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS_ID = undefined;
+exports.fetchBusinesses = exports.fetchCurrentBusinessInfo = exports.setBusinessOnMap = exports.receiveBusinesses = exports.receiveCurrentBusiness = exports.receiveCurrentBusinessId = exports.RECEIVE_BUSINESS_ON_MAP = exports.RECEIVE_BUSINESSES = exports.RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS_ID = undefined;
 
 var _businesses_api_util = __webpack_require__(/*! ../util/businesses_api_util */ "./client/util/businesses_api_util.js");
 
@@ -109,6 +109,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_CURRENT_BUSINESS_ID = exports.RECEIVE_CURRENT_BUSINESS_ID = 'RECEIVE_CURRENT_BUSINESS_ID';
 var RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS = 'RECEIVE_CURRENT_BUSINESS';
+var RECEIVE_BUSINESSES = exports.RECEIVE_BUSINESSES = 'RECEIVE_BUSINESSES';
+var RECEIVE_BUSINESS_ON_MAP = exports.RECEIVE_BUSINESS_ON_MAP = 'RECEIVE_BUSINESS_ON_MAP';
 
 var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function receiveCurrentBusinessId(id) {
     return {
@@ -124,10 +126,32 @@ var receiveCurrentBusiness = exports.receiveCurrentBusiness = function receiveCu
     };
 };
 
+var receiveBusinesses = exports.receiveBusinesses = function receiveBusinesses(businesses) {
+    return {
+        type: RECEIVE_BUSINESSES,
+        businesses: businesses
+    };
+};
+
+var setBusinessOnMap = exports.setBusinessOnMap = function setBusinessOnMap(business) {
+    return {
+        type: RECEIVE_BUSINESS_ON_MAP,
+        business: business
+    };
+};
+
 var fetchCurrentBusinessInfo = exports.fetchCurrentBusinessInfo = function fetchCurrentBusinessInfo(business_id) {
     return function (dispatch) {
         return APIUtil.fetchCurrentBusinessInfo(business_id).then(function (business) {
             return dispatch(receiveCurrentBusiness(business));
+        });
+    };
+};
+
+var fetchBusinesses = exports.fetchBusinesses = function fetchBusinesses(user_id) {
+    return function (dispatch) {
+        return APIUtil.fetchBusinesses(user_id).then(function (businesses) {
+            return dispatch(receiveBusinesses(businesses));
         });
     };
 };
@@ -671,14 +695,24 @@ var Gmap = function (_React$PureComponent) {
         var _this = _possibleConstructorReturn(this, (Gmap.__proto__ || Object.getPrototypeOf(Gmap)).call(this, props));
 
         _this.state = {
-            map: null,
-            default_center: { lat: 40.7484, lng: -73.9967 },
-            center: { lat: 40.7484, lng: -73.9967 },
-            markers: []
+            map: null
+            // default_center: { lat: 40.7484, lng: -73.9967 },
+            // center: { lat: 40.7484, lng: -73.9967 },
+            // markers: []
         };
 
         return _this;
     }
+
+    // componentDidUpdate(prevProps) {
+    //     if(this.props.business_on_map &&         
+    //         (this.props.business_on_map.id != prevProps.business_on_map.id)){
+    //         this.setState({ center: {
+    //             lat: Number(this.props.business_on_map.latitude), 
+    //             lng: Number(this.props.business_on_map.longitude)
+    //         }})
+    //     }
+    // }
 
     _createClass(Gmap, [{
         key: "mapLoaded",
@@ -691,7 +725,7 @@ var Gmap = function (_React$PureComponent) {
         key: "render",
         value: function render() {
             var marker_view = _react2.default.createElement(_reactGoogleMaps.Marker, {
-                position: { lat: 40.7484, lng: -73.9967 }
+                position: { lat: Number(this.props.business_on_map.latitude), lng: Number(this.props.business_on_map.longitude) }
             });
             return _react2.default.createElement(
                 _reactGoogleMaps.GoogleMap,
@@ -699,7 +733,7 @@ var Gmap = function (_React$PureComponent) {
                     ref: this.mapLoaded.bind(this),
                     defaultZoom: 13,
                     defaultCenter: this.state.default_center,
-                    center: this.state.center,
+                    center: this.props.center,
                     defaultOptions: {
                         styles: [{
                             featureType: "poi",
@@ -754,6 +788,8 @@ var _gmap = __webpack_require__(/*! ./gmap.jsx */ "./client/components/dashboard
 
 var _gmap2 = _interopRequireDefault(_gmap);
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -761,8 +797,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        business_on_map: state.ui.business_on_map
+    };
+};
 
 var Map = function (_React$PureComponent) {
     _inherits(Map, _React$PureComponent);
@@ -779,12 +819,12 @@ var Map = function (_React$PureComponent) {
     }
 
     _createClass(Map, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this.delayedShowMarker();
         }
     }, {
-        key: "delayedShowMarker",
+        key: 'delayedShowMarker',
         value: function delayedShowMarker() {
             var _this2 = this;
 
@@ -793,22 +833,28 @@ var Map = function (_React$PureComponent) {
             }, 2000);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
-            return _react2.default.createElement(_gmap2.default, {
-                isMarkerShown: this.state.isMarkerShown,
-                googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw",
-                loadingElement: _react2.default.createElement("div", { style: { height: "100%" } }),
-                containerElement: _react2.default.createElement("div", { style: { height: "400px", width: '400px' } }),
-                mapElement: _react2.default.createElement("div", { style: { height: "100%" } })
-            });
+            if (this.props.business_on_map) {
+                return _react2.default.createElement(_gmap2.default, {
+                    isMarkerShown: this.state.isMarkerShown,
+                    googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw',
+                    loadingElement: _react2.default.createElement('div', { style: { height: '100%' } }),
+                    containerElement: _react2.default.createElement('div', { style: { height: '400px', width: '400px' } }),
+                    mapElement: _react2.default.createElement('div', { style: { height: '100%' } }),
+                    center: { lat: Number(this.props.business_on_map.latitude), lng: Number(this.props.business_on_map.longitude) },
+                    business_on_map: this.props.business_on_map
+                });
+            } else {
+                return _react2.default.createElement('div', null);
+            }
         }
     }]);
 
     return Map;
 }(_react2.default.PureComponent);
 
-exports.default = Map;
+exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(Map);
 
 /***/ }),
 
@@ -2107,6 +2153,10 @@ var _map = __webpack_require__(/*! ../dashboard/map */ "./client/components/dash
 
 var _map2 = _interopRequireDefault(_map);
 
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2115,26 +2165,94 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        current_user: state.session.current_user,
+        businesses: state.entities.businesses,
+        current_business_id: state.ui.current_business_id
+    };
+};
+
+var mapDispathToProps = function mapDispathToProps(dispatch) {
+    return {
+        fetchBusinesses: function fetchBusinesses(user_id) {
+            return dispatch((0, _businesses_actions.fetchBusinesses)(user_id));
+        },
+        setBusinessOnMap: function setBusinessOnMap(business) {
+            return dispatch((0, _businesses_actions.setBusinessOnMap)(business));
+        }
+    };
+};
+
 var SettingsTab = function (_React$Component) {
     _inherits(SettingsTab, _React$Component);
 
     function SettingsTab(props) {
         _classCallCheck(this, SettingsTab);
 
-        return _possibleConstructorReturn(this, (SettingsTab.__proto__ || Object.getPrototypeOf(SettingsTab)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (SettingsTab.__proto__ || Object.getPrototypeOf(SettingsTab)).call(this, props));
+
+        _this.handleBusinessChange = _this.handleBusinessChange.bind(_this);
+        _this.renderBusinessesList = _this.renderBusinessesList.bind(_this);
+        return _this;
     }
 
     _createClass(SettingsTab, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.businesses.length > 0) {
+                for (var i = 0; i < this.props.businesses.length; i++) {
+                    if (this.props.businesses[i].id == this.props.current_business_id) {
+                        this.props.setBusinessOnMap(this.props.businesses[i]);
+                        break;
+                    }
+                }
+            }
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchBusinesses(this.props.current_user.id);
+        }
+    }, {
+        key: 'handleBusinessChange',
+        value: function handleBusinessChange(e, business) {
+            e.preventDefault();
+            this.props.setBusinessOnMap(business);
+        }
+    }, {
+        key: 'renderBusinessesList',
+        value: function renderBusinessesList() {
+            var _this2 = this;
+
+            var businesses = [];
+            this.props.businesses.forEach(function (business) {
+                businesses.push(_react2.default.createElement(
+                    'button',
+                    { onClick: function onClick(e) {
+                            return _this2.handleBusinessChange(e, business);
+                        } },
+                    business.name
+                ));
+            });
+            return businesses;
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(_map2.default, null);
+            return _react2.default.createElement(
+                'div',
+                null,
+                this.renderBusinessesList(),
+                _react2.default.createElement(_map2.default, null)
+            );
         }
     }]);
 
     return SettingsTab;
 }(_react2.default.Component);
 
-exports.default = SettingsTab;
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispathToProps)(SettingsTab);
 
 /***/ }),
 
@@ -2605,6 +2723,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./client/reducers/entities/businesses_reducer.js":
+/*!********************************************************!*\
+  !*** ./client/reducers/entities/businesses_reducer.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var BusinessesReducer = function BusinessesReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _businesses_actions.RECEIVE_BUSINESSES:
+            return action.businesses;
+        default:
+            return state;
+    }
+};
+
+exports.default = BusinessesReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/current_business_reducer.js":
 /*!**************************************************************!*\
   !*** ./client/reducers/entities/current_business_reducer.js ***!
@@ -2873,6 +3023,10 @@ var _current_business_reducer = __webpack_require__(/*! ./entities/current_busin
 
 var _current_business_reducer2 = _interopRequireDefault(_current_business_reducer);
 
+var _businesses_reducer = __webpack_require__(/*! ./entities/businesses_reducer */ "./client/reducers/entities/businesses_reducer.js");
+
+var _businesses_reducer2 = _interopRequireDefault(_businesses_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
@@ -2882,7 +3036,8 @@ var EntitiesReducer = (0, _redux.combineReducers)({
     customers: _customers_reducer2.default,
     search_customers: _search_customers_reducer2.default,
     show_customer: _show_customer_reducer2.default,
-    current_business: _current_business_reducer2.default
+    current_business: _current_business_reducer2.default,
+    businesses: _businesses_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -3028,6 +3183,38 @@ exports.default = SessionReducer;
 
 /***/ }),
 
+/***/ "./client/reducers/ui/business_on_map_reducer.js":
+/*!*******************************************************!*\
+  !*** ./client/reducers/ui/business_on_map_reducer.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var BusinessOnMapReducer = function BusinessOnMapReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _businesses_actions.RECEIVE_BUSINESS_ON_MAP:
+            return action.business;
+        default:
+            return state;
+    }
+};
+
+exports.default = BusinessOnMapReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/ui/current_business_id_reducer.js":
 /*!***********************************************************!*\
   !*** ./client/reducers/ui/current_business_id_reducer.js ***!
@@ -3124,13 +3311,18 @@ var _current_ticket_status_reducer = __webpack_require__(/*! ./ui/current_ticket
 
 var _current_ticket_status_reducer2 = _interopRequireDefault(_current_ticket_status_reducer);
 
+var _business_on_map_reducer = __webpack_require__(/*! ./ui/business_on_map_reducer */ "./client/reducers/ui/business_on_map_reducer.js");
+
+var _business_on_map_reducer2 = _interopRequireDefault(_business_on_map_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // import CurrentCustomerShowIdReducer from './ui/current_customer_show_id_reducer';
 
 var UIReducer = (0, _redux.combineReducers)({
     current_business_id: _current_business_id_reducer2.default,
-    current_ticket_status: _current_ticket_status_reducer2.default
+    current_ticket_status: _current_ticket_status_reducer2.default,
+    business_on_map: _business_on_map_reducer2.default
 });
 
 exports.default = UIReducer;
@@ -3206,6 +3398,13 @@ var fetchCurrentBusinessInfo = exports.fetchCurrentBusinessInfo = function fetch
     return $.ajax({
         method: "GET",
         url: "api/businesses/" + business_id
+    });
+};
+
+var fetchBusinesses = exports.fetchBusinesses = function fetchBusinesses(user_id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/users/" + user_id + "/businesses"
     });
 };
 
