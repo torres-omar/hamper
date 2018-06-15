@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
+import NewTicketForm from '../../dashboard/new_ticket_form';
 
 const mapStateToProps = (state) => ({
     show_customer: state.entities.show_customer
@@ -22,6 +23,7 @@ class TicketInfoTab extends React.Component{
                 <div>
                     <p>{this.props.show_customer.first_name}</p>
                     <p>{this.props.show_customer.last_name}</p>
+                    <NewTicketForm />
                 </div>
             )
         }

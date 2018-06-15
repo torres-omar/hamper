@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_13_105221) do
+ActiveRecord::Schema.define(version: 2018_06_15_041427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,10 +101,10 @@ ActiveRecord::Schema.define(version: 2018_06_13_105221) do
     t.date "date_fulfilled"
     t.float "bag_weight"
     t.float "grand_total", null: false
-    t.integer "ticket_type_id", null: false
+    t.integer "ticket_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "delivery_method_id", null: false
+    t.integer "delivery_method_id"
     t.time "time_fulfilled"
   end
 

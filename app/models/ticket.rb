@@ -46,11 +46,11 @@ class Ticket < ApplicationRecord
               :status_id,
               :date_dropped_off, 
               :time_dropped_off, 
-              :grand_total, 
-              :ticket_type_id, 
+              :grand_total,
+              :bag_weight, 
               presence:true
     
-    validates :bag_weight, weight: true
+    # validates :bag_weight, weight: true
 
     belongs_to :business, 
         class_name: 'Business', 
