@@ -1,5 +1,5 @@
 json.extract! customer, 
-                :id
+                :id,
                 :first_name,
                 :last_name,
                 :business_id

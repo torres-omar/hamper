@@ -110,6 +110,69 @@ var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function recei
 
 /***/ }),
 
+/***/ "./client/actions/customers_actions.js":
+/*!*********************************************!*\
+  !*** ./client/actions/customers_actions.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.fetchSearchCustomers = exports.fetchCustomers = exports.receiveSearchCustomers = exports.clearSearchCustomers = exports.receiveCustomers = exports.RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_CUSTOMERS = undefined;
+
+var _customers_api_util = __webpack_require__(/*! ../util/customers_api_util */ "./client/util/customers_api_util.js");
+
+var APIUtil = _interopRequireWildcard(_customers_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_CUSTOMERS = exports.RECEIVE_CUSTOMERS = 'RECEIVE_CUSTOMER';
+var RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_SEARCH_CUSTOMERS = 'RECEIVE_SEARCH_CUSTOMERS';
+
+var receiveCustomers = exports.receiveCustomers = function receiveCustomers(customers) {
+    return {
+        type: RECEIVE_CUSTOMERS,
+        customers: customers
+    };
+};
+
+var clearSearchCustomers = exports.clearSearchCustomers = function clearSearchCustomers() {
+    return {
+        type: RECEIVE_SEARCH_CUSTOMERS,
+        customers: []
+    };
+};
+
+var receiveSearchCustomers = exports.receiveSearchCustomers = function receiveSearchCustomers(customers) {
+    return {
+        type: RECEIVE_SEARCH_CUSTOMERS,
+        customers: customers
+    };
+};
+
+var fetchCustomers = exports.fetchCustomers = function fetchCustomers(business_id) {
+    return function (dispatch) {
+        return APIUtil.fetchCustomers(business_id).then(function (customers) {
+            return dispatch(receiveCustomers(customers));
+        });
+    };
+};
+
+var fetchSearchCustomers = exports.fetchSearchCustomers = function fetchSearchCustomers(business_id, query) {
+    return function (dispatch) {
+        return APIUtil.fetchSearchCustomers(business_id, query).then(function (customers) {
+            return dispatch(receiveSearchCustomers(customers));
+        });
+    };
+};
+
+/***/ }),
+
 /***/ "./client/actions/session_actions.js":
 /*!*******************************************!*\
   !*** ./client/actions/session_actions.js ***!
@@ -371,6 +434,141 @@ exports.default = App;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactAutocomplete = __webpack_require__(/*! react-autocomplete */ "./node_modules/react-autocomplete/build/lib/Autocomplete.js");
+
+var _reactAutocomplete2 = _interopRequireDefault(_reactAutocomplete);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        customers: state.entities.customers,
+        current_business_id: state.ui.current_business_id,
+        search_customers: state.entities.search_customers
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchCustomers: function fetchCustomers(business_id) {
+            return dispatch((0, _customers_actions.fetchCustomers)(business_id));
+        },
+        fetchSearchCustomers: function fetchSearchCustomers(business_id, query) {
+            return dispatch((0, _customers_actions.fetchSearchCustomers)(business_id, query));
+        },
+        clearSearchCustomers: function clearSearchCustomers() {
+            return dispatch((0, _customers_actions.clearSearchCustomers)());
+        }
+    };
+};
+
+var CustomerSearchBar = function (_React$Component) {
+    _inherits(CustomerSearchBar, _React$Component);
+
+    function CustomerSearchBar(props) {
+        _classCallCheck(this, CustomerSearchBar);
+
+        var _this = _possibleConstructorReturn(this, (CustomerSearchBar.__proto__ || Object.getPrototypeOf(CustomerSearchBar)).call(this, props));
+
+        _this.state = {
+            query: '',
+            timer_id: null
+        };
+
+        _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
+        return _this;
+    }
+
+    // componentDidMount(){
+    //     this.props.fetchCustomers(this.props.current_business_id)
+    // }
+
+    _createClass(CustomerSearchBar, [{
+        key: 'onSelect',
+        value: function onSelect() {
+            alert("customer selected");
+        }
+    }, {
+        key: 'handleChangeDebounced',
+        value: function handleChangeDebounced(event) {
+            event.preventDefault();
+            this.setState({ query: event.target.value });
+            return function () {
+                var _this2 = this;
+
+                if (this.state.timer_id) {
+                    clearTimeout(this.state.timer_id);
+                }
+                var timer_id = setTimeout(function () {
+                    var id = _this2.props.current_business_id;
+                    var q = _this2.state.query;
+                    if (_this2.state.query.length > 0) {
+                        _this2.props.fetchSearchCustomers(id, q);
+                    } else {
+                        _this2.props.clearSearchCustomers();
+                    }
+                    _this2.setState({ timer_id: null });
+                }, 1000);
+                this.setState({ timer_id: timer_id });
+            }.bind(this)();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_reactAutocomplete2.default, {
+                    getItemValue: function getItemValue(item) {
+                        return item.first_name;
+                    },
+                    items: this.props.search_customers,
+                    renderItem: function renderItem(item, isHighlighted) {
+                        return _react2.default.createElement(
+                            'div',
+                            { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
+                            item.first_name
+                        );
+                    },
+                    value: this.state.query,
+                    onChange: this.handleChangeDebounced,
+                    onSelect: this.handleSelect,
+                    menuStyle: {
+                        position: 'static',
+                        zIndex: 2,
+                        overflow: 'visible'
+                    }
+
+                })
+            );
+        }
+    }]);
+
+    return CustomerSearchBar;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CustomerSearchBar);
 
 /***/ }),
 
@@ -1144,6 +1342,7 @@ var CustomerInfoTab = function (_React$Component) {
         };
 
         _this.handleRadioChange = _this.handleRadioChange.bind(_this);
+        _this.renderProperView = _this.renderProperView.bind(_this);
         return _this;
     }
 
@@ -1151,6 +1350,13 @@ var CustomerInfoTab = function (_React$Component) {
         key: 'handleRadioChange',
         value: function handleRadioChange(e) {
             this.setState({ customer_status: e.target.value });
+        }
+    }, {
+        key: 'renderProperView',
+        value: function renderProperView() {
+            if (this.state.customer_status == 'existing') {
+                return _react2.default.createElement(_customer_search_bar2.default, null);
+            }
         }
     }, {
         key: 'render',
@@ -1194,7 +1400,8 @@ var CustomerInfoTab = function (_React$Component) {
                             onChange: this.handleRadioChange
                         })
                     )
-                )
+                ),
+                this.renderProperView()
             );
         }
     }]);
@@ -1669,6 +1876,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./client/reducers/entities/customers_reducer.js":
+/*!*******************************************************!*\
+  !*** ./client/reducers/entities/customers_reducer.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
+
+var CustomersReducer = function CustomersReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _customers_actions.RECEIVE_CUSTOMERS:
+            return state.customers;
+        default:
+            return state;
+    }
+};
+
+exports.default = CustomersReducer;
+
+/***/ }),
+
+/***/ "./client/reducers/entities/search_customers_reducer.js":
+/*!**************************************************************!*\
+  !*** ./client/reducers/entities/search_customers_reducer.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
+
+var SearchCustomersReducer = function SearchCustomersReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _customers_actions.RECEIVE_SEARCH_CUSTOMERS:
+            return action.customers;
+        default:
+            return state;
+    }
+};
+
+exports.default = SearchCustomersReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/search_tickets_reducer.js":
 /*!************************************************************!*\
   !*** ./client/reducers/entities/search_tickets_reducer.js ***!
@@ -1793,12 +2064,22 @@ var _show_ticket_reducer = __webpack_require__(/*! ./entities/show_ticket_reduce
 
 var _show_ticket_reducer2 = _interopRequireDefault(_show_ticket_reducer);
 
+var _customers_reducer = __webpack_require__(/*! ./entities/customers_reducer */ "./client/reducers/entities/customers_reducer.js");
+
+var _customers_reducer2 = _interopRequireDefault(_customers_reducer);
+
+var _search_customers_reducer = __webpack_require__(/*! ./entities/search_customers_reducer */ "./client/reducers/entities/search_customers_reducer.js");
+
+var _search_customers_reducer2 = _interopRequireDefault(_search_customers_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
     tickets: _tickets_reducer2.default,
     search_tickets: _search_tickets_reducer2.default,
-    show_ticket: _show_ticket_reducer2.default
+    show_ticket: _show_ticket_reducer2.default,
+    customers: _customers_reducer2.default,
+    search_customers: _search_customers_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -2100,6 +2381,35 @@ var configureStore = function configureStore() {
 };
 
 exports.default = configureStore;
+
+/***/ }),
+
+/***/ "./client/util/customers_api_util.js":
+/*!*******************************************!*\
+  !*** ./client/util/customers_api_util.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var fetchCustomers = exports.fetchCustomers = function fetchCustomers(business_id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/businesses/" + business_id + "/customers"
+    });
+};
+
+var fetchSearchCustomers = exports.fetchSearchCustomers = function fetchSearchCustomers(busines_id, query) {
+    return $.ajax({
+        method: 'GET',
+        url: "api/businesses/" + busines_id + "/customers/search/" + query
+    });
+};
 
 /***/ }),
 

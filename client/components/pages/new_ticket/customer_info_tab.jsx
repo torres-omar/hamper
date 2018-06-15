@@ -10,10 +10,19 @@ class CustomerInfoTab extends React.Component{
         }
 
         this.handleRadioChange = this.handleRadioChange.bind(this)
+        this.renderProperView = this.renderProperView.bind(this)
     }    
 
     handleRadioChange(e){
         this.setState({customer_status: e.target.value})
+    }
+
+    renderProperView(){
+        if(this.state.customer_status == 'existing'){
+            return(
+                <CustomerSearchBar />
+            )
+        }
     }
 
     render(){
@@ -42,6 +51,7 @@ class CustomerInfoTab extends React.Component{
                         />
                     </label>
                 </div>
+                {this.renderProperView()}
             </div>
         )
     }
