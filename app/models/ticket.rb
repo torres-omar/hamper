@@ -22,9 +22,7 @@ class Ticket < ApplicationRecord
     pg_search_scope :global_scope, 
                      :associated_against => {
                          :customer => [:first_name, :last_name],
-                         :ticket_type => [:type_name],
                          :status => [:status_name], 
-                         :delivery_method => [:method_name]
                      },
                      :against => [:id],
                      :using => {
@@ -66,19 +64,19 @@ class Ticket < ApplicationRecord
         class_name: 'Status',
         foreign_key: :status_id
     
-    belongs_to :ticket_type, 
-        class_name: 'TicketType', 
-        foreign_key: :ticket_type_id, 
-        primary_key: :id
+    # belongs_to :ticket_type, 
+    #     class_name: 'TicketType', 
+    #     foreign_key: :ticket_type_id, 
+    #     primary_key: :id
         
-    belongs_to :delivery_method, 
-        class_name: 'DeliveryMethod', 
-        foreign_key: :delivery_method_id, 
-        primary_key: :id
+    # belongs_to :delivery_method, 
+    #     class_name: 'DeliveryMethod', 
+    #     foreign_key: :delivery_method_id, 
+    #     primary_key: :id
  
-    has_one :note, 
-        class_name: 'Note',
-        foreign_key: :ticket_id 
+    # has_one :note, 
+    #     class_name: 'Note',
+    #     foreign_key: :ticket_id 
 
     def self.search_by_global_scope(business_id, query, status)
         status = Status.where("status_name = ?", status.capitalize).first
@@ -106,8 +104,12 @@ class Ticket < ApplicationRecord
                      .order(time_dropped_off: :desc)
     end
 
+    def set_to_unfulfilled!
+        status = Status.where("status_name = ?", "Unfulfilled").first 
+        self.status_id = status.id
+    end
+
     def change_status_to_notified!
-        status = Status.where("status_name = ?", "Notified").first 
         self.status_id = status.id 
         self.save!
     end

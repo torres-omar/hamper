@@ -6,7 +6,7 @@ class Api::TicketsController < ApplicationController
 
     def create
         @ticket = Ticket.new(ticket_params)
-        @ticket.business_id = params[:business_id]
+        @ticket.set_to_unfulfilled!
         if @ticket.save
             render 'api/tickets/show'
         else 

@@ -1,23 +1,29 @@
 import React from 'react';
 import {fetchCurrentBusinessInfo} from '../../actions/businesses_actions';
+import {createNewTicket} from '../../actions/tickets_actions';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchCurrentBusinessInfo: (business_id) => dispatch(fetchCurrentBusinessInfo(business_id))
+    fetchCurrentBusinessInfo: (business_id) => dispatch(fetchCurrentBusinessInfo(business_id)),
+    createNewTicket: (data, business_id) => dispatch(createNewTicket(data, business_id))
 })
 
 const mapStateToProps = (state) => ({
     current_business: state.entities.current_business,
-    current_business_id: state.ui.current_business_id
+    current_business_id: state.ui.current_business_id,
+    show_customer: state.entities.show_customer
 })
 
 class NewTicketForm extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            bag_weight: 0.0
+            bag_weight: 0.0,
+            total_price: 0.0
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     componentDidMount(){
@@ -25,21 +31,40 @@ class NewTicketForm extends React.Component{
     }
 
     handleChange(e){
-        this.setState({[e.target.name]: e.target.value})
+        let total_price = Math.round((this.props.current_business.price_per_pound * e.target.value) * 100) / 100
+        this.setState({[e.target.name]: e.target.value, total_price: total_price})
+    }
+
+    handleSubmit(e){
+        e.preventDefault()
+        let date = new Date()
+        let data = {
+            business_id: this.props.current_business_id, 
+            customer_id: this.props.show_customer.id, 
+            date_dropped_off: date.toDateString(),
+            time_dropped_off: date,
+            bag_weight: this.state.bag_weight, 
+            grand_total: this.state.total_price
+        }
+        debugger
+        this.props.createNewTicket(data, this.props.current_business_id).then(
+            () => this.props.history.push('/tickets')
+        )
     }
 
     renderForm(){
         if(this.props.current_business){
             return(
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <label>
                         Bag weight (lb)
                             <input type="number" value={this.state.bag_weight} name="bag_weight" onChange={this.handleChange}/>
                     </label>
                     <label>
                         Total
-                            <h1>{this.state.bag_weight * this.props.current_business.price_per_pound}</h1>
+                            <h1>{this.state.total_price}</h1>
                     </label>
+                    <input type="submit"/>
                 </form>
             )
         }
@@ -54,4 +79,4 @@ class NewTicketForm extends React.Component{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewTicketForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewTicketForm));

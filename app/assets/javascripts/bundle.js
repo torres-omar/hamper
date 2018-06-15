@@ -805,7 +805,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
 
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -821,6 +825,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         fetchCurrentBusinessInfo: function fetchCurrentBusinessInfo(business_id) {
             return dispatch((0, _businesses_actions.fetchCurrentBusinessInfo)(business_id));
+        },
+        createNewTicket: function createNewTicket(data, business_id) {
+            return dispatch((0, _tickets_actions.createNewTicket)(data, business_id));
         }
     };
 };
@@ -828,7 +835,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 var mapStateToProps = function mapStateToProps(state) {
     return {
         current_business: state.entities.current_business,
-        current_business_id: state.ui.current_business_id
+        current_business_id: state.ui.current_business_id,
+        show_customer: state.entities.show_customer
     };
 };
 
@@ -841,9 +849,11 @@ var NewTicketForm = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (NewTicketForm.__proto__ || Object.getPrototypeOf(NewTicketForm)).call(this, props));
 
         _this.state = {
-            bag_weight: 0.0
+            bag_weight: 0.0,
+            total_price: 0.0
         };
         _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
@@ -855,7 +865,30 @@ var NewTicketForm = function (_React$Component) {
     }, {
         key: 'handleChange',
         value: function handleChange(e) {
-            this.setState(_defineProperty({}, e.target.name, e.target.value));
+            var _setState;
+
+            var total_price = Math.round(this.props.current_business.price_per_pound * e.target.value * 100) / 100;
+            this.setState((_setState = {}, _defineProperty(_setState, e.target.name, e.target.value), _defineProperty(_setState, 'total_price', total_price), _setState));
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            var _this2 = this;
+
+            e.preventDefault();
+            var date = new Date();
+            var data = {
+                business_id: this.props.current_business_id,
+                customer_id: this.props.show_customer.id,
+                date_dropped_off: date.toDateString(),
+                time_dropped_off: date,
+                bag_weight: this.state.bag_weight,
+                grand_total: this.state.total_price
+            };
+            debugger;
+            this.props.createNewTicket(data, this.props.current_business_id).then(function () {
+                return _this2.props.history.push('/tickets');
+            });
         }
     }, {
         key: 'renderForm',
@@ -863,7 +896,7 @@ var NewTicketForm = function (_React$Component) {
             if (this.props.current_business) {
                 return _react2.default.createElement(
                     'form',
-                    null,
+                    { onSubmit: this.handleSubmit },
                     _react2.default.createElement(
                         'label',
                         null,
@@ -877,9 +910,10 @@ var NewTicketForm = function (_React$Component) {
                         _react2.default.createElement(
                             'h1',
                             null,
-                            this.state.bag_weight * this.props.current_business.price_per_pound
+                            this.state.total_price
                         )
-                    )
+                    ),
+                    _react2.default.createElement('input', { type: 'submit' })
                 );
             }
         }
@@ -897,7 +931,7 @@ var NewTicketForm = function (_React$Component) {
     return NewTicketForm;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewTicketForm);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewTicketForm));
 
 /***/ }),
 
