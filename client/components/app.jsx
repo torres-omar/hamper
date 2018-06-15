@@ -16,7 +16,7 @@ const App = () => (
             <ProtectedRoute exact path="/tickets/new/s2" component={TicketInfoTab} />
             <ProtectedRoute exact path="/tickets" component={TicketsViewTab} />
             <ProtectedRoute exact path="/tickets/:ticket_id" component={TicketViewTab} />
-            <ProtectedRoute exact path="/settings" component={SettingsTab} />
+            <ProtectedRoute exact path="/businesses" component={SettingsTab} />
         </Switch>
     </div> 
 );

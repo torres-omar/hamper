@@ -2,6 +2,9 @@ import React from 'react';
 import TicketsView from '../dashboard/tickets_view';
 import TicketsControl from '../dashboard/tickets_control';
 import TicketSearchBar from '../dashboard/ticket_search_bar';
+import Icons from '../dashboard/icons';
+
+
 import { withRouter } from 'react-router-dom';
 
 class TicketsViewTab extends React.Component{
@@ -26,7 +29,8 @@ class TicketsViewTab extends React.Component{
 
     render(){
         return(
-            <div>
+            <div className="main-dashboard-section">
+                <Icons />
                 <TicketsControl />
                 <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
                 <button onClick={this.handleSettingsRedirect}>settings</button>

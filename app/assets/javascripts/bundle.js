@@ -516,7 +516,7 @@ var App = function App() {
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s2', component: _ticket_info_tab2.default }),
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
             _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/settings', component: _settings_tab2.default })
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/businesses', component: _settings_tab2.default })
         )
     );
 };
@@ -784,6 +784,97 @@ var Gmap = function (_React$PureComponent) {
 }(_react2.default.PureComponent);
 
 exports.default = (0, _reactGoogleMaps.withScriptjs)((0, _reactGoogleMaps.withGoogleMap)(Gmap));
+
+/***/ }),
+
+/***/ "./client/components/dashboard/icons.jsx":
+/*!***********************************************!*\
+  !*** ./client/components/dashboard/icons.jsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        logout: function logout() {
+            return dispatch((0, _session_actions.logout)());
+        }
+    };
+};
+
+var Icons = function (_React$Component) {
+    _inherits(Icons, _React$Component);
+
+    function Icons(props) {
+        _classCallCheck(this, Icons);
+
+        var _this = _possibleConstructorReturn(this, (Icons.__proto__ || Object.getPrototypeOf(Icons)).call(this, props));
+
+        _this.toTickets = _this.toTickets.bind(_this);
+        _this.toBusinesses = _this.toBusinesses.bind(_this);
+        _this.handleSignOut = _this.handleSignOut.bind(_this);
+        return _this;
+    }
+
+    _createClass(Icons, [{
+        key: 'toTickets',
+        value: function toTickets() {
+            this.props.history.push('/tickets');
+        }
+    }, {
+        key: 'toBusinesses',
+        value: function toBusinesses() {
+            this.props.history.push('/businesses');
+        }
+    }, {
+        key: 'handleSignOut',
+        value: function handleSignOut() {
+            this.props.logout();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'icon-group' },
+                _react2.default.createElement('i', { className: 'fas fa-ticket-alt icon-styles', onClick: this.toTickets }),
+                _react2.default.createElement('i', { className: 'fas fa-briefcase icon-styles', onClick: this.toBusinesses }),
+                _react2.default.createElement('i', { className: 'fas fa-power-off icon-styles', onClick: this.handleSignOut })
+            );
+        }
+    }]);
+
+    return Icons;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(null, mapDispatchToProps)(Icons));
 
 /***/ }),
 
@@ -2277,6 +2368,10 @@ var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actio
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+
+var _icons2 = _interopRequireDefault(_icons);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2362,7 +2457,8 @@ var SettingsTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'main-dashboard-section' },
+                _react2.default.createElement(_icons2.default, null),
                 this.renderBusinessesList(),
                 _react2.default.createElement(_map2.default, null)
             );
@@ -2489,6 +2585,10 @@ var _ticket_search_bar = __webpack_require__(/*! ../dashboard/ticket_search_bar 
 
 var _ticket_search_bar2 = _interopRequireDefault(_ticket_search_bar);
 
+var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+
+var _icons2 = _interopRequireDefault(_icons);
+
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -2533,7 +2633,8 @@ var TicketsViewTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'main-dashboard-section' },
+                _react2.default.createElement(_icons2.default, null),
                 _react2.default.createElement(_tickets_control2.default, null),
                 _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
                 _react2.default.createElement(
@@ -2698,11 +2799,15 @@ var LogInForm = function (_React$Component) {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'form',
-                { onSubmit: this.handleSubmit },
-                _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, value: this.state.email }),
-                _react2.default.createElement('input', { type: 'submit' }),
-                this.renderErrors()
+                'div',
+                { className: 'form-container' },
+                _react2.default.createElement(
+                    'form',
+                    { onSubmit: this.handleSubmit, className: 'form-styles', id: 'signin-form' },
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, value: this.state.email, className: 'input-styles' }),
+                    _react2.default.createElement('input', { type: 'submit', className: 'button-styles', value: 'sign in' }),
+                    this.renderErrors()
+                )
             );
         }
     }]);

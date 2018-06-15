@@ -2,6 +2,7 @@ import React from 'react';
 import Map  from '../dashboard/map';
 import {fetchBusinesses, setBusinessOnMap} from '../../actions/businesses_actions';
 import {connect} from 'react-redux';
+import Icons from '../dashboard/icons';
 
 const mapStateToProps = (state) => ({
     current_user: state.session.current_user,
@@ -53,7 +54,8 @@ class SettingsTab extends React.Component{
     }
     render(){
         return(
-            <div>
+            <div className="main-dashboard-section">
+                <Icons />
                 {this.renderBusinessesList()}
                 <Map />
             </div>

@@ -1,0 +1,82 @@
+body{
+  font-family: Helvetica, Arial, Sans-Serif;
+  font-size: 18px !important;
+}
+// account for border and padding
+* {
+  box-sizing: border-box !important;
+}
+
+html{
+    height: 100%;
+}
+
+body{
+    // background-color: black;
+}
+
+button,
+input[type="submit"] {
+  cursor: pointer;
+}
+
+html, body, header, nav, h1, a,
+ul, li, strong, main, button, i,
+section, img, div, h2, p, form,
+fieldset, label, input, textarea,
+span, article, footer, time, small {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+//   color: inherit;
+//   text-align: inherit;
+//   text-decoration: inherit;
+//   vertical-align: inherit;
+//   box-sizing: inherit;
+//   background: transparent;
+}
+
+.form-container{
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+}
+
+.form-styles{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+input{
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.button-styles{
+    background-color: white;
+    padding: 10px 15px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#signin-form{
+    margin-top: 40px;
+}
+
+.icon-styles{
+    font-size: 35px;
+    color: black;
+    margin-bottom: 15px;
+}
+
+.icon-group{
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+
+.main-dashboard-section{
+    display: flex; 
+}
