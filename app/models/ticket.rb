@@ -95,7 +95,7 @@ class Ticket < ApplicationRecord
 
     def self.status_tickets_by_page_number(business_id, page, status)
         return nil unless page >= 0
-        ticket_per_page = 10
+        ticket_per_page = 3
         tickets_offset = page * ticket_per_page
         status = Status.where("status_name = ?", status.capitalize).first
         return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)

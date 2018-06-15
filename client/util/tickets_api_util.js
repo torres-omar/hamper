@@ -56,3 +56,10 @@ export const fulfillTicket = (id) => {
         url: `api/tickets/${id}/fulfill`
     })
 }
+
+export const fetchTicketsByPage = (business_id, ticket_status, page) => {
+    return $.ajax({
+        method: 'GET', 
+        url: `api/businesses/${business_id}/tickets/${ticket_status}/${page}`
+    })
+}

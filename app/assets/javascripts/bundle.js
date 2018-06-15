@@ -327,7 +327,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fulfillTicket = exports.createNewTicket = exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.changeTicketStatus = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_TICKET_STATUS = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fetchTicketsByPage = exports.fulfillTicket = exports.createNewTicket = exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.changeTicketStatus = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_TICKET_STATUS = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -442,6 +442,14 @@ var fulfillTicket = exports.fulfillTicket = function fulfillTicket(ticket_id) {
     return function (dispatch) {
         return APIUtil.fulfillTicket(ticket_id).then(function (ticket) {
             return dispatch(receiveShowTicket(ticket));
+        });
+    };
+};
+
+var fetchTicketsByPage = exports.fetchTicketsByPage = function fetchTicketsByPage(business_id, ticket_status, page) {
+    return function (dispatch) {
+        return APIUtil.fetchTicketsByPage(business_id, ticket_status, page).then(function (tickets) {
+            return dispatch(receiveTickets(tickets));
         });
     };
 };
@@ -1853,6 +1861,8 @@ var _ticket_item = __webpack_require__(/*! ./ticket_item */ "./client/components
 
 var _ticket_item2 = _interopRequireDefault(_ticket_item);
 
+var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1863,7 +1873,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        tickets: state.entities.tickets
+        tickets: state.entities.tickets,
+        current_business_id: state.ui.current_business_id,
+        current_ticket_status: state.ui.current_ticket_status
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchTicketsByPage: function fetchTicketsByPage(business_id, ticket_status, page) {
+            return dispatch((0, _tickets_actions.fetchTicketsByPage)(business_id, ticket_status, page));
+        }
     };
 };
 
@@ -1876,10 +1896,23 @@ var TicketsView = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketsView.__proto__ || Object.getPrototypeOf(TicketsView)).call(this, props));
 
         _this.renderTickets = _this.renderTickets.bind(_this);
+        _this.state = {
+            page: 0
+        };
+
+        _this.handleNextPage = _this.handleNextPage.bind(_this);
+        _this.handlePrevPage = _this.handlePrevPage.bind(_this);
         return _this;
     }
 
     _createClass(TicketsView, [{
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.current_ticket_status != prevProps.current_ticket_status) {
+                this.setState({ page: 0 });
+            }
+        }
+    }, {
         key: 'renderTickets',
         value: function renderTickets() {
             var tickets = [];
@@ -1889,12 +1922,42 @@ var TicketsView = function (_React$Component) {
             return tickets;
         }
     }, {
+        key: 'handleNextPage',
+        value: function handleNextPage(e) {
+            e.preventDefault();
+            this.props.fetchTicketsByPage(this.props.current_business_id, this.props.current_ticket_status, this.state.page + 1);
+            this.setState({ page: this.state.page + 1 });
+        }
+    }, {
+        key: 'handlePrevPage',
+        value: function handlePrevPage(e) {
+            e.preventDefault();
+            this.props.fetchTicketsByPage(this.props.current_business_id, this.props.current_ticket_status, this.state.page - 1);
+            this.setState({ page: this.state.page - 1 });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'ul',
+                'div',
                 null,
-                this.renderTickets()
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.handleNextPage },
+                    'next'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { style: {
+                            display: this.state.page == 0 ? 'none' : 'block'
+                        }, onClick: this.handlePrevPage },
+                    'prev'
+                ),
+                _react2.default.createElement(
+                    'ul',
+                    null,
+                    this.renderTickets()
+                )
             );
         }
     }]);
@@ -1902,7 +1965,7 @@ var TicketsView = function (_React$Component) {
     return TicketsView;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(TicketsView);
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketsView);
 
 /***/ }),
 
@@ -3688,6 +3751,13 @@ var fulfillTicket = exports.fulfillTicket = function fulfillTicket(id) {
     return $.ajax({
         method: "GET",
         url: "api/tickets/" + id + "/fulfill"
+    });
+};
+
+var fetchTicketsByPage = exports.fetchTicketsByPage = function fetchTicketsByPage(business_id, ticket_status, page) {
+    return $.ajax({
+        method: 'GET',
+        url: "api/businesses/" + business_id + "/tickets/" + ticket_status + "/" + page
     });
 };
 

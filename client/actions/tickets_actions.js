@@ -82,3 +82,10 @@ export const fulfillTicket = (ticket_id) => (dispatch) => (
         (ticket) => dispatch(receiveShowTicket(ticket))
     )
 )
+
+
+export const fetchTicketsByPage = (business_id, ticket_status, page) => (dispatch) => (
+    APIUtil.fetchTicketsByPage(business_id, ticket_status, page).then(
+        (tickets) => dispatch(receiveTickets(tickets))
+    )
+)
