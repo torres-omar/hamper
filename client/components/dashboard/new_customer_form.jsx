@@ -19,9 +19,6 @@ class NewCustomerForm extends React.Component{
             last_name: '',
             email_address: '', 
             phone_number: '',
-            street_address: '',
-            zip_code: '', 
-            apt_number: '',
             business_id: this.props.current_business_id
         }
         this.handleChange = this.handleChange.bind(this)
@@ -62,18 +59,6 @@ class NewCustomerForm extends React.Component{
                     <label>
                         Phone number
                         <input type="text" onChange={this.handleChange} name="phone_number" value={this.state.phone_number}/>
-                    </label>
-                    <label>
-                        Street address
-                        <input type="text" onChange={this.handleChange} name="street_address" value={this.state.street_address}/>
-                    </label>
-                    <label>
-                        Apt number
-                        <input type="text" onChange={this.handleChange} name="apt_number" value={this.state.apt_nunber}/>
-                    </label>
-                    <label>
-                        Zip code
-                        <input type="text" onChange={this.handleChange} name="zip_code" value={this.state.zip_code}/>
                     </label>
                     <input type="submit" value="continue" />
                 </form>

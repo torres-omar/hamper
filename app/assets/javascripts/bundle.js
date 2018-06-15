@@ -987,9 +987,6 @@ var NewCustomerForm = function (_React$Component) {
             last_name: '',
             email_address: '',
             phone_number: '',
-            street_address: '',
-            zip_code: '',
-            apt_number: '',
             business_id: _this.props.current_business_id
         };
         _this.handleChange = _this.handleChange.bind(_this);
@@ -1048,24 +1045,6 @@ var NewCustomerForm = function (_React$Component) {
                         null,
                         'Phone number',
                         _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'phone_number', value: this.state.phone_number })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Street address',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'street_address', value: this.state.street_address })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Apt number',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'apt_number', value: this.state.apt_nunber })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Zip code',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'zip_code', value: this.state.zip_code })
                     ),
                     _react2.default.createElement('input', { type: 'submit', value: 'continue' })
                 )
