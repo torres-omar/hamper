@@ -11,3 +11,10 @@ export const fetchSearchCustomers = (busines_id, query) => {
         url: `api/businesses/${busines_id}/customers/search/${query}`
     })
 }
+
+export const fetchShowCustomer = (customer_id) => {
+    return $.ajax({
+        method: 'GET', 
+        url: `api/customers/${customer_id}`
+    })
+}

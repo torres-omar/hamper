@@ -123,7 +123,7 @@ var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function recei
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchSearchCustomers = exports.fetchCustomers = exports.receiveSearchCustomers = exports.clearSearchCustomers = exports.receiveCustomers = exports.RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_CUSTOMERS = undefined;
+exports.fetchShowCustomer = exports.fetchSearchCustomers = exports.fetchCustomers = exports.receiveSearchCustomers = exports.clearSearchCustomers = exports.receiveShowCustomer = exports.receiveCustomers = exports.RECEIVE_SHOW_CUSTOMER = exports.RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_CUSTOMERS = undefined;
 
 var _customers_api_util = __webpack_require__(/*! ../util/customers_api_util */ "./client/util/customers_api_util.js");
 
@@ -133,11 +133,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_CUSTOMERS = exports.RECEIVE_CUSTOMERS = 'RECEIVE_CUSTOMER';
 var RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_SEARCH_CUSTOMERS = 'RECEIVE_SEARCH_CUSTOMERS';
+var RECEIVE_SHOW_CUSTOMER = exports.RECEIVE_SHOW_CUSTOMER = 'RECEIVE_SHOW_CUSTOMER';
 
 var receiveCustomers = exports.receiveCustomers = function receiveCustomers(customers) {
     return {
         type: RECEIVE_CUSTOMERS,
         customers: customers
+    };
+};
+
+var receiveShowCustomer = exports.receiveShowCustomer = function receiveShowCustomer(customer) {
+    return {
+        type: RECEIVE_SHOW_CUSTOMER,
+        customer: customer
     };
 };
 
@@ -167,6 +175,14 @@ var fetchSearchCustomers = exports.fetchSearchCustomers = function fetchSearchCu
     return function (dispatch) {
         return APIUtil.fetchSearchCustomers(business_id, query).then(function (customers) {
             return dispatch(receiveSearchCustomers(customers));
+        });
+    };
+};
+
+var fetchShowCustomer = exports.fetchShowCustomer = function fetchShowCustomer(customer_id) {
+    return function (dispatch) {
+        return APIUtil.fetchShowCustomer(customer_id).then(function (customer) {
+            return dispatch(receiveShowCustomer(customer));
         });
     };
 };
@@ -451,6 +467,8 @@ var _reactAutocomplete2 = _interopRequireDefault(_reactAutocomplete);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -473,6 +491,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         fetchCustomers: function fetchCustomers(business_id) {
             return dispatch((0, _customers_actions.fetchCustomers)(business_id));
+        },
+        fetchShowCustomer: function fetchShowCustomer(customer_id) {
+            return dispatch((0, _customers_actions.fetchShowCustomer)(customer_id));
         },
         fetchSearchCustomers: function fetchSearchCustomers(business_id, query) {
             return dispatch((0, _customers_actions.fetchSearchCustomers)(business_id, query));
@@ -497,13 +518,19 @@ var CustomerSearchBar = function (_React$Component) {
         };
 
         _this.handleChangeDebounced = _this.handleChangeDebounced.bind(_this);
+        _this.handleSelect = _this.handleSelect.bind(_this);
         return _this;
     }
 
     _createClass(CustomerSearchBar, [{
-        key: 'onSelect',
-        value: function onSelect() {
-            alert("customer selected");
+        key: 'handleSelect',
+        value: function handleSelect(value, item) {
+            var _this2 = this;
+
+            this.props.clearSearchCustomers();
+            this.props.fetchShowCustomer(item.id).then(function () {
+                return _this2.props.history.push('/tickets/new/s2');
+            });
         }
     }, {
         key: 'handleChangeDebounced',
@@ -511,20 +538,20 @@ var CustomerSearchBar = function (_React$Component) {
             event.preventDefault();
             this.setState({ query: event.target.value });
             return function () {
-                var _this2 = this;
+                var _this3 = this;
 
                 if (this.state.timer_id) {
                     clearTimeout(this.state.timer_id);
                 }
                 var timer_id = setTimeout(function () {
-                    var id = _this2.props.current_business_id;
-                    var q = _this2.state.query;
-                    if (_this2.state.query.length > 0) {
-                        _this2.props.fetchSearchCustomers(id, q);
+                    var id = _this3.props.current_business_id;
+                    var q = _this3.state.query;
+                    if (_this3.state.query.length > 0) {
+                        _this3.props.fetchSearchCustomers(id, q);
                     } else {
-                        _this2.props.clearSearchCustomers();
+                        _this3.props.clearSearchCustomers();
                     }
-                    _this2.setState({ timer_id: null });
+                    _this3.setState({ timer_id: null });
                 }, 1000);
                 this.setState({ timer_id: timer_id });
             }.bind(this)();
@@ -564,7 +591,7 @@ var CustomerSearchBar = function (_React$Component) {
     return CustomerSearchBar;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CustomerSearchBar);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CustomerSearchBar));
 
 /***/ }),
 
@@ -1447,6 +1474,8 @@ var _new_customer_form = __webpack_require__(/*! ../../dashboard/new_customer_fo
 
 var _new_customer_form2 = _interopRequireDefault(_new_customer_form);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1469,6 +1498,7 @@ var CustomerInfoTab = function (_React$Component) {
 
         _this.handleRadioChange = _this.handleRadioChange.bind(_this);
         _this.renderProperView = _this.renderProperView.bind(_this);
+        _this.goBack = _this.goBack.bind(_this);
         return _this;
     }
 
@@ -1486,15 +1516,11 @@ var CustomerInfoTab = function (_React$Component) {
                 return _react2.default.createElement(_new_customer_form2.default, null);
             }
         }
-
-        // handleContinue(){
-        //     if(this.state.customer_status == 'existing'){
-        //         // fetch customer info & redirect to next page
-        //     }else if(this.state.customer_status == 'new'){
-        //         // create a new customer & redirect to next page
-        //     }
-        // }
-
+    }, {
+        key: 'goBack',
+        value: function goBack() {
+            this.props.history.push('/tickets');
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -1511,6 +1537,11 @@ var CustomerInfoTab = function (_React$Component) {
                     'p',
                     null,
                     'Customer Info'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.goBack },
+                    'back'
                 ),
                 _react2.default.createElement(
                     'div',
@@ -1546,7 +1577,7 @@ var CustomerInfoTab = function (_React$Component) {
     return CustomerInfoTab;
 }(_react2.default.Component);
 
-exports.default = CustomerInfoTab;
+exports.default = (0, _reactRouterDom.withRouter)(CustomerInfoTab);
 
 /***/ }),
 
@@ -1559,6 +1590,68 @@ exports.default = CustomerInfoTab;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TicketInfoTab = function (_React$Component) {
+    _inherits(TicketInfoTab, _React$Component);
+
+    function TicketInfoTab(props) {
+        _classCallCheck(this, TicketInfoTab);
+
+        var _this = _possibleConstructorReturn(this, (TicketInfoTab.__proto__ || Object.getPrototypeOf(TicketInfoTab)).call(this, props));
+
+        _this.goBack = _this.goBack.bind(_this);
+        return _this;
+    }
+
+    _createClass(TicketInfoTab, [{
+        key: 'goBack',
+        value: function goBack() {
+            this.props.history.push('/tickets/new/s1');
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.goBack },
+                    'back'
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Ticket info'
+                )
+            );
+        }
+    }]);
+
+    return TicketInfoTab;
+}(_react2.default.Component);
+
+exports.default = (0, _reactRouterDom.withRouter)(TicketInfoTab);
 
 /***/ }),
 
@@ -1618,8 +1711,8 @@ var TicketViewTab = function (_React$Component) {
 
     _createClass(TicketViewTab, [{
         key: 'handleNewTicketRedirect',
-        value: function handleNewTicketRedirect(e) {
-            e.preventDefault();
+        value: function handleNewTicketRedirect() {
+            // e.preventDefault()
             this.props.history.push('/tickets/new/s1');
         }
     }, {
@@ -1699,10 +1792,15 @@ var TicketsViewTab = function (_React$Component) {
 
     _createClass(TicketsViewTab, [{
         key: 'handleNewTicketRedirect',
-        value: function handleNewTicketRedirect(e) {
-            e.preventDefault();
+        value: function handleNewTicketRedirect() {
+            // e.preventDefault()
             this.props.history.push('/tickets/new/s1');
         }
+
+        // componentDidMount(){
+        //     this.props.history.push('/tickets')
+        // }
+
     }, {
         key: 'render',
         value: function render() {
@@ -1850,7 +1948,7 @@ var LogInForm = function (_React$Component) {
 
             event.preventDefault();
             // no need to redirect upon succesful login
-            // AUthRoute makes sure to redirect as soon as user is logged in
+            // AuthRoute makes sure to redirect as soon as user is logged in
             this.props.login(this.state.email).then(function () {
                 return;
             }, function (response) {
@@ -2109,6 +2207,38 @@ exports.default = SearchTicketsReducer;
 
 /***/ }),
 
+/***/ "./client/reducers/entities/show_customer_reducer.js":
+/*!***********************************************************!*\
+  !*** ./client/reducers/entities/show_customer_reducer.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
+
+var ShowCustomerReducer = function ShowCustomerReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _customers_actions.RECEIVE_SHOW_CUSTOMER:
+            return action.customer;
+        default:
+            return state;
+    }
+};
+
+exports.default = ShowCustomerReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/show_ticket_reducer.js":
 /*!*********************************************************!*\
   !*** ./client/reducers/entities/show_ticket_reducer.js ***!
@@ -2209,6 +2339,10 @@ var _search_customers_reducer = __webpack_require__(/*! ./entities/search_custom
 
 var _search_customers_reducer2 = _interopRequireDefault(_search_customers_reducer);
 
+var _show_customer_reducer = __webpack_require__(/*! ./entities/show_customer_reducer */ "./client/reducers/entities/show_customer_reducer.js");
+
+var _show_customer_reducer2 = _interopRequireDefault(_show_customer_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
@@ -2216,7 +2350,8 @@ var EntitiesReducer = (0, _redux.combineReducers)({
     search_tickets: _search_tickets_reducer2.default,
     show_ticket: _show_ticket_reducer2.default,
     customers: _customers_reducer2.default,
-    search_customers: _search_customers_reducer2.default
+    search_customers: _search_customers_reducer2.default,
+    show_customer: _show_customer_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -2539,14 +2674,21 @@ Object.defineProperty(exports, "__esModule", {
 var fetchCustomers = exports.fetchCustomers = function fetchCustomers(business_id) {
     return $.ajax({
         method: "GET",
-        url: "api/businesses/" + business_id + "/customers"
+        url: 'api/businesses/' + business_id + '/customers'
     });
 };
 
 var fetchSearchCustomers = exports.fetchSearchCustomers = function fetchSearchCustomers(busines_id, query) {
     return $.ajax({
         method: 'GET',
-        url: "api/businesses/" + busines_id + "/customers/search/" + query
+        url: 'api/businesses/' + busines_id + '/customers/search/' + query
+    });
+};
+
+var fetchShowCustomer = exports.fetchShowCustomer = function fetchShowCustomer(customer_id) {
+    return $.ajax({
+        method: 'GET',
+        url: 'api/customers/' + customer_id
     });
 };
 

@@ -4,13 +4,15 @@ import SearchTicketsReducer from './entities/search_tickets_reducer';
 import ShowTicketReducer from './entities/show_ticket_reducer';
 import CustomersReducer from './entities/customers_reducer';
 import SearchCustomersReducer from './entities/search_customers_reducer';
+import ShowCustomerReducer from './entities/show_customer_reducer';
 
 const EntitiesReducer = combineReducers({
     tickets: TicketsReducer,
     search_tickets: SearchTicketsReducer,
     show_ticket: ShowTicketReducer,
     customers: CustomersReducer,
-    search_customers: SearchCustomersReducer
+    search_customers: SearchCustomersReducer,
+    show_customer: ShowCustomerReducer
 })
 
 export default EntitiesReducer;

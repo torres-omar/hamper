@@ -10,10 +10,14 @@ class TicketsViewTab extends React.Component{
         this.handleNewTicketRedirect = this.handleNewTicketRedirect.bind(this)
     }
 
-    handleNewTicketRedirect(e) {
-        e.preventDefault()
+    handleNewTicketRedirect() {
+        // e.preventDefault()
         this.props.history.push('/tickets/new/s1')
     }
+
+    // componentDidMount(){
+    //     this.props.history.push('/tickets')
+    // }
 
     render(){
         return(

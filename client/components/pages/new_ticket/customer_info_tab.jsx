@@ -2,6 +2,7 @@ import React from 'react';
 import TicketsControl from '../../dashboard/tickets_control';
 import CustomerSearchBar from '../../dashboard/customer_search_bar';
 import NewCustomerForm from '../../dashboard/new_customer_form';
+import { withRouter } from 'react-router-dom';
 
 class CustomerInfoTab extends React.Component{
     constructor(props){
@@ -12,6 +13,7 @@ class CustomerInfoTab extends React.Component{
 
         this.handleRadioChange = this.handleRadioChange.bind(this)
         this.renderProperView = this.renderProperView.bind(this)
+        this.goBack = this.goBack.bind(this)
     }    
 
     handleRadioChange(e){
@@ -30,13 +32,9 @@ class CustomerInfoTab extends React.Component{
         }
     }
 
-    // handleContinue(){
-    //     if(this.state.customer_status == 'existing'){
-    //         // fetch customer info & redirect to next page
-    //     }else if(this.state.customer_status == 'new'){
-    //         // create a new customer & redirect to next page
-    //     }
-    // }
+    goBack(){
+        this.props.history.push('/tickets')
+    }
 
     render(){
         return(
@@ -44,6 +42,7 @@ class CustomerInfoTab extends React.Component{
                 <TicketsControl />
                 <h1>New ticket</h1>
                 <p>Customer Info</p>
+                <button onClick={this.goBack}>back</button>
                 <div>
                     <label>
                         Existing customer
@@ -70,4 +69,4 @@ class CustomerInfoTab extends React.Component{
     }
 }
 
-export default CustomerInfoTab;
+export default withRouter(CustomerInfoTab);

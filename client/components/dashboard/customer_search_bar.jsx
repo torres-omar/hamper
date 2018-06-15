@@ -1,7 +1,12 @@
 import React from 'react';
 import Autocomplete from 'react-autocomplete';
 import { connect } from 'react-redux';
-import { fetchCustomers, fetchSearchCustomers, clearSearchCustomers } from '../../actions/customers_actions';
+import { withRouter } from 'react-router-dom';
+import { fetchCustomers, 
+         fetchSearchCustomers, 
+         clearSearchCustomers,
+         fetchShowCustomer
+        } from '../../actions/customers_actions';
 
 const mapStateToProps = (state) => ({
     customers: state.entities.customers,
@@ -11,6 +16,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     fetchCustomers: (business_id) => dispatch(fetchCustomers(business_id)),
+    fetchShowCustomer: (customer_id) => dispatch(fetchShowCustomer(customer_id)),
     fetchSearchCustomers: (business_id, query) => dispatch(fetchSearchCustomers(business_id, query)),
     clearSearchCustomers: () => dispatch(clearSearchCustomers())
 })
@@ -24,10 +30,16 @@ class CustomerSearchBar extends React.Component{
         }
         
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
     }
 
-    onSelect(){
-        alert("customer selected")
+
+
+    handleSelect(value, item){
+        this.props.clearSearchCustomers()
+        this.props.fetchShowCustomer(item.id).then(
+            () => this.props.history.push('/tickets/new/s2')
+        )
     }
 
     handleChangeDebounced(event) {
@@ -79,4 +91,4 @@ class CustomerSearchBar extends React.Component{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerSearchBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomerSearchBar));
