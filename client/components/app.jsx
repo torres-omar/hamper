@@ -6,6 +6,7 @@ import TicketsViewTab from './pages/tickets_view_tab';
 import TicketViewTab from './pages/ticket_view_tab';
 import CustomerInfoTab from './pages/new_ticket/customer_info_tab';
 import TicketInfoTab from './pages/new_ticket/ticket_info_tab';
+import SettingsTab from './pages/settings_tab';
 
 const App = () => (
     <div> 
@@ -15,6 +16,7 @@ const App = () => (
             <ProtectedRoute exact path="/tickets/new/s2" component={TicketInfoTab} />
             <ProtectedRoute exact path="/tickets" component={TicketsViewTab} />
             <ProtectedRoute exact path="/tickets/:ticket_id" component={TicketViewTab} />
+            <ProtectedRoute exact path="/settings" component={SettingsTab} />
         </Switch>
     </div> 
 );

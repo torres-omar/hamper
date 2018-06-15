@@ -8,6 +8,7 @@ class TicketsViewTab extends React.Component{
     constructor(props){
         super(props)
         this.handleNewTicketRedirect = this.handleNewTicketRedirect.bind(this)
+        this.handleSettingsRedirect = this.handleSettingsRedirect.bind(this)
     }
 
     handleNewTicketRedirect() {
@@ -19,11 +20,16 @@ class TicketsViewTab extends React.Component{
     //     this.props.history.push('/tickets')
     // }
 
+    handleSettingsRedirect(){
+        this.props.history.push('/settings')
+    }
+
     render(){
         return(
             <div>
                 <TicketsControl />
                 <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
+                <button onClick={this.handleSettingsRedirect}>settings</button>
                 <TicketSearchBar />
                 <TicketsView />
             </div>
