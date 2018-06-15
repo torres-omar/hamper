@@ -1,6 +1,7 @@
 import React from 'react';
 import TicketsControl from '../../dashboard/tickets_control';
 import CustomerSearchBar from '../../dashboard/customer_search_bar';
+import NewCustomerForm from '../../dashboard/new_customer_form';
 
 class CustomerInfoTab extends React.Component{
     constructor(props){
@@ -22,8 +23,20 @@ class CustomerInfoTab extends React.Component{
             return(
                 <CustomerSearchBar />
             )
+        }else if(this.state.customer_status == 'new'){
+            return(
+                <NewCustomerForm />
+            )
         }
     }
+
+    // handleContinue(){
+    //     if(this.state.customer_status == 'existing'){
+    //         // fetch customer info & redirect to next page
+    //     }else if(this.state.customer_status == 'new'){
+    //         // create a new customer & redirect to next page
+    //     }
+    // }
 
     render(){
         return(

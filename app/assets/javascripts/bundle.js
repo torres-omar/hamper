@@ -500,10 +500,6 @@ var CustomerSearchBar = function (_React$Component) {
         return _this;
     }
 
-    // componentDidMount(){
-    //     this.props.fetchCustomers(this.props.current_business_id)
-    // }
-
     _createClass(CustomerSearchBar, [{
         key: 'onSelect',
         value: function onSelect() {
@@ -569,6 +565,132 @@ var CustomerSearchBar = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CustomerSearchBar);
+
+/***/ }),
+
+/***/ "./client/components/dashboard/new_customer_form.jsx":
+/*!***********************************************************!*\
+  !*** ./client/components/dashboard/new_customer_form.jsx ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NewCustomerForm = function (_React$Component) {
+    _inherits(NewCustomerForm, _React$Component);
+
+    function NewCustomerForm(props) {
+        _classCallCheck(this, NewCustomerForm);
+
+        var _this = _possibleConstructorReturn(this, (NewCustomerForm.__proto__ || Object.getPrototypeOf(NewCustomerForm)).call(this, props));
+
+        _this.state = {
+            first_name: '',
+            last_name: '',
+            email_address: '',
+            phone_number: '',
+            street_address: '',
+            zip_code: '',
+            apt_number: ''
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
+    }
+
+    // handleSubmit(e){
+    // submit form as post request
+    // response (user) should be stored in redux
+    // and should redirect to next step in process 
+    // }
+
+    _createClass(NewCustomerForm, [{
+        key: 'handleChange',
+        value: function handleChange(e) {
+            this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'form',
+                    { onSubmit: this.handleSubmit },
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'First name',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'first_name', value: this.state.first_name })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Last name',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'last_name', value: this.state.last_name })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Email',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'email_address', value: this.state.email_address })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Phone number',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'phone_number', value: this.state.phone_number })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Street address',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'street_address', value: this.state.street_address })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Apt number',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'apt_number', value: this.state.apt_nunber })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Zip code',
+                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'zip_code', value: this.state.zip_code })
+                    ),
+                    _react2.default.createElement('input', { type: 'submit', value: 'continue' })
+                )
+            );
+        }
+    }]);
+
+    return NewCustomerForm;
+}(_react2.default.Component);
+
+exports.default = NewCustomerForm;
 
 /***/ }),
 
@@ -1321,6 +1443,10 @@ var _customer_search_bar = __webpack_require__(/*! ../../dashboard/customer_sear
 
 var _customer_search_bar2 = _interopRequireDefault(_customer_search_bar);
 
+var _new_customer_form = __webpack_require__(/*! ../../dashboard/new_customer_form */ "./client/components/dashboard/new_customer_form.jsx");
+
+var _new_customer_form2 = _interopRequireDefault(_new_customer_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1356,8 +1482,19 @@ var CustomerInfoTab = function (_React$Component) {
         value: function renderProperView() {
             if (this.state.customer_status == 'existing') {
                 return _react2.default.createElement(_customer_search_bar2.default, null);
+            } else if (this.state.customer_status == 'new') {
+                return _react2.default.createElement(_new_customer_form2.default, null);
             }
         }
+
+        // handleContinue(){
+        //     if(this.state.customer_status == 'existing'){
+        //         // fetch customer info & redirect to next page
+        //     }else if(this.state.customer_status == 'new'){
+        //         // create a new customer & redirect to next page
+        //     }
+        // }
+
     }, {
         key: 'render',
         value: function render() {
@@ -2322,6 +2459,8 @@ var _current_ticket_status_reducer = __webpack_require__(/*! ./ui/current_ticket
 var _current_ticket_status_reducer2 = _interopRequireDefault(_current_ticket_status_reducer);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import CurrentCustomerShowIdReducer from './ui/current_customer_show_id_reducer';
 
 var UIReducer = (0, _redux.combineReducers)({
     current_business_id: _current_business_id_reducer2.default,

@@ -26,10 +26,6 @@ class CustomerSearchBar extends React.Component{
         this.handleChangeDebounced = this.handleChangeDebounced.bind(this)
     }
 
-    // componentDidMount(){
-    //     this.props.fetchCustomers(this.props.current_business_id)
-    // }
-
     onSelect(){
         alert("customer selected")
     }
