@@ -25,6 +25,11 @@ export const setBusinessOnMap = (business) => ({
     business: business
 })
 
+export const changeCurrentBusinessId = (id) => ({
+    type: RECEIVE_CURRENT_BUSINESS_ID, 
+    id: id
+})
+
 export const fetchCurrentBusinessInfo = (business_id) => (dispatch) => (
     APIUtil.fetchCurrentBusinessInfo(business_id).then(
         (business) => dispatch(receiveCurrentBusiness(business))

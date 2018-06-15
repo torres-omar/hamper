@@ -99,7 +99,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchBusinesses = exports.fetchCurrentBusinessInfo = exports.setBusinessOnMap = exports.receiveBusinesses = exports.receiveCurrentBusiness = exports.receiveCurrentBusinessId = exports.RECEIVE_BUSINESS_ON_MAP = exports.RECEIVE_BUSINESSES = exports.RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS_ID = undefined;
+exports.fetchBusinesses = exports.fetchCurrentBusinessInfo = exports.changeCurrentBusinessId = exports.setBusinessOnMap = exports.receiveBusinesses = exports.receiveCurrentBusiness = exports.receiveCurrentBusinessId = exports.RECEIVE_BUSINESS_ON_MAP = exports.RECEIVE_BUSINESSES = exports.RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS_ID = undefined;
 
 var _businesses_api_util = __webpack_require__(/*! ../util/businesses_api_util */ "./client/util/businesses_api_util.js");
 
@@ -137,6 +137,13 @@ var setBusinessOnMap = exports.setBusinessOnMap = function setBusinessOnMap(busi
     return {
         type: RECEIVE_BUSINESS_ON_MAP,
         business: business
+    };
+};
+
+var changeCurrentBusinessId = exports.changeCurrentBusinessId = function changeCurrentBusinessId(id) {
+    return {
+        type: RECEIVE_CURRENT_BUSINESS_ID,
+        id: id
     };
 };
 
@@ -790,6 +797,10 @@ var _gmap2 = _interopRequireDefault(_gmap);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -800,7 +811,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        business_on_map: state.ui.business_on_map
+        business_on_map: state.ui.business_on_map,
+        current_business_id: state.ui.current_business_id
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        changeCurrentBusinessId: function changeCurrentBusinessId(id) {
+            return dispatch((0, _businesses_actions.changeCurrentBusinessId)(id));
+        }
     };
 };
 
@@ -815,6 +835,8 @@ var Map = function (_React$PureComponent) {
         _this.state = {
             isMarkerShown: false
         };
+        _this.renderGoToButton = _this.renderGoToButton.bind(_this);
+        _this.handleRedirect = _this.handleRedirect.bind(_this);
         return _this;
     }
 
@@ -833,18 +855,46 @@ var Map = function (_React$PureComponent) {
             }, 2000);
         }
     }, {
+        key: 'handleRedirect',
+        value: function handleRedirect(e) {
+            e.preventDefault();
+            this.props.changeCurrentBusinessId(this.props.business_on_map.id);
+            this.props.history.push('/tickets');
+        }
+    }, {
+        key: 'renderGoToButton',
+        value: function renderGoToButton() {
+            if (this.props.current_business_id != this.props.business_on_map.id) {
+                return _react2.default.createElement(
+                    'button',
+                    { onClick: this.handleRedirect },
+                    'Go to this location'
+                );
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             if (this.props.business_on_map) {
-                return _react2.default.createElement(_gmap2.default, {
-                    isMarkerShown: this.state.isMarkerShown,
-                    googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw',
-                    loadingElement: _react2.default.createElement('div', { style: { height: '100%' } }),
-                    containerElement: _react2.default.createElement('div', { style: { height: '400px', width: '400px' } }),
-                    mapElement: _react2.default.createElement('div', { style: { height: '100%' } }),
-                    center: { lat: Number(this.props.business_on_map.latitude), lng: Number(this.props.business_on_map.longitude) },
-                    business_on_map: this.props.business_on_map
-                });
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        this.props.business_on_map.name
+                    ),
+                    this.renderGoToButton(),
+                    _react2.default.createElement(_gmap2.default, {
+                        isMarkerShown: this.state.isMarkerShown,
+                        googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw',
+                        loadingElement: _react2.default.createElement('div', { style: { height: '100%' } }),
+                        containerElement: _react2.default.createElement('div', { style: { height: '400px', width: '400px' } }),
+                        mapElement: _react2.default.createElement('div', { style: { height: '100%' } }),
+                        center: { lat: Number(this.props.business_on_map.latitude), lng: Number(this.props.business_on_map.longitude) },
+                        business_on_map: this.props.business_on_map
+                    })
+                );
             } else {
                 return _react2.default.createElement('div', null);
             }
@@ -854,7 +904,7 @@ var Map = function (_React$PureComponent) {
     return Map;
 }(_react2.default.PureComponent);
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(Map);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Map));
 
 /***/ }),
 

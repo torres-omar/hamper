@@ -51,7 +51,6 @@ class SettingsTab extends React.Component{
         })
         return businesses
     }
-
     render(){
         return(
             <div>
