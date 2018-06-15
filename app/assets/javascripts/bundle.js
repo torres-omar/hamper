@@ -99,12 +99,36 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.fetchCurrentBusinessInfo = exports.receiveCurrentBusiness = exports.receiveCurrentBusinessId = exports.RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS_ID = undefined;
+
+var _businesses_api_util = __webpack_require__(/*! ../util/businesses_api_util */ "./client/util/businesses_api_util.js");
+
+var APIUtil = _interopRequireWildcard(_businesses_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 var RECEIVE_CURRENT_BUSINESS_ID = exports.RECEIVE_CURRENT_BUSINESS_ID = 'RECEIVE_CURRENT_BUSINESS_ID';
+var RECEIVE_CURRENT_BUSINESS = exports.RECEIVE_CURRENT_BUSINESS = 'RECEIVE_CURRENT_BUSINESS';
 
 var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function receiveCurrentBusinessId(id) {
     return {
         type: RECEIVE_CURRENT_BUSINESS_ID,
         id: id
+    };
+};
+
+var receiveCurrentBusiness = exports.receiveCurrentBusiness = function receiveCurrentBusiness(business) {
+    return {
+        type: RECEIVE_CURRENT_BUSINESS,
+        business: business
+    };
+};
+
+var fetchCurrentBusinessInfo = exports.fetchCurrentBusinessInfo = function fetchCurrentBusinessInfo(business_id) {
+    return function (dispatch) {
+        return APIUtil.fetchCurrentBusinessInfo(business_id).then(function (business) {
+            return dispatch(receiveCurrentBusiness(business));
+        });
     };
 };
 
@@ -779,7 +803,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -787,22 +817,79 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        fetchCurrentBusinessInfo: function fetchCurrentBusinessInfo(business_id) {
+            return dispatch((0, _businesses_actions.fetchCurrentBusinessInfo)(business_id));
+        }
+    };
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        current_business: state.entities.current_business,
+        current_business_id: state.ui.current_business_id
+    };
+};
+
 var NewTicketForm = function (_React$Component) {
     _inherits(NewTicketForm, _React$Component);
 
     function NewTicketForm(props) {
         _classCallCheck(this, NewTicketForm);
 
-        return _possibleConstructorReturn(this, (NewTicketForm.__proto__ || Object.getPrototypeOf(NewTicketForm)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (NewTicketForm.__proto__ || Object.getPrototypeOf(NewTicketForm)).call(this, props));
+
+        _this.state = {
+            bag_weight: 0.0
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
     }
 
     _createClass(NewTicketForm, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.props.fetchCurrentBusinessInfo(this.props.current_business_id);
+        }
+    }, {
+        key: 'handleChange',
+        value: function handleChange(e) {
+            this.setState(_defineProperty({}, e.target.name, e.target.value));
+        }
+    }, {
+        key: 'renderForm',
+        value: function renderForm() {
+            if (this.props.current_business) {
+                return _react2.default.createElement(
+                    'form',
+                    null,
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Bag weight (lb)',
+                        _react2.default.createElement('input', { type: 'number', value: this.state.bag_weight, name: 'bag_weight', onChange: this.handleChange })
+                    ),
+                    _react2.default.createElement(
+                        'label',
+                        null,
+                        'Total',
+                        _react2.default.createElement(
+                            'h1',
+                            null,
+                            this.state.bag_weight * this.props.current_business.price_per_pound
+                        )
+                    )
+                );
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement('form', null)
+                this.renderForm()
             );
         }
     }]);
@@ -810,7 +897,7 @@ var NewTicketForm = function (_React$Component) {
     return NewTicketForm;
 }(_react2.default.Component);
 
-exports.default = NewTicketForm;
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewTicketForm);
 
 /***/ }),
 
@@ -2233,6 +2320,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
+/***/ "./client/reducers/entities/current_business_reducer.js":
+/*!**************************************************************!*\
+  !*** ./client/reducers/entities/current_business_reducer.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actions */ "./client/actions/businesses_actions.js");
+
+var CurrentBusinessReducer = function CurrentBusinessReducer() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var action = arguments[1];
+
+    switch (action.type) {
+        case _businesses_actions.RECEIVE_CURRENT_BUSINESS:
+            return action.business;
+        default:
+            return state;
+    }
+};
+
+exports.default = CurrentBusinessReducer;
+
+/***/ }),
+
 /***/ "./client/reducers/entities/customers_reducer.js":
 /*!*******************************************************!*\
   !*** ./client/reducers/entities/customers_reducer.js ***!
@@ -2465,6 +2584,10 @@ var _show_customer_reducer = __webpack_require__(/*! ./entities/show_customer_re
 
 var _show_customer_reducer2 = _interopRequireDefault(_show_customer_reducer);
 
+var _current_business_reducer = __webpack_require__(/*! ./entities/current_business_reducer */ "./client/reducers/entities/current_business_reducer.js");
+
+var _current_business_reducer2 = _interopRequireDefault(_current_business_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var EntitiesReducer = (0, _redux.combineReducers)({
@@ -2473,7 +2596,8 @@ var EntitiesReducer = (0, _redux.combineReducers)({
     show_ticket: _show_ticket_reducer2.default,
     customers: _customers_reducer2.default,
     search_customers: _search_customers_reducer2.default,
-    show_customer: _show_customer_reducer2.default
+    show_customer: _show_customer_reducer2.default,
+    current_business: _current_business_reducer2.default
 });
 
 exports.default = EntitiesReducer;
@@ -2777,6 +2901,28 @@ var configureStore = function configureStore() {
 };
 
 exports.default = configureStore;
+
+/***/ }),
+
+/***/ "./client/util/businesses_api_util.js":
+/*!********************************************!*\
+  !*** ./client/util/businesses_api_util.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var fetchCurrentBusinessInfo = exports.fetchCurrentBusinessInfo = function fetchCurrentBusinessInfo(business_id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/businesses/" + business_id
+    });
+};
 
 /***/ }),
 
