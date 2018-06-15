@@ -10,8 +10,8 @@ class Customer < ApplicationRecord
     include PgSearch
     include SendGrid
 
-    pg_search_scope :name_scope, 
-                    :against => [:first_name, :last_name],
+    pg_search_scope :name_and_email_scope, 
+                    :against => [:first_name, :last_name, :email_address],
                     :using => {
                         :tsearch => {:prefix => true}
                     }
@@ -31,8 +31,8 @@ class Customer < ApplicationRecord
         class_name: 'Business', 
         foreign_key: :business_id
 
-    def self.search_by_name(business_id, query)
-        return Customer.where("business_id = ?", business_id).name_scope(query)
+    def self.search_by_name_and_email(business_id, query)
+        return Customer.where("business_id = ?", business_id).name_and_email_scope(query)
     end
 
     def send_notification(ticket_id)

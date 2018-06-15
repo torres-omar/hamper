@@ -23,7 +23,7 @@ class Api::CustomersController < ApplicationController
     end
 
     def search
-        @customers = Customer.search_by_name(params[:business_id], params[:q])
+        @customers = Customer.search_by_name_and_email(params[:business_id], params[:q])
         render 'api/customers/index'
     end
 
