@@ -110,6 +110,13 @@ class Ticket < ApplicationRecord
     end
 
     def change_status_to_notified!
+        status = Status.where("status_name = ?", "Notified").first
+        self.status_id = status.id 
+        self.save!
+    end
+
+    def fulfill!
+        status = Status.where("status_name = ?", "Fulfilled").first
         self.status_id = status.id 
         self.save!
     end

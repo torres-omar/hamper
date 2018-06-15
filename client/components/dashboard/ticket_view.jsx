@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchShowTicket, clearShowTicket, notifyCustomer } from '../../actions/tickets_actions';
+import { fetchShowTicket, clearShowTicket, notifyCustomer, fulfillTicket } from '../../actions/tickets_actions';
 
 const mapStateToProps = (state) => ({
     show_ticket: state.entities.show_ticket
@@ -10,7 +10,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     fetchShowTicket: (ticket_id) => dispatch(fetchShowTicket(ticket_id)),
     clearShowTicket: () => dispatch(clearShowTicket()),
-    notifyCustomer: (ticket_id) => dispatch(notifyCustomer(ticket_id))
+    notifyCustomer: (ticket_id) => dispatch(notifyCustomer(ticket_id)),
+    fulfillTicket: (ticket_id) => dispatch(fulfillTicket(ticket_id))
 })
 
 class TicketView extends React.Component{
@@ -22,6 +23,7 @@ class TicketView extends React.Component{
         this.renderTicket = this.renderTicket.bind(this);
         this.goBack = this.goBack.bind(this);
         this.sendNotification = this.sendNotification.bind(this);
+        this.fulfillTicket = this.fulfillTicket.bind(this);
     }
 
     componentDidMount(){
@@ -54,6 +56,12 @@ class TicketView extends React.Component{
         })
     }
 
+    fulfillTicket(){
+        this.props.fulfillTicket(this.props.show_ticket.id).then(
+            () => this.setState({notification_response: 'Ticket fulfilled!'})
+        )
+    }
+
     renderNotificationResponse(){
         if(this.state.notification_response){
             return(
@@ -69,6 +77,9 @@ class TicketView extends React.Component{
                 <button onClick={this.sendNotification} style={{
                     display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
                 }}>notify</button>
+                <button onClick={this.fulfillTicket} style={{
+                    display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                }}>fulfill</button>
                 {this.renderNotificationResponse()}
                 {this.renderTicket()}
             </div>

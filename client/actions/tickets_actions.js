@@ -76,3 +76,9 @@ export const createNewTicket = (data, business_id) => (dispatch) => (
         (ticket) => dispatch(receiveShowTicket(ticket))
     )
 )
+
+export const fulfillTicket = (ticket_id) => (dispatch) => (
+    APIUtil.fulfillTicket(ticket_id).then(
+        (ticket) => dispatch(receiveShowTicket(ticket))
+    )
+)

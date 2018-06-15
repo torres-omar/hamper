@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     resources :customers, only: [:show]
     resources :tickets, only: [:show] do 
       get '/notify', to: 'tickets#notify_customer'
+      get '/fulfill', to: 'tickets#fulfill_ticket'
     end
 
   end

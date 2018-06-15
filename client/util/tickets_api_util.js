@@ -49,3 +49,10 @@ export const createNewTicket = (data, business_id) => {
         }
     })
 }
+
+export const fulfillTicket = (id) => {
+    return $.ajax({
+        method: "GET", 
+        url: `api/tickets/${id}/fulfill`
+    })
+}

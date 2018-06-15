@@ -327,7 +327,7 @@ var logout = exports.logout = function logout() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.createNewTicket = exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.changeTicketStatus = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_TICKET_STATUS = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
+exports.fulfillTicket = exports.createNewTicket = exports.notifyCustomer = exports.fetchShowTicket = exports.fetchNameSearchTickets = exports.fetchIdSearchTickets = exports.fetchGlobalSearchTickets = exports.fetchStatusTickets = exports.clearShowTicket = exports.changeTicketStatus = exports.receiveShowTicket = exports.clearSearchTickets = exports.receiveSearchTickets = exports.receiveTickets = exports.RECEIVE_TICKET_STATUS = exports.RECEIVE_SHOW_TICKET = exports.RECEIVE_SEARCH_TICKETS = exports.RECEIVE_TICKETS = undefined;
 
 var _tickets_api_util = __webpack_require__(/*! ../util/tickets_api_util */ "./client/util/tickets_api_util.js");
 
@@ -433,6 +433,14 @@ var notifyCustomer = exports.notifyCustomer = function notifyCustomer(ticket_id)
 var createNewTicket = exports.createNewTicket = function createNewTicket(data, business_id) {
     return function (dispatch) {
         return APIUtil.createNewTicket(data, business_id).then(function (ticket) {
+            return dispatch(receiveShowTicket(ticket));
+        });
+    };
+};
+
+var fulfillTicket = exports.fulfillTicket = function fulfillTicket(ticket_id) {
+    return function (dispatch) {
+        return APIUtil.fulfillTicket(ticket_id).then(function (ticket) {
             return dispatch(receiveShowTicket(ticket));
         });
     };
@@ -1539,6 +1547,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         notifyCustomer: function notifyCustomer(ticket_id) {
             return dispatch((0, _tickets_actions.notifyCustomer)(ticket_id));
+        },
+        fulfillTicket: function fulfillTicket(ticket_id) {
+            return dispatch((0, _tickets_actions.fulfillTicket)(ticket_id));
         }
     };
 };
@@ -1557,6 +1568,7 @@ var TicketView = function (_React$Component) {
         _this.renderTicket = _this.renderTicket.bind(_this);
         _this.goBack = _this.goBack.bind(_this);
         _this.sendNotification = _this.sendNotification.bind(_this);
+        _this.fulfillTicket = _this.fulfillTicket.bind(_this);
         return _this;
     }
 
@@ -1607,6 +1619,15 @@ var TicketView = function (_React$Component) {
             });
         }
     }, {
+        key: 'fulfillTicket',
+        value: function fulfillTicket() {
+            var _this3 = this;
+
+            this.props.fulfillTicket(this.props.show_ticket.id).then(function () {
+                return _this3.setState({ notification_response: 'Ticket fulfilled!' });
+            });
+        }
+    }, {
         key: 'renderNotificationResponse',
         value: function renderNotificationResponse() {
             if (this.state.notification_response) {
@@ -1634,6 +1655,13 @@ var TicketView = function (_React$Component) {
                             display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
                         } },
                     'notify'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.fulfillTicket, style: {
+                            display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                        } },
+                    'fulfill'
                 ),
                 this.renderNotificationResponse(),
                 this.renderTicket()
@@ -3653,6 +3681,13 @@ var createNewTicket = exports.createNewTicket = function createNewTicket(data, b
         data: {
             ticket: data
         }
+    });
+};
+
+var fulfillTicket = exports.fulfillTicket = function fulfillTicket(id) {
+    return $.ajax({
+        method: "GET",
+        url: "api/tickets/" + id + "/fulfill"
     });
 };
 

@@ -15,7 +15,7 @@ class Api::TicketsController < ApplicationController
     end 
 
     def show
-        @ticket = Ticket.includes(:customer, :status, :ticket_type, :delivery_method, :note).find_by(id: params[:id])
+        @ticket = Ticket.includes(:customer, :status).find_by(id: params[:id])
         if @ticket 
             render 'api/tickets/show'
         else 
@@ -58,6 +58,16 @@ class Api::TicketsController < ApplicationController
         else
             render json: {:error => ['No record found']}, status: 422
         end 
+    end
+
+    def fulfill_ticket
+        @ticket = Ticket.find_by(id: params[:ticket_id])
+        if @ticket 
+            @ticket.fulfill!
+            render 'api/tickets/show'
+        else
+            render json: {:error => ['No record found']}, status: 422
+        end
     end
 
     private 
