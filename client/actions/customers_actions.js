@@ -41,3 +41,9 @@ export const fetchShowCustomer = (customer_id) => (dispatch) => (
         (customer) => dispatch(receiveShowCustomer(customer))
     )
 )
+
+export const createNewCustomer = (data) => (dispatch) => (
+    APIUtil.createNewCustomer(data).then(
+        (customer) => dispatch(receiveShowCustomer(customer))
+    )
+)

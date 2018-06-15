@@ -1,4 +1,15 @@
 import React from 'react';
+import {createNewCustomer} from '../../actions/customers_actions';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+
+const mapDispatchToProps = (dispatch) => ({
+    createNewCustomer: (data) => dispatch(createNewCustomer(data))
+})
+
+const mapStateToProps = (state) => ({
+    current_business_id: state.ui.current_business_id
+})
 
 class NewCustomerForm extends React.Component{
     constructor(props){
@@ -10,16 +21,23 @@ class NewCustomerForm extends React.Component{
             phone_number: '',
             street_address: '',
             zip_code: '', 
-            apt_number: ''
+            apt_number: '',
+            business_id: this.props.current_business_id
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    // handleSubmit(e){
+    handleSubmit(e){
+        e.preventDefault()
         // submit form as post request
         // response (user) should be stored in redux
         // and should redirect to next step in process 
-    // }
+        debugger
+        this.props.createNewCustomer(this.state).then(
+            () => this.props.history.push('/tickets/new/s2')
+        )
+    }
 
     handleChange(e){
         this.setState({[e.target.name]: e.target.value})
@@ -64,4 +82,4 @@ class NewCustomerForm extends React.Component{
     }
 }
 
-export default NewCustomerForm;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewCustomerForm));

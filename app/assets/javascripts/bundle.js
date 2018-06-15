@@ -123,7 +123,7 @@ var receiveCurrentBusinessId = exports.receiveCurrentBusinessId = function recei
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchShowCustomer = exports.fetchSearchCustomers = exports.fetchCustomers = exports.receiveSearchCustomers = exports.clearSearchCustomers = exports.receiveShowCustomer = exports.receiveCustomers = exports.RECEIVE_SHOW_CUSTOMER = exports.RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_CUSTOMERS = undefined;
+exports.createNewCustomer = exports.fetchShowCustomer = exports.fetchSearchCustomers = exports.fetchCustomers = exports.receiveSearchCustomers = exports.clearSearchCustomers = exports.receiveShowCustomer = exports.receiveCustomers = exports.RECEIVE_SHOW_CUSTOMER = exports.RECEIVE_SEARCH_CUSTOMERS = exports.RECEIVE_CUSTOMERS = undefined;
 
 var _customers_api_util = __webpack_require__(/*! ../util/customers_api_util */ "./client/util/customers_api_util.js");
 
@@ -182,6 +182,14 @@ var fetchSearchCustomers = exports.fetchSearchCustomers = function fetchSearchCu
 var fetchShowCustomer = exports.fetchShowCustomer = function fetchShowCustomer(customer_id) {
     return function (dispatch) {
         return APIUtil.fetchShowCustomer(customer_id).then(function (customer) {
+            return dispatch(receiveShowCustomer(customer));
+        });
+    };
+};
+
+var createNewCustomer = exports.createNewCustomer = function createNewCustomer(data) {
+    return function (dispatch) {
+        return APIUtil.createNewCustomer(data).then(function (customer) {
             return dispatch(receiveShowCustomer(customer));
         });
     };
@@ -615,6 +623,12 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _customers_actions = __webpack_require__(/*! ../../actions/customers_actions */ "./client/actions/customers_actions.js");
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -624,6 +638,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        createNewCustomer: function createNewCustomer(data) {
+            return dispatch((0, _customers_actions.createNewCustomer)(data));
+        }
+    };
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        current_business_id: state.ui.current_business_id
+    };
+};
 
 var NewCustomerForm = function (_React$Component) {
     _inherits(NewCustomerForm, _React$Component);
@@ -640,19 +668,29 @@ var NewCustomerForm = function (_React$Component) {
             phone_number: '',
             street_address: '',
             zip_code: '',
-            apt_number: ''
+            apt_number: '',
+            business_id: _this.props.current_business_id
         };
         _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
-    // handleSubmit(e){
-    // submit form as post request
-    // response (user) should be stored in redux
-    // and should redirect to next step in process 
-    // }
-
     _createClass(NewCustomerForm, [{
+        key: 'handleSubmit',
+        value: function handleSubmit(e) {
+            var _this2 = this;
+
+            e.preventDefault();
+            // submit form as post request
+            // response (user) should be stored in redux
+            // and should redirect to next step in process 
+            debugger;
+            this.props.createNewCustomer(this.state).then(function () {
+                return _this2.props.history.push('/tickets/new/s2');
+            });
+        }
+    }, {
         key: 'handleChange',
         value: function handleChange(e) {
             this.setState(_defineProperty({}, e.target.name, e.target.value));
@@ -717,7 +755,7 @@ var NewCustomerForm = function (_React$Component) {
     return NewCustomerForm;
 }(_react2.default.Component);
 
-exports.default = NewCustomerForm;
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewCustomerForm));
 
 /***/ }),
 
@@ -1603,6 +1641,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1610,6 +1650,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        show_customer: state.entities.show_customer
+    };
+};
 
 var TicketInfoTab = function (_React$Component) {
     _inherits(TicketInfoTab, _React$Component);
@@ -1629,6 +1675,26 @@ var TicketInfoTab = function (_React$Component) {
             this.props.history.push('/tickets/new/s1');
         }
     }, {
+        key: 'renderCustomerInfo',
+        value: function renderCustomerInfo() {
+            if (this.props.show_customer) {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        this.props.show_customer.first_name
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        this.props.show_customer.last_name
+                    )
+                );
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -1639,11 +1705,7 @@ var TicketInfoTab = function (_React$Component) {
                     { onClick: this.goBack },
                     'back'
                 ),
-                _react2.default.createElement(
-                    'p',
-                    null,
-                    'Ticket info'
-                )
+                this.renderCustomerInfo()
             );
         }
     }]);
@@ -1651,7 +1713,7 @@ var TicketInfoTab = function (_React$Component) {
     return TicketInfoTab;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouterDom.withRouter)(TicketInfoTab);
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, null)(TicketInfoTab));
 
 /***/ }),
 
@@ -2689,6 +2751,16 @@ var fetchShowCustomer = exports.fetchShowCustomer = function fetchShowCustomer(c
     return $.ajax({
         method: 'GET',
         url: 'api/customers/' + customer_id
+    });
+};
+
+var createNewCustomer = exports.createNewCustomer = function createNewCustomer(data) {
+    return $.ajax({
+        method: "POST",
+        url: 'api/businesses/' + data.business_id + '/customers',
+        data: {
+            customer: data
+        }
     });
 };
 

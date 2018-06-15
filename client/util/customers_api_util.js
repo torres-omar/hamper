@@ -18,3 +18,13 @@ export const fetchShowCustomer = (customer_id) => {
         url: `api/customers/${customer_id}`
     })
 }
+
+export const createNewCustomer = (data) => {
+    return $.ajax({
+        method: "POST", 
+        url: `api/businesses/${data.business_id}/customers`,
+        data: {
+            customer: data
+        }
+    })
+}
