@@ -27,7 +27,7 @@ class TicketsControl extends React.Component {
     // such as tickets view, which renders tickets stored in the store (entities.tickets)
     componentDidUpdate(prevProps) {
         if (this.props.current_ticket_status != prevProps.current_ticket_status) {
-            let id = this.props.user.startup_business_id
+            let id = this.props.current_business_id
             let status = this.props.current_ticket_status
             this.props.fetchStatusTickets(id, 0, status)
         }

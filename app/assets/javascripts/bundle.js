@@ -1755,7 +1755,7 @@ var TicketsControl = function (_React$Component) {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps) {
             if (this.props.current_ticket_status != prevProps.current_ticket_status) {
-                var id = this.props.user.startup_business_id;
+                var id = this.props.current_business_id;
                 var status = this.props.current_ticket_status;
                 this.props.fetchStatusTickets(id, 0, status);
             }
