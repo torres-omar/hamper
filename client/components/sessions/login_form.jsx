@@ -47,9 +47,9 @@ class LogInForm extends React.Component{
 
     render(){
         return(
-            <div className="form-container"> 
-                <form onSubmit={this.handleSubmit} className="form-styles" id="signin-form"> 
-                    <input type="text" onChange={this.handleChange} value={this.state.email} className="input-styles"/>
+            <div> 
+                <form onSubmit={this.handleSubmit}> 
+                    <input type="text" onChange={this.handleChange} value={this.state.email}/>
                     <input type="submit" className="button-styles" value="sign in"/>
                     {this.renderErrors()}
                 </form> 

@@ -29,12 +29,13 @@ class TicketsViewTab extends React.Component{
 
     render(){
         return(
-            <div className="main-dashboard-section">
+            <div>
                 <Icons />
                 <TicketsControl />
-                <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
-                <button onClick={this.handleSettingsRedirect}>settings</button>
-                <TicketSearchBar />
+                <div> 
+                    <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
+                    <TicketSearchBar />
+                </div>
                 <TicketsView />
             </div>
         )

@@ -3,6 +3,7 @@ import TicketsControl from '../dashboard/tickets_control';
 import TicketView from '../dashboard/ticket_view';
 import {withRouter} from 'react-router-dom';
 import TicketSearchBar from '../dashboard/ticket_search_bar';
+import Icons from '../dashboard/icons';
 
 class TicketViewTab extends React.Component{
     constructor(props){
@@ -18,9 +19,12 @@ class TicketViewTab extends React.Component{
     render(){
         return(
             <div>
+                <Icons />
                 <TicketsControl />
-                <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
-                <TicketSearchBar />
+                <div>
+                    <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
+                    <TicketSearchBar />
+                </div>
                 <TicketView />
             </div>
         )

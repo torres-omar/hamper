@@ -53,7 +53,7 @@ class TicketsView extends React.Component{
 
     render(){
         return(
-            <div> 
+            <div className="tickets-view"> 
                 <button onClick={this.handleNextPage}>next</button>
                 <button style={{
                     display: this.state.page == 0 ? 'none' : 'block'

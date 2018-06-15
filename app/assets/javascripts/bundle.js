@@ -863,10 +863,10 @@ var Icons = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'icon-group' },
-                _react2.default.createElement('i', { className: 'fas fa-ticket-alt icon-styles', onClick: this.toTickets }),
-                _react2.default.createElement('i', { className: 'fas fa-briefcase icon-styles', onClick: this.toBusinesses }),
-                _react2.default.createElement('i', { className: 'fas fa-power-off icon-styles', onClick: this.handleSignOut })
+                null,
+                _react2.default.createElement('i', { onClick: this.toTickets }),
+                _react2.default.createElement('i', { onClick: this.toBusinesses }),
+                _react2.default.createElement('i', { onClick: this.handleSignOut })
             );
         }
     }]);
@@ -1869,31 +1869,26 @@ var TicketsControl = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: function onClick(e) {
-                                return _this2.handleStatusChange(e, "unfulfilled");
-                            } },
-                        'Unfulfilled'
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: function onClick(e) {
-                                return _this2.handleStatusChange(e, "notified");
-                            } },
-                        'Notified'
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: function onClick(e) {
-                                return _this2.handleStatusChange(e, "fulfilled");
-                            } },
-                        'Fulfilled'
-                    )
+                    'button',
+                    { onClick: function onClick(e) {
+                            return _this2.handleStatusChange(e, "unfulfilled");
+                        } },
+                    'Unfulfilled'
                 ),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleSubmit, value: 'sign out' })
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick(e) {
+                            return _this2.handleStatusChange(e, "notified");
+                        } },
+                    'Notified'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: function onClick(e) {
+                            return _this2.handleStatusChange(e, "fulfilled");
+                        } },
+                    'Fulfilled'
+                )
             );
         }
     }]);
@@ -2010,7 +2005,7 @@ var TicketsView = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'tickets-view' },
                 _react2.default.createElement(
                     'button',
                     { onClick: this.handleNextPage },
@@ -2444,7 +2439,7 @@ var SettingsTab = function (_React$Component) {
             this.props.businesses.forEach(function (business) {
                 businesses.push(_react2.default.createElement(
                     'button',
-                    { onClick: function onClick(e) {
+                    { className: 'button-styles', onClick: function onClick(e) {
                             return _this2.handleBusinessChange(e, business);
                         } },
                     business.name
@@ -2457,9 +2452,13 @@ var SettingsTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'main-dashboard-section' },
+                null,
                 _react2.default.createElement(_icons2.default, null),
-                this.renderBusinessesList(),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    this.renderBusinessesList()
+                ),
                 _react2.default.createElement(_map2.default, null)
             );
         }
@@ -2506,6 +2505,10 @@ var _ticket_search_bar = __webpack_require__(/*! ../dashboard/ticket_search_bar 
 
 var _ticket_search_bar2 = _interopRequireDefault(_ticket_search_bar);
 
+var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+
+var _icons2 = _interopRequireDefault(_icons);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2538,9 +2541,14 @@ var TicketViewTab = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
+                _react2.default.createElement(_icons2.default, null),
                 _react2.default.createElement(_tickets_control2.default, null),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
-                _react2.default.createElement(_ticket_search_bar2.default, null),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
+                    _react2.default.createElement(_ticket_search_bar2.default, null)
+                ),
                 _react2.default.createElement(_ticket_view2.default, null)
             );
         }
@@ -2633,16 +2641,15 @@ var TicketsViewTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'main-dashboard-section' },
+                null,
                 _react2.default.createElement(_icons2.default, null),
                 _react2.default.createElement(_tickets_control2.default, null),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.handleSettingsRedirect },
-                    'settings'
+                    'div',
+                    null,
+                    _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
+                    _react2.default.createElement(_ticket_search_bar2.default, null)
                 ),
-                _react2.default.createElement(_ticket_search_bar2.default, null),
                 _react2.default.createElement(_tickets_view2.default, null)
             );
         }
@@ -2800,11 +2807,11 @@ var LogInForm = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'form-container' },
+                null,
                 _react2.default.createElement(
                     'form',
-                    { onSubmit: this.handleSubmit, className: 'form-styles', id: 'signin-form' },
-                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, value: this.state.email, className: 'input-styles' }),
+                    { onSubmit: this.handleSubmit },
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, value: this.state.email }),
                     _react2.default.createElement('input', { type: 'submit', className: 'button-styles', value: 'sign in' }),
                     this.renderErrors()
                 )

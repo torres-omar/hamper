@@ -30,10 +30,10 @@ class Icons extends React.Component{
 
     render(){
         return(
-            <div className="icon-group">
-                <i className="fas fa-ticket-alt icon-styles" onClick={this.toTickets}></i>
-                <i className="fas fa-briefcase icon-styles" onClick={this.toBusinesses}></i>
-                <i className="fas fa-power-off icon-styles" onClick={this.handleSignOut}></i>
+            <div>
+                <i onClick={this.toTickets}></i>
+                <i onClick={this.toBusinesses}></i>
+                <i onClick={this.handleSignOut}></i>
             </div>
         )
     }

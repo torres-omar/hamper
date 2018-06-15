@@ -55,12 +55,9 @@ class TicketsControl extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>Unfulfilled</button>
-                    <button onClick={(e) => this.handleStatusChange(e, "notified")}>Notified</button>
-                    <button onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
-                </div>
-                <input type="button" onClick={this.handleSubmit} value="sign out" />
+                <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")} >Unfulfilled</button>
+                <button onClick={(e) => this.handleStatusChange(e, "notified")} >Notified</button>
+                <button onClick={(e) => this.handleStatusChange(e, "fulfilled")} >Fulfilled</button>
             </div>
         )
     }

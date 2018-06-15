@@ -47,16 +47,18 @@ class SettingsTab extends React.Component{
         let businesses = []
         this.props.businesses.forEach((business) => {
             businesses.push(
-                <button onClick={(e) => this.handleBusinessChange(e,business)}>{business.name}</button>
+                <button className="button-styles" onClick={(e) => this.handleBusinessChange(e,business)}>{business.name}</button>
             )
         })
         return businesses
     }
     render(){
         return(
-            <div className="main-dashboard-section">
+            <div>
                 <Icons />
-                {this.renderBusinessesList()}
+                <div> 
+                    {this.renderBusinessesList()}
+                </div>
                 <Map />
             </div>
         )
