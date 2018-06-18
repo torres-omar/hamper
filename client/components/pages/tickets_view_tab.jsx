@@ -29,10 +29,8 @@ class TicketsViewTab extends React.Component{
 
     render(){
         return(
-            <div class="dashboard__main-view">
-                <div> 
-                    <TicketSearchBar />
-                </div>
+            <div className="dashboard__main-view">
+                <TicketSearchBar />
                 <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
                 <TicketsControl />
                 <TicketsView />

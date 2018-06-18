@@ -110,7 +110,7 @@ class TicketSearchBar extends React.Component{
 
     render(){
         return(
-            <div> 
+            <div className="searchbar"> 
                 <Autocomplete 
                     getItemValue = {(item) => {
                         return item.date_dropped_off
@@ -125,9 +125,10 @@ class TicketSearchBar extends React.Component{
                     onChange={this.handleChangeDebounced}
                     onSelect={this.handleSelect}
                     menuStyle={{
-                        position: 'static',
-                        zIndex: 2,
-                        overflow: 'visible'
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        position: 'fixed',
+                        overflow: 'auto',
+                        maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
                     }}
                 /> 
                 <div> 

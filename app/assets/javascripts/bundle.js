@@ -1545,7 +1545,7 @@ var TicketSearchBar = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'searchbar' },
                 _react2.default.createElement(_reactAutocomplete2.default, {
                     getItemValue: function getItemValue(item) {
                         return item.date_dropped_off;
@@ -1562,9 +1562,10 @@ var TicketSearchBar = function (_React$Component) {
                     onChange: this.handleChangeDebounced,
                     onSelect: this.handleSelect,
                     menuStyle: {
-                        position: 'static',
-                        zIndex: 2,
-                        overflow: 'visible'
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        position: 'fixed',
+                        overflow: 'auto',
+                        maxHeight: '50%' // TODO: don't cheat, let it flow to the bottom
                     }
                 }),
                 _react2.default.createElement(
@@ -2549,7 +2550,6 @@ var TicketViewTab = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_icons2.default, null),
                 _react2.default.createElement(_tickets_control2.default, null),
                 _react2.default.createElement(
                     'div',
@@ -2649,12 +2649,8 @@ var TicketsViewTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { 'class': 'dashboard__main-view' },
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(_ticket_search_bar2.default, null)
-                ),
+                { className: 'dashboard__main-view' },
+                _react2.default.createElement(_ticket_search_bar2.default, null),
                 _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
                 _react2.default.createElement(_tickets_control2.default, null),
                 _react2.default.createElement(_tickets_view2.default, null)

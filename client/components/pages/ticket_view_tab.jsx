@@ -19,7 +19,6 @@ class TicketViewTab extends React.Component{
     render(){
         return(
             <div>
-                <Icons />
                 <TicketsControl />
                 <div>
                     <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
