@@ -14,14 +14,5 @@
 .dashboard__tickets-view-and-control{
     display: flex;
     margin-top: 1rem;
-    justify-content: space-between;
 }
 
-.tickets-control{
-    display: flex;
-    flex-direction: column;
-}
-
-.tickets-view{
-    border: 5px solid green;
-}

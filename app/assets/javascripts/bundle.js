@@ -1311,58 +1311,6 @@ exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapSt
 
 /***/ }),
 
-/***/ "./client/components/dashboard/ticket_item.jsx":
-/*!*****************************************************!*\
-  !*** ./client/components/dashboard/ticket_item.jsx ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TicketItem = function TicketItem(_ref) {
-    var ticket = _ref.ticket;
-    return _react2.default.createElement(
-        'li',
-        null,
-        _react2.default.createElement(
-            'p',
-            null,
-            ticket.id
-        ),
-        _react2.default.createElement(
-            'p',
-            null,
-            ticket.business_id
-        ),
-        _react2.default.createElement(
-            'p',
-            null,
-            ticket.date_dropped_off
-        ),
-        _react2.default.createElement(
-            'p',
-            null,
-            ticket.time_dropped_off
-        )
-    );
-};
-
-exports.default = TicketItem;
-
-/***/ }),
-
 /***/ "./client/components/dashboard/ticket_search_bar.jsx":
 /*!***********************************************************!*\
   !*** ./client/components/dashboard/ticket_search_bar.jsx ***!
@@ -1959,9 +1907,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
-var _ticket_item = __webpack_require__(/*! ./ticket_item */ "./client/components/dashboard/ticket_item.jsx");
+var _tickets_view_item = __webpack_require__(/*! ./tickets_view_item */ "./client/components/dashboard/tickets_view_item.jsx");
 
-var _ticket_item2 = _interopRequireDefault(_ticket_item);
+var _tickets_view_item2 = _interopRequireDefault(_tickets_view_item);
 
 var _tickets_actions = __webpack_require__(/*! ../../actions/tickets_actions */ "./client/actions/tickets_actions.js");
 
@@ -2019,7 +1967,7 @@ var TicketsView = function (_React$Component) {
         value: function renderTickets() {
             var tickets = [];
             this.props.tickets.forEach(function (ticket, i) {
-                tickets.push(_react2.default.createElement(_ticket_item2.default, { ticket: ticket, key: i }));
+                tickets.push(_react2.default.createElement(_tickets_view_item2.default, { ticket: ticket, key: i }));
             });
             return tickets;
         }
@@ -2042,22 +1990,26 @@ var TicketsView = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'tickets-view' },
+                { className: 'tickets-view-area' },
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.handleNextPage },
-                    'next'
+                    'div',
+                    { className: 'tickets-view-area__page_navigation' },
+                    _react2.default.createElement(
+                        'button',
+                        { style: {
+                                display: this.state.page == 0 ? 'none' : 'block'
+                            }, onClick: this.handlePrevPage },
+                        'prev'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.handleNextPage },
+                        'next'
+                    )
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { style: {
-                            display: this.state.page == 0 ? 'none' : 'block'
-                        }, onClick: this.handlePrevPage },
-                    'prev'
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    null,
+                    'div',
+                    { className: 'tickets-view' },
                     this.renderTickets()
                 )
             );
@@ -2068,6 +2020,58 @@ var TicketsView = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(TicketsView);
+
+/***/ }),
+
+/***/ "./client/components/dashboard/tickets_view_item.jsx":
+/*!***********************************************************!*\
+  !*** ./client/components/dashboard/tickets_view_item.jsx ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TicketsViewItem = function TicketsViewItem(_ref) {
+    var ticket = _ref.ticket;
+    return _react2.default.createElement(
+        "div",
+        { className: "tickets-view__item" },
+        _react2.default.createElement(
+            "p",
+            null,
+            ticket.id
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            ticket.business_id
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            ticket.date_dropped_off
+        ),
+        _react2.default.createElement(
+            "p",
+            null,
+            ticket.time_dropped_off
+        )
+    );
+};
+
+exports.default = TicketsViewItem;
 
 /***/ }),
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import TicketItem from './ticket_item';
+import TicketsViewItem from './tickets_view_item';
 import {fetchTicketsByPage} from '../../actions/tickets_actions';
 
 const mapStateToProps = (state) => ({
@@ -34,7 +34,7 @@ class TicketsView extends React.Component{
     renderTickets(){
         let tickets = []
         this.props.tickets.forEach( (ticket,i)=> {
-            tickets.push(<TicketItem ticket={ticket} key={i}/>)
+            tickets.push(<TicketsViewItem ticket={ticket} key={i}/>)
         })
         return tickets
     }
@@ -53,14 +53,16 @@ class TicketsView extends React.Component{
 
     render(){
         return(
-            <div className="tickets-view"> 
-                <button onClick={this.handleNextPage}>next</button>
-                <button style={{
-                    display: this.state.page == 0 ? 'none' : 'block'
-                }} onClick={this.handlePrevPage}>prev</button>
-                <ul>
+            <div className="tickets-view-area">
+                <div className="tickets-view-area__page_navigation">
+                    <button style={{
+                        display: this.state.page == 0 ? 'none' : 'block'
+                    }} onClick={this.handlePrevPage}>prev</button>
+                    <button onClick={this.handleNextPage}>next</button>
+                </div> 
+                <div className="tickets-view">
                     {this.renderTickets()}
-                </ul>
+                </div>
             </div>
         )
     }

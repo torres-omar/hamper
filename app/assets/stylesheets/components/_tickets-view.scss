@@ -1,3 +1,25 @@
+.tickets-view-area{
+    width: 70%;
+}
+
+.tickets-view-area__page_navigation{
+    float: right;
+    display: flex;
+}
+
 .tickets-view{
-    border: 5px solid green;
+    margin-top: 2rem;
+}
+
+.tickets-view__item{
+    display: flex;
+    padding: .5rem 1rem;
+    background-color: white;
+    border-right: .5px solid grey;
+    border-left: .5px solid grey;
+    border-bottom: .5px solid grey;
+}
+
+.tickets-view__item:first-child{
+    border-top: .5px solid grey;
 }
