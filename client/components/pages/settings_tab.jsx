@@ -55,7 +55,6 @@ class SettingsTab extends React.Component{
     render(){
         return(
             <div>
-                <Icons />
                 <div> 
                     {this.renderBusinessesList()}
                 </div>

@@ -1,12 +1,18 @@
 // @import '_variables.scss';
 
 html{
-  border: 10px solid red;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  // border: 5px solid black;
+  // height: 100%;
 }
 
 body{
   font-family: $font-stack;
-  background-color: blue;
+  background-color: $background-color;
+  // height: 100%;
+  // border: 5px solid orange;
+
 }
 
 *{

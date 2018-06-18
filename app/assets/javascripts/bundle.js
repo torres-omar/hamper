@@ -502,21 +502,30 @@ var _settings_tab = __webpack_require__(/*! ./pages/settings_tab */ "./client/co
 
 var _settings_tab2 = _interopRequireDefault(_settings_tab);
 
+var _icons = __webpack_require__(/*! ./dashboard/icons */ "./client/components/dashboard/icons.jsx");
+
+var _icons2 = _interopRequireDefault(_icons);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App() {
     return _react2.default.createElement(
         'div',
-        null,
+        { className: 'app' },
+        _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/login', component: _login_page2.default }),
         _react2.default.createElement(
-            _reactRouterDom.Switch,
-            null,
-            _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/', component: _login_page2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s1', component: _customer_info_tab2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s2', component: _ticket_info_tab2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default }),
-            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/businesses', component: _settings_tab2.default })
+            'div',
+            { className: 'dashboard' },
+            _react2.default.createElement(_route_util.ProtectedRoute, { path: '/', component: _icons2.default }),
+            _react2.default.createElement(
+                _reactRouterDom.Switch,
+                null,
+                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s1', component: _customer_info_tab2.default }),
+                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s2', component: _ticket_info_tab2.default }),
+                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
+                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default }),
+                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/businesses', component: _settings_tab2.default })
+            )
         )
     );
 };
@@ -2453,7 +2462,6 @@ var SettingsTab = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_icons2.default, null),
                 _react2.default.createElement(
                     'div',
                     null,
@@ -2641,15 +2649,14 @@ var TicketsViewTab = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement(_icons2.default, null),
-                _react2.default.createElement(_tickets_control2.default, null),
+                { 'class': 'dashboard__main-view' },
                 _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
                     _react2.default.createElement(_ticket_search_bar2.default, null)
                 ),
+                _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
+                _react2.default.createElement(_tickets_control2.default, null),
                 _react2.default.createElement(_tickets_view2.default, null)
             );
         }
@@ -3730,7 +3737,7 @@ var Protected = function Protected(_ref2) {
         path = _ref2.path,
         loggedIn = _ref2.loggedIn;
     return _react2.default.createElement(_reactRouterDom.Route, { path: path, render: function render(props) {
-            return loggedIn ? _react2.default.createElement(Component, props) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' });
+            return loggedIn ? _react2.default.createElement(Component, props) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/login' });
         } });
 };
 

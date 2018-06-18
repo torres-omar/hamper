@@ -1,16 +1,12 @@
 // !default declaration says to assign the color value UNLESS the variable has already been assigned.
-$primary:       white !default;
-$secondary:     black !default;
-$bar-main:  red !default;
-$diary-main: green !default;
-
-// $success:       $green !default;
-// $info:          $cyan !default;
-// $warning:       $yellow !default;
-// $danger:        $red !default;
-// $light:         $gray-100 !default;
-// $dark:          $gray-800 !default;
-
+$palette-1: #4F7CAC!default;
+$palette-2:  #C0E0DE !default;
+$palette-3:  #162521 !default;
+$palette-4:  #3C474B !default;
+$palette-5:  #9EEFE5 !default;
+$background-color: $palette-2;
+$dashboard-background-color: $palette-4;
+$sidebar-background-color: $palette-3;
 
 $font-stack: Roboto,sans-serif;
 $secondary-font-stack: brandon-grotesque, sans-serif;

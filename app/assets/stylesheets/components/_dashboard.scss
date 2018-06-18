@@ -1,0 +1,11 @@
+.dashboard{
+    display: flex;
+    background-color: $dashboard-background-color;
+    width: 60rem;
+    margin: 0 auto;
+    height: 30rem;
+}
+
+.dashboard__main-view{
+    padding: 1rem;
+}

@@ -2,5 +2,15 @@
     display: flex;
     flex-direction: column;
     font-size: 2em;
-    color: black;
+    color: white;
+    background-color: $sidebar-background-color;
+    padding: 1rem;
+}
+
+.sidebar__button{
+    margin-bottom: 2rem;
+}
+
+.sidebar__button:hover{
+    cursor: pointer;
 }
