@@ -1565,15 +1565,21 @@ var TicketSearchBar = function (_React$Component) {
                         background: 'rgba(255, 255, 255, 0.9)',
                         position: 'fixed',
                         overflow: 'auto',
-                        maxHeight: '50%' // TODO: don't cheat, let it flow to the bottom
+                        maxHeight: '50%'
+                    },
+                    wrapperStyle: {
+                        width: "100%"
+                    },
+                    inputProps: {
+                        placeholder: "Search..."
                     }
                 }),
                 _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement('input', { type: 'button', value: 'search scope', onClick: this.toggleScopeOptions }),
-                    this.renderScopeOptions()
-                )
+                    'button',
+                    { onClick: this.toggleScopeOptions, className: 'searchbar__scope-setting' },
+                    _react2.default.createElement('i', { className: 'fas fa-sort-down' })
+                ),
+                this.renderScopeOptions()
             );
         }
     }]);
@@ -1831,6 +1837,7 @@ var TicketsControl = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (TicketsControl.__proto__ || Object.getPrototypeOf(TicketsControl)).call(this, props));
 
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.handleNewTicketRedirect = _this.handleNewTicketRedirect.bind(_this);
         return _this;
     }
     // fetch new status tickets upon changing state (ticket_status) 
@@ -1871,33 +1878,53 @@ var TicketsControl = function (_React$Component) {
             }
         }
     }, {
+        key: 'handleNewTicketRedirect',
+        value: function handleNewTicketRedirect() {
+            // e.preventDefault()
+            this.props.history.push('/tickets/new/s1');
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'tickets-control' },
                 _react2.default.createElement(
                     'button',
                     { onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "unfulfilled");
-                        } },
+                        }, className: 'tickets-control__button' },
                     'Unfulfilled'
                 ),
                 _react2.default.createElement(
                     'button',
                     { onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "notified");
-                        } },
+                        }, className: 'tickets-control__button' },
                     'Notified'
                 ),
                 _react2.default.createElement(
                     'button',
                     { onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "fulfilled");
-                        } },
+                        }, className: 'tickets-control__button' },
                     'Fulfilled'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'tickets-control__new-ticket-area' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'tickets-control__new-ticket-button', onClick: this.handleNewTicketRedirect },
+                        _react2.default.createElement('i', { 'class': 'fas fa-plus' })
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'new ticket'
+                    )
                 )
             );
         }
@@ -2623,23 +2650,11 @@ var TicketsViewTab = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (TicketsViewTab.__proto__ || Object.getPrototypeOf(TicketsViewTab)).call(this, props));
 
-        _this.handleNewTicketRedirect = _this.handleNewTicketRedirect.bind(_this);
         _this.handleSettingsRedirect = _this.handleSettingsRedirect.bind(_this);
         return _this;
     }
 
     _createClass(TicketsViewTab, [{
-        key: 'handleNewTicketRedirect',
-        value: function handleNewTicketRedirect() {
-            // e.preventDefault()
-            this.props.history.push('/tickets/new/s1');
-        }
-
-        // componentDidMount(){
-        //     this.props.history.push('/tickets')
-        // }
-
-    }, {
         key: 'handleSettingsRedirect',
         value: function handleSettingsRedirect() {
             this.props.history.push('/settings');
@@ -2651,9 +2666,12 @@ var TicketsViewTab = function (_React$Component) {
                 'div',
                 { className: 'dashboard__main-view' },
                 _react2.default.createElement(_ticket_search_bar2.default, null),
-                _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
-                _react2.default.createElement(_tickets_control2.default, null),
-                _react2.default.createElement(_tickets_view2.default, null)
+                _react2.default.createElement(
+                    'div',
+                    { className: 'dashboard__tickets-view-and-control' },
+                    _react2.default.createElement(_tickets_control2.default, null),
+                    _react2.default.createElement(_tickets_view2.default, null)
+                )
             );
         }
     }]);

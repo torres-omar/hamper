@@ -1,0 +1,25 @@
+.tickets-control{
+    display: flex;
+    flex-direction: column;
+}
+
+.tickets-control__button{
+    margin-bottom: 1rem;
+}
+
+.tickets-control__new-ticket-area{
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.tickets-control__new-ticket-button{
+    background-color: $palette-1;
+    border-radius: 50%;
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+}

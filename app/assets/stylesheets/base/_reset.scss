@@ -46,3 +46,22 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+input,
+input[type="password"],
+input[type="email"],
+input[type="text"],
+input[type="submit"],
+input[type="search"]
+textarea,
+button {
+    appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 0;
+}
+
+input:focus{
+    outline: none;
+    box-shadow: none;
+}

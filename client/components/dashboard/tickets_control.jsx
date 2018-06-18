@@ -20,6 +20,7 @@ class TicketsControl extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleNewTicketRedirect = this.handleNewTicketRedirect.bind(this)
     }
     // fetch new status tickets upon changing state (ticket_status) 
     // new tickets will go through redux and be stored in entities.tickets
@@ -52,12 +53,21 @@ class TicketsControl extends React.Component {
         } 
     }
 
+    handleNewTicketRedirect() {
+        // e.preventDefault()
+        this.props.history.push('/tickets/new/s1')
+    }
+
     render() {
         return (
-            <div>
-                <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")} >Unfulfilled</button>
-                <button onClick={(e) => this.handleStatusChange(e, "notified")} >Notified</button>
-                <button onClick={(e) => this.handleStatusChange(e, "fulfilled")} >Fulfilled</button>
+            <div className="tickets-control">
+                <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")} className="tickets-control__button">Unfulfilled</button>
+                <button onClick={(e) => this.handleStatusChange(e, "notified")} className="tickets-control__button">Notified</button>
+                <button onClick={(e) => this.handleStatusChange(e, "fulfilled")} className="tickets-control__button">Fulfilled</button>
+                <div className="tickets-control__new-ticket-area">
+                    <div className="tickets-control__new-ticket-button" onClick={this.handleNewTicketRedirect}><i class="fas fa-plus"></i></div>
+                    <p>new ticket</p>
+                </div>
             </div>
         )
     }

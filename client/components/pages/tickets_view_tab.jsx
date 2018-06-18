@@ -10,18 +10,8 @@ import { withRouter } from 'react-router-dom';
 class TicketsViewTab extends React.Component{
     constructor(props){
         super(props)
-        this.handleNewTicketRedirect = this.handleNewTicketRedirect.bind(this)
         this.handleSettingsRedirect = this.handleSettingsRedirect.bind(this)
     }
-
-    handleNewTicketRedirect() {
-        // e.preventDefault()
-        this.props.history.push('/tickets/new/s1')
-    }
-
-    // componentDidMount(){
-    //     this.props.history.push('/tickets')
-    // }
 
     handleSettingsRedirect(){
         this.props.history.push('/settings')
@@ -31,9 +21,10 @@ class TicketsViewTab extends React.Component{
         return(
             <div className="dashboard__main-view">
                 <TicketSearchBar />
-                <input type="button" onClick={this.handleNewTicketRedirect} value="new ticket" />
-                <TicketsControl />
-                <TicketsView />
+                <div className="dashboard__tickets-view-and-control"> 
+                    <TicketsControl />
+                    <TicketsView />
+                </div>
             </div>
         )
     }

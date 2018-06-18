@@ -128,13 +128,19 @@ class TicketSearchBar extends React.Component{
                         background: 'rgba(255, 255, 255, 0.9)',
                         position: 'fixed',
                         overflow: 'auto',
-                        maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
+                        maxHeight: '50%',
+                    }}
+                    wrapperStyle={{
+                        width: "100%"
+                    }}
+                    inputProps={{
+                        placeholder: "Search..."
                     }}
                 /> 
-                <div> 
-                    <input type="button" value="search scope" onClick={this.toggleScopeOptions}/>
-                    {this.renderScopeOptions()}
-                </div>
+                <button onClick={this.toggleScopeOptions} className="searchbar__scope-setting">
+                    <i className="fas fa-sort-down"></i>
+                </button>
+                {this.renderScopeOptions()}
             </div>
         )
     }
