@@ -1,0 +1,14 @@
+// @import '_variables.scss';
+
+html{
+  border: 10px solid red;
+}
+
+body{
+  font-family: $font-stack;
+  background-color: blue;
+}
+
+*{
+  box-sizing: border-box;
+}

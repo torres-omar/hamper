@@ -863,10 +863,10 @@ var Icons = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement('i', { onClick: this.toTickets }),
-                _react2.default.createElement('i', { onClick: this.toBusinesses }),
-                _react2.default.createElement('i', { onClick: this.handleSignOut })
+                { className: 'sidebar' },
+                _react2.default.createElement('i', { className: 'fas fa-ticket-alt sidebar__button', onClick: this.toTickets }),
+                _react2.default.createElement('i', { className: 'fas fa-briefcase sidebar__button', onClick: this.toBusinesses }),
+                _react2.default.createElement('i', { className: 'fas fa-power-off sidebar__button', onClick: this.handleSignOut })
             );
         }
     }]);
