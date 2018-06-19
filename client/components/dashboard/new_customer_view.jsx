@@ -8,7 +8,9 @@ class NewCustomerView extends React.Component{
 
     render(){
         return(
-            <NewCustomerForm />
+            <div className="new-customer-view">
+                <NewCustomerForm />
+            </div>
         )
     }
 }

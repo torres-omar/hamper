@@ -1,6 +1,7 @@
 .searchbar{
     display: flex;
     width: 100%;
+    color: black;
 }
 
 .searchbar input{
@@ -13,4 +14,10 @@
     font-size: 1.2rem;
     color: $palette-4;
     background-color: $palette-2;
+}
+
+
+.customer-search-bar{
+    width: 40%;
+    margin-right: 2rem;
 }

@@ -42,27 +42,25 @@ class NewCustomerForm extends React.Component{
 
     render(){
         return(
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        First name
-                        <input type="text" onChange={this.handleChange} name="first_name" value={this.state.first_name}/>
-                    </label>
-                    <label>
-                        Last name
-                        <input type="text" onChange={this.handleChange} name="last_name" value={this.state.last_name}/>
-                    </label>
-                    <label>
-                        Email
-                        <input type="text" onChange={this.handleChange} name="email_address" value={this.state.email_address}/>
-                    </label>
-                    <label>
-                        Phone number
-                        <input type="text" onChange={this.handleChange} name="phone_number" value={this.state.phone_number}/>
-                    </label>
-                    <input type="submit" value="continue" />
-                </form>
-            </div>
+            <form onSubmit={this.handleSubmit} className="form new-customer-form">
+                <label className="form__label-and-field">
+                    First name
+                    <input type="text" onChange={this.handleChange} name="first_name" value={this.state.first_name}/>
+                </label>
+                <label className="form__label-and-field">
+                    Last name
+                    <input type="text" onChange={this.handleChange} name="last_name" value={this.state.last_name}/>
+                </label>
+                <label className="form__label-and-field">
+                    Email
+                    <input type="text" onChange={this.handleChange} name="email_address" value={this.state.email_address}/>
+                </label>
+                <label className="form__label-and-field">
+                    Phone number
+                    <input type="text" onChange={this.handleChange} name="phone_number" value={this.state.phone_number}/>
+                </label>
+                <input type="submit" value="continue" className="form__submit-button"/>
+            </form>
         )
     }
 }

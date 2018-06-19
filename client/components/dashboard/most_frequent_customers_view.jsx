@@ -8,8 +8,8 @@ class MostFrequentCustomersView extends React.Component{
 
     render(){
         return(
-            <div>
-                <h2>Most frequent customers</h2>
+            <div className="most-frequent-customers">
+                <h2 className="most-frequent-customers__title">Most frequent customers</h2>  
             </div>
         )
     }

@@ -65,7 +65,7 @@ class CustomerSearchBar extends React.Component{
 
     render(){
         return(
-            <div>
+            <div className="searchbar customer-search-bar">
                 <Autocomplete
                     getItemValue={(item) => {
                         return item.first_name
@@ -80,9 +80,16 @@ class CustomerSearchBar extends React.Component{
                     onChange={this.handleChangeDebounced}
                     onSelect={this.handleSelect}
                     menuStyle={{
-                        position: 'static',
-                        zIndex: 2,
-                        overflow: 'visible'
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        position: 'fixed',
+                        overflow: 'auto',
+                        maxHeight: '50%',
+                    }}
+                    wrapperStyle={{
+                        width: "100%"
+                    }}
+                    inputProps={{
+                        placeholder: "Search..."
                     }}      
 
                 />

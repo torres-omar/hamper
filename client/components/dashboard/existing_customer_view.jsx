@@ -9,7 +9,7 @@ class ExistingCustomerView extends React.Component{
 
     render(){
         return(
-            <div className="">
+            <div className="existing-customer-view">
                 <CustomerSearchBar />
                 <MostFrequentCustomersView />
             </div>

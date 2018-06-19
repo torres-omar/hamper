@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 30rem;
+}
+
+.form__label-and-field{
+    margin-bottom: .5rem;
+    input{
+        float: right;
+        width: 60%;
+    }
+}
+
+.form__submit-button{
+    margin-top: 1rem;
+}

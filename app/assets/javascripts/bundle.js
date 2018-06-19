@@ -619,7 +619,7 @@ var CustomerSearchBar = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'searchbar customer-search-bar' },
                 _react2.default.createElement(_reactAutocomplete2.default, {
                     getItemValue: function getItemValue(item) {
                         return item.first_name;
@@ -636,9 +636,16 @@ var CustomerSearchBar = function (_React$Component) {
                     onChange: this.handleChangeDebounced,
                     onSelect: this.handleSelect,
                     menuStyle: {
-                        position: 'static',
-                        zIndex: 2,
-                        overflow: 'visible'
+                        background: 'rgba(255, 255, 255, 0.9)',
+                        position: 'fixed',
+                        overflow: 'auto',
+                        maxHeight: '50%'
+                    },
+                    wrapperStyle: {
+                        width: "100%"
+                    },
+                    inputProps: {
+                        placeholder: "Search..."
                     }
 
                 })
@@ -703,7 +710,7 @@ var ExistingCustomerView = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: '' },
+                { className: 'existing-customer-view' },
                 _react2.default.createElement(_customer_search_bar2.default, null),
                 _react2.default.createElement(_most_frequent_customers_view2.default, null)
             );
@@ -1091,15 +1098,15 @@ var MostFrequentCustomersView = function (_React$Component) {
     }
 
     _createClass(MostFrequentCustomersView, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                null,
+                "div",
+                { className: "most-frequent-customers" },
                 _react2.default.createElement(
-                    'h2',
-                    null,
-                    'Most frequent customers'
+                    "h2",
+                    { className: "most-frequent-customers__title" },
+                    "Most frequent customers"
                 )
             );
         }
@@ -1205,37 +1212,33 @@ var NewCustomerForm = function (_React$Component) {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                null,
+                'form',
+                { onSubmit: this.handleSubmit, className: 'form new-customer-form' },
                 _react2.default.createElement(
-                    'form',
-                    { onSubmit: this.handleSubmit },
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'First name',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'first_name', value: this.state.first_name })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Last name',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'last_name', value: this.state.last_name })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Email',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'email_address', value: this.state.email_address })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Phone number',
-                        _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'phone_number', value: this.state.phone_number })
-                    ),
-                    _react2.default.createElement('input', { type: 'submit', value: 'continue' })
-                )
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'First name',
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'first_name', value: this.state.first_name })
+                ),
+                _react2.default.createElement(
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'Last name',
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'last_name', value: this.state.last_name })
+                ),
+                _react2.default.createElement(
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'Email',
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'email_address', value: this.state.email_address })
+                ),
+                _react2.default.createElement(
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'Phone number',
+                    _react2.default.createElement('input', { type: 'text', onChange: this.handleChange, name: 'phone_number', value: this.state.phone_number })
+                ),
+                _react2.default.createElement('input', { type: 'submit', value: 'continue', className: 'form__submit-button' })
             );
         }
     }]);
@@ -1291,7 +1294,11 @@ var NewCustomerView = function (_React$Component) {
     _createClass(NewCustomerView, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(_new_customer_form2.default, null);
+            return _react2.default.createElement(
+                'div',
+                { className: 'new-customer-view' },
+                _react2.default.createElement(_new_customer_form2.default, null)
+            );
         }
     }]);
 
@@ -2397,7 +2404,7 @@ var CustomerInfo = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (CustomerInfo.__proto__ || Object.getPrototypeOf(CustomerInfo)).call(this, props));
 
         _this.state = {
-            customer_status: "existing"
+            customer_status: "new"
         };
 
         _this.handleRadioChange = _this.handleRadioChange.bind(_this);

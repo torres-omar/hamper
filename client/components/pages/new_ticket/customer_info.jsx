@@ -7,7 +7,7 @@ class CustomerInfo extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            customer_status: "existing"
+            customer_status: "new"
         }
 
         this.handleRadioChange = this.handleRadioChange.bind(this)
