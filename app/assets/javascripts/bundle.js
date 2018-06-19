@@ -2444,7 +2444,7 @@ var CustomerInfo = function (_React$Component) {
                     'New ticket'
                 ),
                 _react2.default.createElement(
-                    'p',
+                    'h3',
                     null,
                     'Customer Info'
                 ),
@@ -2455,27 +2455,29 @@ var CustomerInfo = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'new-ticket__customer-options' },
                     _react2.default.createElement(
                         'label',
-                        null,
+                        { className: 'radio-option new-ticket_customer-option' },
                         'Existing customer',
                         _react2.default.createElement('input', {
                             type: 'radio',
                             value: 'existing',
                             checked: this.state.customer_status == 'existing',
-                            onChange: this.handleRadioChange
+                            onChange: this.handleRadioChange,
+                            className: 'radio-option__button'
                         })
                     ),
                     _react2.default.createElement(
                         'label',
-                        null,
+                        { className: 'radio-option new-ticket-customer-option' },
                         'New customer',
                         _react2.default.createElement('input', {
                             type: 'radio',
                             value: 'new',
                             checked: this.state.customer_status == 'new',
-                            onChange: this.handleRadioChange
+                            onChange: this.handleRadioChange,
+                            className: 'radio-option__button'
                         })
                     )
                 ),
