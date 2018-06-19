@@ -474,37 +474,15 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-
 var _route_util = __webpack_require__(/*! ../util/route_util */ "./client/util/route_util.jsx");
 
 var _login_page = __webpack_require__(/*! ./pages/login_page */ "./client/components/pages/login_page.jsx");
 
 var _login_page2 = _interopRequireDefault(_login_page);
 
-var _tickets_view_tab = __webpack_require__(/*! ./pages/tickets_view_tab */ "./client/components/pages/tickets_view_tab.jsx");
+var _dashboard = __webpack_require__(/*! ./pages/dashboard */ "./client/components/pages/dashboard.jsx");
 
-var _tickets_view_tab2 = _interopRequireDefault(_tickets_view_tab);
-
-var _ticket_view_tab = __webpack_require__(/*! ./pages/ticket_view_tab */ "./client/components/pages/ticket_view_tab.jsx");
-
-var _ticket_view_tab2 = _interopRequireDefault(_ticket_view_tab);
-
-var _customer_info_tab = __webpack_require__(/*! ./pages/new_ticket/customer_info_tab */ "./client/components/pages/new_ticket/customer_info_tab.jsx");
-
-var _customer_info_tab2 = _interopRequireDefault(_customer_info_tab);
-
-var _ticket_info_tab = __webpack_require__(/*! ./pages/new_ticket/ticket_info_tab */ "./client/components/pages/new_ticket/ticket_info_tab.jsx");
-
-var _ticket_info_tab2 = _interopRequireDefault(_ticket_info_tab);
-
-var _settings_tab = __webpack_require__(/*! ./pages/settings_tab */ "./client/components/pages/settings_tab.jsx");
-
-var _settings_tab2 = _interopRequireDefault(_settings_tab);
-
-var _icons = __webpack_require__(/*! ./dashboard/icons */ "./client/components/dashboard/icons.jsx");
-
-var _icons2 = _interopRequireDefault(_icons);
+var _dashboard2 = _interopRequireDefault(_dashboard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -513,20 +491,7 @@ var App = function App() {
         'div',
         { className: 'app' },
         _react2.default.createElement(_route_util.AuthRoute, { exact: true, path: '/login', component: _login_page2.default }),
-        _react2.default.createElement(
-            'div',
-            { className: 'dashboard' },
-            _react2.default.createElement(_route_util.ProtectedRoute, { path: '/', component: _icons2.default }),
-            _react2.default.createElement(
-                _reactRouterDom.Switch,
-                null,
-                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s1', component: _customer_info_tab2.default }),
-                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/new/s2', component: _ticket_info_tab2.default }),
-                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets', component: _tickets_view_tab2.default }),
-                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/tickets/:ticket_id', component: _ticket_view_tab2.default }),
-                _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/businesses', component: _settings_tab2.default })
-            )
-        )
+        _react2.default.createElement(_route_util.ProtectedRoute, { path: '/dashboard', component: _dashboard2.default })
     );
 };
 
@@ -685,6 +650,70 @@ var CustomerSearchBar = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(CustomerSearchBar));
+
+/***/ }),
+
+/***/ "./client/components/dashboard/existing_customer_view.jsx":
+/*!****************************************************************!*\
+  !*** ./client/components/dashboard/existing_customer_view.jsx ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _customer_search_bar = __webpack_require__(/*! ./customer_search_bar */ "./client/components/dashboard/customer_search_bar.jsx");
+
+var _customer_search_bar2 = _interopRequireDefault(_customer_search_bar);
+
+var _most_frequent_customers_view = __webpack_require__(/*! ./most_frequent_customers_view */ "./client/components/dashboard/most_frequent_customers_view.jsx");
+
+var _most_frequent_customers_view2 = _interopRequireDefault(_most_frequent_customers_view);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExistingCustomerView = function (_React$Component) {
+    _inherits(ExistingCustomerView, _React$Component);
+
+    function ExistingCustomerView(props) {
+        _classCallCheck(this, ExistingCustomerView);
+
+        return _possibleConstructorReturn(this, (ExistingCustomerView.__proto__ || Object.getPrototypeOf(ExistingCustomerView)).call(this, props));
+    }
+
+    _createClass(ExistingCustomerView, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: '' },
+                _react2.default.createElement(_customer_search_bar2.default, null),
+                _react2.default.createElement(_most_frequent_customers_view2.default, null)
+            );
+        }
+    }]);
+
+    return ExistingCustomerView;
+}(_react2.default.Component);
+
+exports.default = ExistingCustomerView;
 
 /***/ }),
 
@@ -855,12 +884,12 @@ var Icons = function (_React$Component) {
     _createClass(Icons, [{
         key: 'toTickets',
         value: function toTickets() {
-            this.props.history.push('/tickets');
+            this.props.history.push('/dashboard/tickets');
         }
     }, {
         key: 'toBusinesses',
         value: function toBusinesses() {
-            this.props.history.push('/businesses');
+            this.props.history.push('/dashboard/businesses');
         }
     }, {
         key: 'handleSignOut',
@@ -1024,6 +1053,65 @@ exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapSt
 
 /***/ }),
 
+/***/ "./client/components/dashboard/most_frequent_customers_view.jsx":
+/*!**********************************************************************!*\
+  !*** ./client/components/dashboard/most_frequent_customers_view.jsx ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MostFrequentCustomersView = function (_React$Component) {
+    _inherits(MostFrequentCustomersView, _React$Component);
+
+    function MostFrequentCustomersView(props) {
+        _classCallCheck(this, MostFrequentCustomersView);
+
+        return _possibleConstructorReturn(this, (MostFrequentCustomersView.__proto__ || Object.getPrototypeOf(MostFrequentCustomersView)).call(this, props));
+    }
+
+    _createClass(MostFrequentCustomersView, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'h2',
+                    null,
+                    'Most frequent customers'
+                )
+            );
+        }
+    }]);
+
+    return MostFrequentCustomersView;
+}(_react2.default.Component);
+
+exports.default = MostFrequentCustomersView;
+
+/***/ }),
+
 /***/ "./client/components/dashboard/new_customer_form.jsx":
 /*!***********************************************************!*\
   !*** ./client/components/dashboard/new_customer_form.jsx ***!
@@ -1156,6 +1244,61 @@ var NewCustomerForm = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewCustomerForm));
+
+/***/ }),
+
+/***/ "./client/components/dashboard/new_customer_view.jsx":
+/*!***********************************************************!*\
+  !*** ./client/components/dashboard/new_customer_view.jsx ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _new_customer_form = __webpack_require__(/*! ./new_customer_form */ "./client/components/dashboard/new_customer_form.jsx");
+
+var _new_customer_form2 = _interopRequireDefault(_new_customer_form);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NewCustomerView = function (_React$Component) {
+    _inherits(NewCustomerView, _React$Component);
+
+    function NewCustomerView(props) {
+        _classCallCheck(this, NewCustomerView);
+
+        return _possibleConstructorReturn(this, (NewCustomerView.__proto__ || Object.getPrototypeOf(NewCustomerView)).call(this, props));
+    }
+
+    _createClass(NewCustomerView, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(_new_customer_form2.default, null);
+        }
+    }]);
+
+    return NewCustomerView;
+}(_react2.default.Component);
+
+exports.default = NewCustomerView;
 
 /***/ }),
 
@@ -1450,7 +1593,8 @@ var TicketSearchBar = function (_React$Component) {
             // exposes all tickets to any user.
             // fix this later to only show tickets that belong to the current user
             this.props.clearSearchTickets();
-            this.props.history.push('/tickets/' + item.id);
+            this.setState({ query: '' });
+            this.props.history.push('/dashboard/tickets/' + item.id);
         }
     }, {
         key: 'handleScopeChange',
@@ -1647,7 +1791,7 @@ var TicketView = function (_React$Component) {
     }, {
         key: 'goBack',
         value: function goBack() {
-            this.props.history.push('/tickets');
+            this.props.history.push('/dashboard/tickets');
         }
     }, {
         key: 'sendNotification',
@@ -1685,28 +1829,36 @@ var TicketView = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'ticket-view-area' },
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.goBack },
-                    'back'
+                    'div',
+                    { className: 'ticket-view-area__back_nagivation' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.goBack },
+                        'back'
+                    )
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.sendNotification, style: {
-                            display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
-                        } },
-                    'notify'
-                ),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.fulfillTicket, style: {
-                            display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
-                        } },
-                    'fulfill'
-                ),
-                this.renderNotificationResponse(),
-                this.renderTicket()
+                    'div',
+                    { className: 'ticket-view' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.sendNotification, style: {
+                                display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
+                            } },
+                        'notify'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.fulfillTicket, style: {
+                                display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                            } },
+                        'fulfill'
+                    ),
+                    this.renderNotificationResponse(),
+                    this.renderTicket()
+                )
             );
         }
     }]);
@@ -1821,15 +1973,15 @@ var TicketsControl = function (_React$Component) {
         value: function handleStatusChange(e, status) {
             e.preventDefault();
             this.props.changeTicketStatus(status);
-            if (this.props.location.pathname != "/tickets") {
-                this.props.history.push('/tickets');
+            if (this.props.location.pathname != "/dashboard/tickets") {
+                this.props.history.push('/dashboard/tickets');
             }
         }
     }, {
         key: 'handleNewTicketRedirect',
         value: function handleNewTicketRedirect() {
             // e.preventDefault()
-            this.props.history.push('/tickets/new/s1');
+            this.props.history.push('/dashboard/new-ticket-s1');
         }
     }, {
         key: 'render',
@@ -1866,7 +2018,7 @@ var TicketsControl = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'tickets-control__new-ticket-button', onClick: this.handleNewTicketRedirect },
-                        _react2.default.createElement('i', { 'class': 'fas fa-plus' })
+                        _react2.default.createElement('i', { className: 'fas fa-plus' })
                     ),
                     _react2.default.createElement(
                         'p',
@@ -2075,6 +2227,70 @@ exports.default = TicketsViewItem;
 
 /***/ }),
 
+/***/ "./client/components/pages/dashboard.jsx":
+/*!***********************************************!*\
+  !*** ./client/components/pages/dashboard.jsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _route_util = __webpack_require__(/*! ../../util/route_util */ "./client/util/route_util.jsx");
+
+var _tickets_view_tab = __webpack_require__(/*! ./tickets_view_tab */ "./client/components/pages/tickets_view_tab.jsx");
+
+var _tickets_view_tab2 = _interopRequireDefault(_tickets_view_tab);
+
+var _customer_info = __webpack_require__(/*! ./new_ticket/customer_info */ "./client/components/pages/new_ticket/customer_info.jsx");
+
+var _customer_info2 = _interopRequireDefault(_customer_info);
+
+var _ticket_info = __webpack_require__(/*! ./new_ticket/ticket_info */ "./client/components/pages/new_ticket/ticket_info.jsx");
+
+var _ticket_info2 = _interopRequireDefault(_ticket_info);
+
+var _settings_tab = __webpack_require__(/*! ./settings_tab */ "./client/components/pages/settings_tab.jsx");
+
+var _settings_tab2 = _interopRequireDefault(_settings_tab);
+
+var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+
+var _icons2 = _interopRequireDefault(_icons);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Dashboard = function Dashboard() {
+    return _react2.default.createElement(
+        'div',
+        { className: 'dashboard' },
+        _react2.default.createElement(_route_util.ProtectedRoute, { path: '/dashboard', component: _icons2.default }),
+        _react2.default.createElement(
+            _reactRouterDom.Switch,
+            null,
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/dashboard/new-ticket-s1', component: _customer_info2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/dashboard/new-ticket-s2', component: _ticket_info2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/dashboard/businesses', component: _settings_tab2.default }),
+            _react2.default.createElement(_route_util.ProtectedRoute, { path: '/dashboard/tickets', component: _tickets_view_tab2.default })
+        )
+    );
+};
+
+exports.default = Dashboard;
+
+/***/ }),
+
 /***/ "./client/components/pages/login_page.jsx":
 /*!************************************************!*\
   !*** ./client/components/pages/login_page.jsx ***!
@@ -2134,10 +2350,10 @@ exports.default = LogInPage;
 
 /***/ }),
 
-/***/ "./client/components/pages/new_ticket/customer_info_tab.jsx":
-/*!******************************************************************!*\
-  !*** ./client/components/pages/new_ticket/customer_info_tab.jsx ***!
-  \******************************************************************/
+/***/ "./client/components/pages/new_ticket/customer_info.jsx":
+/*!**************************************************************!*\
+  !*** ./client/components/pages/new_ticket/customer_info.jsx ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2154,17 +2370,13 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _tickets_control = __webpack_require__(/*! ../../dashboard/tickets_control */ "./client/components/dashboard/tickets_control.jsx");
+var _existing_customer_view = __webpack_require__(/*! ../../dashboard/existing_customer_view */ "./client/components/dashboard/existing_customer_view.jsx");
 
-var _tickets_control2 = _interopRequireDefault(_tickets_control);
+var _existing_customer_view2 = _interopRequireDefault(_existing_customer_view);
 
-var _customer_search_bar = __webpack_require__(/*! ../../dashboard/customer_search_bar */ "./client/components/dashboard/customer_search_bar.jsx");
+var _new_customer_view = __webpack_require__(/*! ../../dashboard/new_customer_view */ "./client/components/dashboard/new_customer_view.jsx");
 
-var _customer_search_bar2 = _interopRequireDefault(_customer_search_bar);
-
-var _new_customer_form = __webpack_require__(/*! ../../dashboard/new_customer_form */ "./client/components/dashboard/new_customer_form.jsx");
-
-var _new_customer_form2 = _interopRequireDefault(_new_customer_form);
+var _new_customer_view2 = _interopRequireDefault(_new_customer_view);
 
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
@@ -2176,13 +2388,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CustomerInfoTab = function (_React$Component) {
-    _inherits(CustomerInfoTab, _React$Component);
+var CustomerInfo = function (_React$Component) {
+    _inherits(CustomerInfo, _React$Component);
 
-    function CustomerInfoTab(props) {
-        _classCallCheck(this, CustomerInfoTab);
+    function CustomerInfo(props) {
+        _classCallCheck(this, CustomerInfo);
 
-        var _this = _possibleConstructorReturn(this, (CustomerInfoTab.__proto__ || Object.getPrototypeOf(CustomerInfoTab)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (CustomerInfo.__proto__ || Object.getPrototypeOf(CustomerInfo)).call(this, props));
 
         _this.state = {
             customer_status: "existing"
@@ -2194,7 +2406,7 @@ var CustomerInfoTab = function (_React$Component) {
         return _this;
     }
 
-    _createClass(CustomerInfoTab, [{
+    _createClass(CustomerInfo, [{
         key: 'handleRadioChange',
         value: function handleRadioChange(e) {
             this.setState({ customer_status: e.target.value });
@@ -2203,23 +2415,22 @@ var CustomerInfoTab = function (_React$Component) {
         key: 'renderProperView',
         value: function renderProperView() {
             if (this.state.customer_status == 'existing') {
-                return _react2.default.createElement(_customer_search_bar2.default, null);
+                return _react2.default.createElement(_existing_customer_view2.default, null);
             } else if (this.state.customer_status == 'new') {
-                return _react2.default.createElement(_new_customer_form2.default, null);
+                return _react2.default.createElement(_new_customer_view2.default, null);
             }
         }
     }, {
         key: 'goBack',
         value: function goBack() {
-            this.props.history.push('/tickets');
+            this.props.history.push('/dashboard/tickets');
         }
     }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement(_tickets_control2.default, null),
+                { className: 'dashboard__main-view dashboard__new-ticket-view' },
                 _react2.default.createElement(
                     'h1',
                     null,
@@ -2266,17 +2477,17 @@ var CustomerInfoTab = function (_React$Component) {
         }
     }]);
 
-    return CustomerInfoTab;
+    return CustomerInfo;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouterDom.withRouter)(CustomerInfoTab);
+exports.default = (0, _reactRouterDom.withRouter)(CustomerInfo);
 
 /***/ }),
 
-/***/ "./client/components/pages/new_ticket/ticket_info_tab.jsx":
-/*!****************************************************************!*\
-  !*** ./client/components/pages/new_ticket/ticket_info_tab.jsx ***!
-  \****************************************************************/
+/***/ "./client/components/pages/new_ticket/ticket_info.jsx":
+/*!************************************************************!*\
+  !*** ./client/components/pages/new_ticket/ticket_info.jsx ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2315,19 +2526,19 @@ var mapStateToProps = function mapStateToProps(state) {
     };
 };
 
-var TicketInfoTab = function (_React$Component) {
-    _inherits(TicketInfoTab, _React$Component);
+var TicketInfo = function (_React$Component) {
+    _inherits(TicketInfo, _React$Component);
 
-    function TicketInfoTab(props) {
-        _classCallCheck(this, TicketInfoTab);
+    function TicketInfo(props) {
+        _classCallCheck(this, TicketInfo);
 
-        var _this = _possibleConstructorReturn(this, (TicketInfoTab.__proto__ || Object.getPrototypeOf(TicketInfoTab)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (TicketInfo.__proto__ || Object.getPrototypeOf(TicketInfo)).call(this, props));
 
         _this.goBack = _this.goBack.bind(_this);
         return _this;
     }
 
-    _createClass(TicketInfoTab, [{
+    _createClass(TicketInfo, [{
         key: 'goBack',
         value: function goBack() {
             this.props.history.push('/tickets/new/s1');
@@ -2369,10 +2580,10 @@ var TicketInfoTab = function (_React$Component) {
         }
     }]);
 
-    return TicketInfoTab;
+    return TicketInfo;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, null)(TicketInfoTab));
+exports.default = (0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, null)(TicketInfo));
 
 /***/ }),
 
@@ -2511,95 +2722,6 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispathToProps)(S
 
 /***/ }),
 
-/***/ "./client/components/pages/ticket_view_tab.jsx":
-/*!*****************************************************!*\
-  !*** ./client/components/pages/ticket_view_tab.jsx ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-
-var _react2 = _interopRequireDefault(_react);
-
-var _tickets_control = __webpack_require__(/*! ../dashboard/tickets_control */ "./client/components/dashboard/tickets_control.jsx");
-
-var _tickets_control2 = _interopRequireDefault(_tickets_control);
-
-var _ticket_view = __webpack_require__(/*! ../dashboard/ticket_view */ "./client/components/dashboard/ticket_view.jsx");
-
-var _ticket_view2 = _interopRequireDefault(_ticket_view);
-
-var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-
-var _ticket_search_bar = __webpack_require__(/*! ../dashboard/ticket_search_bar */ "./client/components/dashboard/ticket_search_bar.jsx");
-
-var _ticket_search_bar2 = _interopRequireDefault(_ticket_search_bar);
-
-var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
-
-var _icons2 = _interopRequireDefault(_icons);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TicketViewTab = function (_React$Component) {
-    _inherits(TicketViewTab, _React$Component);
-
-    function TicketViewTab(props) {
-        _classCallCheck(this, TicketViewTab);
-
-        var _this = _possibleConstructorReturn(this, (TicketViewTab.__proto__ || Object.getPrototypeOf(TicketViewTab)).call(this, props));
-
-        _this.handleNewTicketRedirect = _this.handleNewTicketRedirect.bind(_this);
-        return _this;
-    }
-
-    _createClass(TicketViewTab, [{
-        key: 'handleNewTicketRedirect',
-        value: function handleNewTicketRedirect() {
-            // e.preventDefault()
-            this.props.history.push('/tickets/new/s1');
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_tickets_control2.default, null),
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement('input', { type: 'button', onClick: this.handleNewTicketRedirect, value: 'new ticket' }),
-                    _react2.default.createElement(_ticket_search_bar2.default, null)
-                ),
-                _react2.default.createElement(_ticket_view2.default, null)
-            );
-        }
-    }]);
-
-    return TicketViewTab;
-}(_react2.default.Component);
-
-exports.default = (0, _reactRouterDom.withRouter)(TicketViewTab);
-
-/***/ }),
-
 /***/ "./client/components/pages/tickets_view_tab.jsx":
 /*!******************************************************!*\
   !*** ./client/components/pages/tickets_view_tab.jsx ***!
@@ -2632,9 +2754,11 @@ var _ticket_search_bar = __webpack_require__(/*! ../dashboard/ticket_search_bar 
 
 var _ticket_search_bar2 = _interopRequireDefault(_ticket_search_bar);
 
-var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+var _ticket_view = __webpack_require__(/*! ../dashboard/ticket_view */ "./client/components/dashboard/ticket_view.jsx");
 
-var _icons2 = _interopRequireDefault(_icons);
+var _ticket_view2 = _interopRequireDefault(_ticket_view);
+
+var _route_util = __webpack_require__(/*! ../../util/route_util */ "./client/util/route_util.jsx");
 
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
@@ -2652,18 +2776,10 @@ var TicketsViewTab = function (_React$Component) {
     function TicketsViewTab(props) {
         _classCallCheck(this, TicketsViewTab);
 
-        var _this = _possibleConstructorReturn(this, (TicketsViewTab.__proto__ || Object.getPrototypeOf(TicketsViewTab)).call(this, props));
-
-        _this.handleSettingsRedirect = _this.handleSettingsRedirect.bind(_this);
-        return _this;
+        return _possibleConstructorReturn(this, (TicketsViewTab.__proto__ || Object.getPrototypeOf(TicketsViewTab)).call(this, props));
     }
 
     _createClass(TicketsViewTab, [{
-        key: 'handleSettingsRedirect',
-        value: function handleSettingsRedirect() {
-            this.props.history.push('/settings');
-        }
-    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -2674,7 +2790,12 @@ var TicketsViewTab = function (_React$Component) {
                     'div',
                     { className: 'dashboard__tickets-view-and-control' },
                     _react2.default.createElement(_tickets_control2.default, null),
-                    _react2.default.createElement(_tickets_view2.default, null)
+                    _react2.default.createElement(
+                        _reactRouterDom.Switch,
+                        null,
+                        _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/dashboard/tickets', component: _tickets_view2.default }),
+                        _react2.default.createElement(_route_util.ProtectedRoute, { exact: true, path: '/dashboard/tickets/:ticket_id', component: _ticket_view2.default })
+                    )
                 )
             );
         }
@@ -2683,7 +2804,7 @@ var TicketsViewTab = function (_React$Component) {
     return TicketsViewTab;
 }(_react2.default.Component);
 
-exports.default = (0, _reactRouterDom.withRouter)(TicketsViewTab);
+exports.default = TicketsViewTab;
 
 /***/ }),
 
@@ -3745,7 +3866,7 @@ var Auth = function Auth(_ref) {
         loggedIn = _ref.loggedIn;
 
     return _react2.default.createElement(_reactRouterDom.Route, { path: path, render: function render(props) {
-            return !loggedIn ? _react2.default.createElement(Component, props) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/tickets' });
+            return !loggedIn ? _react2.default.createElement(Component, props) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/dashboard/tickets' });
         } });
 };
 

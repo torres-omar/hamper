@@ -2,19 +2,13 @@ import React from 'react';
 import TicketsView from '../dashboard/tickets_view';
 import TicketsControl from '../dashboard/tickets_control';
 import TicketSearchBar from '../dashboard/ticket_search_bar';
-import Icons from '../dashboard/icons';
-
-
-import { withRouter } from 'react-router-dom';
+import TicketView from '../dashboard/ticket_view';
+import { ProtectedRoute } from '../../util/route_util';
+import { Switch } from 'react-router-dom';
 
 class TicketsViewTab extends React.Component{
     constructor(props){
         super(props)
-        this.handleSettingsRedirect = this.handleSettingsRedirect.bind(this)
-    }
-
-    handleSettingsRedirect(){
-        this.props.history.push('/settings')
     }
 
     render(){
@@ -23,11 +17,14 @@ class TicketsViewTab extends React.Component{
                 <TicketSearchBar />
                 <div className="dashboard__tickets-view-and-control"> 
                     <TicketsControl />
-                    <TicketsView />
+                    <Switch>
+                        <ProtectedRoute exact path="/dashboard/tickets" component={TicketsView} />
+                        <ProtectedRoute exact path="/dashboard/tickets/:ticket_id" component={TicketView} />
+                    </Switch>
                 </div>
             </div>
         )
     }
 }
 
-export default withRouter(TicketsViewTab);
+export default TicketsViewTab;

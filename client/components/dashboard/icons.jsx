@@ -17,11 +17,11 @@ class Icons extends React.Component{
     }
 
     toTickets(){
-        this.props.history.push('/tickets')
+        this.props.history.push('/dashboard/tickets')
     }
 
     toBusinesses(){
-        this.props.history.push('/businesses')
+        this.props.history.push('/dashboard/businesses')
     }
 
     handleSignOut(){

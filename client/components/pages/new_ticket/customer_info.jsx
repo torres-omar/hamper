@@ -1,10 +1,9 @@
 import React from 'react';
-import TicketsControl from '../../dashboard/tickets_control';
-import CustomerSearchBar from '../../dashboard/customer_search_bar';
-import NewCustomerForm from '../../dashboard/new_customer_form';
+import ExistingCustomerView from '../../dashboard/existing_customer_view';
+import NewCustomerView from '../../dashboard/new_customer_view';
 import { withRouter } from 'react-router-dom';
 
-class CustomerInfoTab extends React.Component{
+class CustomerInfo extends React.Component{
     constructor(props){
         super(props)
         this.state = {
@@ -23,23 +22,22 @@ class CustomerInfoTab extends React.Component{
     renderProperView(){
         if(this.state.customer_status == 'existing'){
             return(
-                <CustomerSearchBar />
+                <ExistingCustomerView />
             )
         }else if(this.state.customer_status == 'new'){
             return(
-                <NewCustomerForm />
+                <NewCustomerView />
             )
         }
     }
 
     goBack(){
-        this.props.history.push('/tickets')
+        this.props.history.push('/dashboard/tickets')
     }
 
     render(){
         return(
-            <div>
-                <TicketsControl />
+            <div className="dashboard__main-view dashboard__new-ticket-view">
                 <h1>New ticket</h1>
                 <p>Customer Info</p>
                 <button onClick={this.goBack}>back</button>
@@ -69,4 +67,4 @@ class CustomerInfoTab extends React.Component{
     }
 }
 
-export default withRouter(CustomerInfoTab);
+export default withRouter(CustomerInfo);

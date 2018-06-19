@@ -46,7 +46,7 @@ class TicketView extends React.Component{
     }
 
     goBack(){
-        this.props.history.push('/tickets')
+        this.props.history.push('/dashboard/tickets')
     }
 
     sendNotification(){
@@ -72,16 +72,20 @@ class TicketView extends React.Component{
 
     render(){
         return(
-            <div>
-                <button onClick={this.goBack}>back</button>
-                <button onClick={this.sendNotification} style={{
-                    display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
-                }}>notify</button>
-                <button onClick={this.fulfillTicket} style={{
-                    display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
-                }}>fulfill</button>
-                {this.renderNotificationResponse()}
-                {this.renderTicket()}
+            <div className="ticket-view-area">
+                <div className="ticket-view-area__back_nagivation"> 
+                    <button onClick={this.goBack}>back</button>
+                </div>
+                <div className="ticket-view">
+                    <button onClick={this.sendNotification} style={{
+                        display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
+                    }}>notify</button>
+                    <button onClick={this.fulfillTicket} style={{
+                        display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                    }}>fulfill</button>
+                    {this.renderNotificationResponse()}
+                    {this.renderTicket()}
+                </div>
             </div>
         )
     }

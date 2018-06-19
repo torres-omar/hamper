@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
     show_customer: state.entities.show_customer
 })
 
-class TicketInfoTab extends React.Component{
+class TicketInfo extends React.Component{
     constructor(props){
         super(props)
         this.goBack = this.goBack.bind(this)
@@ -39,4 +39,4 @@ class TicketInfoTab extends React.Component{
     }
 }
 
-export default withRouter(connect(mapStateToProps, null)(TicketInfoTab));
+export default withRouter(connect(mapStateToProps, null)(TicketInfo));

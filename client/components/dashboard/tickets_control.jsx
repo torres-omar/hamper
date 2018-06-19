@@ -48,14 +48,14 @@ class TicketsControl extends React.Component {
     handleStatusChange(e, status) {
         e.preventDefault()
         this.props.changeTicketStatus(status)
-        if(this.props.location.pathname != "/tickets"){
-            this.props.history.push('/tickets')
+        if(this.props.location.pathname != "/dashboard/tickets"){
+            this.props.history.push('/dashboard/tickets')
         } 
     }
 
     handleNewTicketRedirect() {
         // e.preventDefault()
-        this.props.history.push('/tickets/new/s1')
+        this.props.history.push('/dashboard/new-ticket-s1')
     }
 
     render() {
@@ -65,7 +65,7 @@ class TicketsControl extends React.Component {
                 <button onClick={(e) => this.handleStatusChange(e, "notified")} className="tickets-control__button">Notified</button>
                 <button onClick={(e) => this.handleStatusChange(e, "fulfilled")} className="tickets-control__button">Fulfilled</button>
                 <div className="tickets-control__new-ticket-area">
-                    <div className="tickets-control__new-ticket-button" onClick={this.handleNewTicketRedirect}><i class="fas fa-plus"></i></div>
+                    <div className="tickets-control__new-ticket-button" onClick={this.handleNewTicketRedirect}><i className="fas fa-plus"></i></div>
                     <p>new ticket</p>
                 </div>
             </div>

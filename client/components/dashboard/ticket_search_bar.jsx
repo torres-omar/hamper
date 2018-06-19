@@ -84,7 +84,8 @@ class TicketSearchBar extends React.Component{
         // exposes all tickets to any user.
         // fix this later to only show tickets that belong to the current user
         this.props.clearSearchTickets()
-        this.props.history.push(`/tickets/${item.id}`)
+        this.setState({query: ''})
+        this.props.history.push(`/dashboard/tickets/${item.id}`)
     }
 
     handleScopeChange(event){
