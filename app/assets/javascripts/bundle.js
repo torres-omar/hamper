@@ -914,7 +914,7 @@ var Icons = function (_React$Component) {
                 'div',
                 { className: 'sidebar' },
                 _react2.default.createElement('i', { className: (0, _classnames2.default)({ "sidebar__button": true, 'fa-ticket-alt': true, 'fas': true, 'sidebar__button-active': this.props.location.pathname.includes('tickets') }), onClick: this.toTickets }),
-                _react2.default.createElement('i', { className: (0, _classnames2.default)({ "fas fa-ticket-alt sidebar__button": true, 'sidebar__button-active': this.props.location.pathname.includes('businesses') }), onClick: this.toBusinesses }),
+                _react2.default.createElement('i', { className: (0, _classnames2.default)({ "fas fa-briefcase sidebar__button": true, 'sidebar__button-active': this.props.location.pathname.includes('businesses') }), onClick: this.toBusinesses }),
                 _react2.default.createElement('i', { className: 'fas fa-power-off sidebar__button', onClick: this.handleSignOut })
             );
         }
@@ -1802,16 +1802,45 @@ var TicketView = function (_React$Component) {
             if (this.props.show_ticket) {
                 return _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'ticket-view__ticket-info' },
                     _react2.default.createElement(
                         'h1',
                         null,
-                        this.props.show_ticket.customer_first_name
+                        'id: ',
+                        this.props.show_ticket.id
                     ),
                     _react2.default.createElement(
                         'h1',
                         null,
+                        'drop-off-date: ',
+                        this.props.show_ticket.date_dropped_off
+                    ),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'status: ',
+                        this.props.show_ticket.status
+                    ),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'customer: ',
+                        this.props.show_ticket.customer_first_name,
+                        ' ',
                         this.props.show_ticket.customer_last_name
+                    ),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'bag weight: ',
+                        this.props.show_ticket.bag_weight,
+                        ' lb'
+                    ),
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'grand total: $',
+                        this.props.show_ticket.grand_total
                     )
                 );
             }

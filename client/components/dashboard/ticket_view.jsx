@@ -33,9 +33,13 @@ class TicketView extends React.Component{
     renderTicket(){
         if(this.props.show_ticket){
             return(
-                <div>
-                    <h1>{this.props.show_ticket.customer_first_name}</h1>
-                    <h1>{this.props.show_ticket.customer_last_name}</h1>
+                <div className="ticket-view__ticket-info">
+                    <h1>id: {this.props.show_ticket.id}</h1>
+                    <h1>drop-off-date: {this.props.show_ticket.date_dropped_off}</h1>
+                    <h1>status: {this.props.show_ticket.status}</h1>
+                    <h1>customer: {this.props.show_ticket.customer_first_name} {this.props.show_ticket.customer_last_name}</h1>
+                    <h1>bag weight: {this.props.show_ticket.bag_weight} lb</h1>
+                    <h1>grand total: ${this.props.show_ticket.grand_total}</h1>
                 </div>
             )
         }
