@@ -7,6 +7,7 @@ import { fetchGlobalSearchTickets,
          clearSearchTickets } from '../../actions/tickets_actions';
 
 import { withRouter } from 'react-router-dom';
+import { relative } from 'path';
 
 
 const mapStateToProps = (state) => ({
@@ -51,7 +52,7 @@ class TicketSearchBar extends React.Component{
     // avoids having to send multiple, continuous requests 
     handleChangeDebounced(event){
         event.preventDefault()
-        this.setState({query: event.target.value})
+        this.setState({query: event.target.value, show_scope_options: false})
         return function(){
             if(this.state.timer_id){
                 clearTimeout(this.state.timer_id)
@@ -97,6 +98,7 @@ class TicketSearchBar extends React.Component{
         if(this.state.show_scope_options){
             return(
                 <div className="searchbar__scope-options-container">
+                    <h3>ticket search scope</h3>
                     <div className="searchbar__scope-options">
                         <label className="scope-option">
                             Global 
@@ -140,7 +142,7 @@ class TicketSearchBar extends React.Component{
 
     render(){
         return(
-            <div>
+            <div style={{position: 'relative'}}>
                 <div className="searchbar"> 
                     <Autocomplete 
                         getItemValue = {(item) => {

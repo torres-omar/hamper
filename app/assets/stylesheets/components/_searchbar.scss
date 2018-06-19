@@ -22,8 +22,14 @@
 }
 
 .searchbar__scope-options-container{
-    color: white;
-    margin-top: .5rem;
+    color: black;
+    background-color: white;
+    padding: .5rem 1rem;
+    position: absolute;
+    h3{
+        margin: .5rem 0 1rem 0
+    }
+    right: 0;
 }
 
 .scope-option{
