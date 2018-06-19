@@ -587,7 +587,7 @@ var CustomerSearchBar = function (_React$Component) {
 
             this.props.clearSearchCustomers();
             this.props.fetchShowCustomer(item.id).then(function () {
-                return _this2.props.history.push('/tickets/new/s2');
+                return _this2.props.history.push('/dashboard/new-ticket-s2');
             });
         }
     }, {
@@ -2449,9 +2449,13 @@ var CustomerInfo = function (_React$Component) {
                     'Customer Info'
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.goBack },
-                    'back'
+                    'div',
+                    { className: 'button__back-button' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.goBack },
+                        'back'
+                    )
                 ),
                 _react2.default.createElement(
                     'div',
@@ -2548,6 +2552,13 @@ var TicketInfo = function (_React$Component) {
     }
 
     _createClass(TicketInfo, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            if (this.props.show_customer == null) {
+                this.props.history.push('/dashboard/new-ticket-s1');
+            }
+        }
+    }, {
         key: 'goBack',
         value: function goBack() {
             this.props.history.push('/tickets/new/s1');

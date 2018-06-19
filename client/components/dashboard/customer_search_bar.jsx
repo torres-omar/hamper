@@ -38,7 +38,7 @@ class CustomerSearchBar extends React.Component{
     handleSelect(value, item){
         this.props.clearSearchCustomers()
         this.props.fetchShowCustomer(item.id).then(
-            () => this.props.history.push('/tickets/new/s2')
+            () => this.props.history.push('/dashboard/new-ticket-s2')
         )
     }
 

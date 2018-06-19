@@ -13,6 +13,12 @@ class TicketInfo extends React.Component{
         this.goBack = this.goBack.bind(this)
     }
 
+    componentDidMount(){
+        if(this.props.show_customer == null){
+            this.props.history.push('/dashboard/new-ticket-s1')
+        }
+    }
+
     goBack(){
         this.props.history.push('/tickets/new/s1')
     }

@@ -40,7 +40,9 @@ class CustomerInfo extends React.Component{
             <div className="dashboard__main-view dashboard__new-ticket-view">
                 <h1>New ticket</h1>
                 <h3>Customer Info</h3>
-                <button onClick={this.goBack}>back</button>
+                <div className="button__back-button">
+                    <button onClick={this.goBack}>back</button>
+                </div>
                 <div className="new-ticket__customer-options">
                     <label className="radio-option new-ticket_customer-option">
                         Existing customer
