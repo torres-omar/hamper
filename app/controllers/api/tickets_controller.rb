@@ -1,6 +1,6 @@
 class Api::TicketsController < ApplicationController
     def index 
-        @tickets = Ticket.where("business_id = ?", params[:business_id])
+        @tickets = Ticket.includes(:customer).where("business_id = ?", params[:business_id])
         render 'api/tickets/index'
     end 
 
