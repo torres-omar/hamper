@@ -7,7 +7,6 @@ import { fetchGlobalSearchTickets,
          clearSearchTickets } from '../../actions/tickets_actions';
 
 import { withRouter } from 'react-router-dom';
-import { relative } from 'path';
 
 
 const mapStateToProps = (state) => ({

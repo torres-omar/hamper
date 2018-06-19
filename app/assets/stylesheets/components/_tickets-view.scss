@@ -21,6 +21,11 @@
     justify-content: space-between;
 }
 
+.tickets-view__item:hover{
+    background-color: rgb(236, 251, 255);
+    cursor: pointer;
+}
+
 .tickets-view__item:first-child{
     border-top: .5px solid grey;
 }
