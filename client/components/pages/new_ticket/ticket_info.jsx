@@ -20,16 +20,14 @@ class TicketInfo extends React.Component{
     }
 
     goBack(){
-        this.props.history.push('/tickets/new/s1')
+        this.props.history.push('/dashboard/new-ticket-s1')
     }
 
     renderCustomerInfo(){
         if(this.props.show_customer){
             return(
-                <div>
-                    <p>{this.props.show_customer.first_name}</p>
-                    <p>{this.props.show_customer.last_name}</p>
-                    <NewTicketForm />
+                <div className="ticket-info-view__customer-name">
+                    <p>{this.props.show_customer.first_name} {this.props.show_customer.last_name}</p>
                 </div>
             )
         }
@@ -37,9 +35,18 @@ class TicketInfo extends React.Component{
 
     render(){
         return(
-            <div>
-                <button onClick={this.goBack}>back</button>
-                {this.renderCustomerInfo()}
+            <div className="dashboard__main-view dashboard__new-ticket-view">
+                <h1>New Ticket</h1>
+                <h3>Ticket info</h3>
+                <div className="button__back-button">
+                    <button onClick={this.goBack}>back</button>
+                </div>
+                <div>
+                    <div className="ticket-info-view">
+                        {this.renderCustomerInfo()}
+                        <NewTicketForm />
+                    </div>
+                </div>
             </div>
         )
     }

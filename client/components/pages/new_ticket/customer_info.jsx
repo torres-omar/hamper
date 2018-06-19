@@ -44,7 +44,7 @@ class CustomerInfo extends React.Component{
                     <button onClick={this.goBack}>back</button>
                 </div>
                 <div className="new-ticket__customer-options">
-                    <label className="radio-option new-ticket_customer-option">
+                    <label className="radio-option new-ticket__customer-option">
                         Existing customer
                         <input 
                             type="radio"
@@ -54,7 +54,7 @@ class CustomerInfo extends React.Component{
                             className="radio-option__button"
                         />
                     </label>
-                    <label className="radio-option new-ticket-customer-option">
+                    <label className="radio-option new-ticket__customer-option">
                         New customer
                         <input 
                             type="radio" 

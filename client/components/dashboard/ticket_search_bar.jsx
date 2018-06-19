@@ -96,11 +96,40 @@ class TicketSearchBar extends React.Component{
     renderScopeOptions(){
         if(this.state.show_scope_options){
             return(
-                <ul> 
-                    <li onClick={this.handleScopeChange} value={"Global"}>Global</li>
-                    <li onClick={this.handleScopeChange} value={"Id"}>By id</li>
-                    <li onClick={this.handleScopeChange} value={"Name"}>By customer name</li>
-                </ul> 
+                <div className="searchbar__scope-options-container">
+                    <div className="searchbar__scope-options">
+                        <label className="scope-option">
+                            Global 
+                            <input
+                                type="radio"
+                                value="Global"
+                                checked={this.state.search_scope == "Global"}
+                                onChange={this.handleScopeChange}
+                                className="radio-option__button"
+                            /> 
+                        </label>
+                        <label className="scope-option">
+                            Id
+                            <input
+                                type="radio"
+                                value="Id"
+                                checked={this.state.search_scope == "Id"}
+                                onChange={this.handleScopeChange}
+                                className="radio-option__button"
+                            /> 
+                        </label>
+                        <label className="scope-option">
+                            Customer name
+                            <input
+                                type="radio"
+                                value="Name"
+                                checked={this.state.search_scope == "Name"}
+                                onChange={this.handleScopeChange}
+                                className="radio-option__button"
+                            /> 
+                        </label>
+                    </div>
+                </div> 
             )
         }
     }
@@ -111,36 +140,38 @@ class TicketSearchBar extends React.Component{
 
     render(){
         return(
-            <div className="searchbar"> 
-                <Autocomplete 
-                    getItemValue = {(item) => {
-                        return item.date_dropped_off
-                    }}
-                    items = {this.props.search_tickets}
-                    renderItem={(item, isHighlighted) =>
-                        <div style={{ background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }} key={item.id}>
-                            {item.date_dropped_off}
-                        </div>
-                    }
-                    value={this.state.query}
-                    onChange={this.handleChangeDebounced}
-                    onSelect={this.handleSelect}
-                    menuStyle={{
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        position: 'fixed',
-                        overflow: 'auto',
-                        maxHeight: '50%',
-                    }}
-                    wrapperStyle={{
-                        width: "100%"
-                    }}
-                    inputProps={{
-                        placeholder: "Search..."
-                    }}
-                /> 
-                <button onClick={this.toggleScopeOptions} className="searchbar__scope-setting">
-                    <i className="fas fa-sort-down"></i>
-                </button>
+            <div>
+                <div className="searchbar"> 
+                    <Autocomplete 
+                        getItemValue = {(item) => {
+                            return item.date_dropped_off
+                        }}
+                        items = {this.props.search_tickets}
+                        renderItem={(item, isHighlighted) =>
+                            <div style={{ background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }} key={item.id}>
+                                {item.date_dropped_off}
+                            </div>
+                        }
+                        value={this.state.query}
+                        onChange={this.handleChangeDebounced}
+                        onSelect={this.handleSelect}
+                        menuStyle={{
+                            background: 'rgba(255, 255, 255, 0.9)',
+                            position: 'fixed',
+                            overflow: 'auto',
+                            maxHeight: '50%',
+                        }}
+                        wrapperStyle={{
+                            width: "100%"
+                        }}
+                        inputProps={{
+                            placeholder: "Search..."
+                        }}
+                    /> 
+                    <button onClick={this.toggleScopeOptions} className="searchbar__scope-setting">
+                        <i className="fas fa-sort-down"></i>
+                    </button>
+                </div>
                 {this.renderScopeOptions()}
             </div>
         )

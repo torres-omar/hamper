@@ -46,35 +46,23 @@ class NewTicketForm extends React.Component{
             bag_weight: this.state.bag_weight, 
             grand_total: this.state.total_price
         }
-        debugger
         this.props.createNewTicket(data, this.props.current_business_id).then(
             () => this.props.history.push('/tickets')
         )
     }
-
-    renderForm(){
-        if(this.props.current_business){
-            return(
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Bag weight (lb)
-                            <input type="number" value={this.state.bag_weight} name="bag_weight" onChange={this.handleChange}/>
-                    </label>
-                    <label>
-                        Total
-                            <h1>{this.state.total_price}</h1>
-                    </label>
-                    <input type="submit"/>
-                </form>
-            )
-        }
-    }
-
     render(){
         return(
-            <div> 
-                {this.renderForm()}
-            </div>
+            <form onSubmit={this.handleSubmit} class="form">
+                <label className="form__label-and-field">
+                    Bag weight (lb)
+                        <input type="number" value={this.state.bag_weight} name="bag_weight" onChange={this.handleChange} />
+                </label>
+                <label className="form__label-and-field">
+                    Total
+                        <h2>{this.state.total_price}</h2>
+                </label>
+                <input type="submit" />
+            </form>
         )
     }
 }

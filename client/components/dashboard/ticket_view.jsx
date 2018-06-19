@@ -73,16 +73,18 @@ class TicketView extends React.Component{
     render(){
         return(
             <div className="ticket-view-area">
-                <div className="ticket-view-area__back_nagivation"> 
+                <div className="ticket-view-area__back-button"> 
                     <button onClick={this.goBack}>back</button>
                 </div>
                 <div className="ticket-view">
-                    <button onClick={this.sendNotification} style={{
-                        display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
-                    }}>notify</button>
-                    <button onClick={this.fulfillTicket} style={{
-                        display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
-                    }}>fulfill</button>
+                    <div className="ticket-view__action-button">
+                        <button onClick={this.sendNotification} style={{
+                            display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
+                        }}>notify</button>
+                        <button onClick={this.fulfillTicket} style={{
+                            display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                        }}>fulfill</button>
+                    </div>
                     {this.renderNotificationResponse()}
                     {this.renderTicket()}
                 </div>

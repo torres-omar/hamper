@@ -1411,45 +1411,33 @@ var NewTicketForm = function (_React$Component) {
                 bag_weight: this.state.bag_weight,
                 grand_total: this.state.total_price
             };
-            debugger;
             this.props.createNewTicket(data, this.props.current_business_id).then(function () {
                 return _this2.props.history.push('/tickets');
             });
         }
     }, {
-        key: 'renderForm',
-        value: function renderForm() {
-            if (this.props.current_business) {
-                return _react2.default.createElement(
-                    'form',
-                    { onSubmit: this.handleSubmit },
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Bag weight (lb)',
-                        _react2.default.createElement('input', { type: 'number', value: this.state.bag_weight, name: 'bag_weight', onChange: this.handleChange })
-                    ),
-                    _react2.default.createElement(
-                        'label',
-                        null,
-                        'Total',
-                        _react2.default.createElement(
-                            'h1',
-                            null,
-                            this.state.total_price
-                        )
-                    ),
-                    _react2.default.createElement('input', { type: 'submit' })
-                );
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                null,
-                this.renderForm()
+                'form',
+                { onSubmit: this.handleSubmit, 'class': 'form' },
+                _react2.default.createElement(
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'Bag weight (lb)',
+                    _react2.default.createElement('input', { type: 'number', value: this.state.bag_weight, name: 'bag_weight', onChange: this.handleChange })
+                ),
+                _react2.default.createElement(
+                    'label',
+                    { className: 'form__label-and-field' },
+                    'Total',
+                    _react2.default.createElement(
+                        'h2',
+                        null,
+                        this.state.total_price
+                    )
+                ),
+                _react2.default.createElement('input', { type: 'submit' })
             );
         }
     }]);
@@ -1614,22 +1602,47 @@ var TicketSearchBar = function (_React$Component) {
         value: function renderScopeOptions() {
             if (this.state.show_scope_options) {
                 return _react2.default.createElement(
-                    'ul',
-                    null,
+                    'div',
+                    { className: 'searchbar__scope-options-container' },
                     _react2.default.createElement(
-                        'li',
-                        { onClick: this.handleScopeChange, value: "Global" },
-                        'Global'
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { onClick: this.handleScopeChange, value: "Id" },
-                        'By id'
-                    ),
-                    _react2.default.createElement(
-                        'li',
-                        { onClick: this.handleScopeChange, value: "Name" },
-                        'By customer name'
+                        'div',
+                        { className: 'searchbar__scope-options' },
+                        _react2.default.createElement(
+                            'label',
+                            { className: 'scope-option' },
+                            'Global',
+                            _react2.default.createElement('input', {
+                                type: 'radio',
+                                value: 'Global',
+                                checked: this.state.search_scope == "Global",
+                                onChange: this.handleScopeChange,
+                                className: 'radio-option__button'
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            { className: 'scope-option' },
+                            'Id',
+                            _react2.default.createElement('input', {
+                                type: 'radio',
+                                value: 'Id',
+                                checked: this.state.search_scope == "Id",
+                                onChange: this.handleScopeChange,
+                                className: 'radio-option__button'
+                            })
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            { className: 'scope-option' },
+                            'Customer name',
+                            _react2.default.createElement('input', {
+                                type: 'radio',
+                                value: 'Name',
+                                checked: this.state.search_scope == "Name",
+                                onChange: this.handleScopeChange,
+                                className: 'radio-option__button'
+                            })
+                        )
                     )
                 );
             }
@@ -1644,39 +1657,43 @@ var TicketSearchBar = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'searchbar' },
-                _react2.default.createElement(_reactAutocomplete2.default, {
-                    getItemValue: function getItemValue(item) {
-                        return item.date_dropped_off;
-                    },
-                    items: this.props.search_tickets,
-                    renderItem: function renderItem(item, isHighlighted) {
-                        return _react2.default.createElement(
-                            'div',
-                            { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
-                            item.date_dropped_off
-                        );
-                    },
-                    value: this.state.query,
-                    onChange: this.handleChangeDebounced,
-                    onSelect: this.handleSelect,
-                    menuStyle: {
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        position: 'fixed',
-                        overflow: 'auto',
-                        maxHeight: '50%'
-                    },
-                    wrapperStyle: {
-                        width: "100%"
-                    },
-                    inputProps: {
-                        placeholder: "Search..."
-                    }
-                }),
+                null,
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.toggleScopeOptions, className: 'searchbar__scope-setting' },
-                    _react2.default.createElement('i', { className: 'fas fa-sort-down' })
+                    'div',
+                    { className: 'searchbar' },
+                    _react2.default.createElement(_reactAutocomplete2.default, {
+                        getItemValue: function getItemValue(item) {
+                            return item.date_dropped_off;
+                        },
+                        items: this.props.search_tickets,
+                        renderItem: function renderItem(item, isHighlighted) {
+                            return _react2.default.createElement(
+                                'div',
+                                { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
+                                item.date_dropped_off
+                            );
+                        },
+                        value: this.state.query,
+                        onChange: this.handleChangeDebounced,
+                        onSelect: this.handleSelect,
+                        menuStyle: {
+                            background: 'rgba(255, 255, 255, 0.9)',
+                            position: 'fixed',
+                            overflow: 'auto',
+                            maxHeight: '50%'
+                        },
+                        wrapperStyle: {
+                            width: "100%"
+                        },
+                        inputProps: {
+                            placeholder: "Search..."
+                        }
+                    }),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.toggleScopeOptions, className: 'searchbar__scope-setting' },
+                        _react2.default.createElement('i', { className: 'fas fa-sort-down' })
+                    )
                 ),
                 this.renderScopeOptions()
             );
@@ -1839,7 +1856,7 @@ var TicketView = function (_React$Component) {
                 { className: 'ticket-view-area' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'ticket-view-area__back_nagivation' },
+                    { className: 'ticket-view-area__back-button' },
                     _react2.default.createElement(
                         'button',
                         { onClick: this.goBack },
@@ -1850,18 +1867,22 @@ var TicketView = function (_React$Component) {
                     'div',
                     { className: 'ticket-view' },
                     _react2.default.createElement(
-                        'button',
-                        { onClick: this.sendNotification, style: {
-                                display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
-                            } },
-                        'notify'
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: this.fulfillTicket, style: {
-                                display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
-                            } },
-                        'fulfill'
+                        'div',
+                        { className: 'ticket-view__action-button' },
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.sendNotification, style: {
+                                    display: this.props.show_ticket && this.props.show_ticket.status == "Unfulfilled" ? 'block' : 'none'
+                                } },
+                            'notify'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.fulfillTicket, style: {
+                                    display: this.props.show_ticket && this.props.show_ticket.status == "Notified" ? 'block' : 'none'
+                                } },
+                            'fulfill'
+                        )
                     ),
                     this.renderNotificationResponse(),
                     this.renderTicket()
@@ -2462,7 +2483,7 @@ var CustomerInfo = function (_React$Component) {
                     { className: 'new-ticket__customer-options' },
                     _react2.default.createElement(
                         'label',
-                        { className: 'radio-option new-ticket_customer-option' },
+                        { className: 'radio-option new-ticket__customer-option' },
                         'Existing customer',
                         _react2.default.createElement('input', {
                             type: 'radio',
@@ -2474,7 +2495,7 @@ var CustomerInfo = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'label',
-                        { className: 'radio-option new-ticket-customer-option' },
+                        { className: 'radio-option new-ticket__customer-option' },
                         'New customer',
                         _react2.default.createElement('input', {
                             type: 'radio',
@@ -2561,7 +2582,7 @@ var TicketInfo = function (_React$Component) {
     }, {
         key: 'goBack',
         value: function goBack() {
-            this.props.history.push('/tickets/new/s1');
+            this.props.history.push('/dashboard/new-ticket-s1');
         }
     }, {
         key: 'renderCustomerInfo',
@@ -2569,18 +2590,14 @@ var TicketInfo = function (_React$Component) {
             if (this.props.show_customer) {
                 return _react2.default.createElement(
                     'div',
-                    null,
+                    { className: 'ticket-info-view__customer-name' },
                     _react2.default.createElement(
                         'p',
                         null,
-                        this.props.show_customer.first_name
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        null,
+                        this.props.show_customer.first_name,
+                        ' ',
                         this.props.show_customer.last_name
-                    ),
-                    _react2.default.createElement(_new_ticket_form2.default, null)
+                    )
                 );
             }
         }
@@ -2589,13 +2606,36 @@ var TicketInfo = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'dashboard__main-view dashboard__new-ticket-view' },
                 _react2.default.createElement(
-                    'button',
-                    { onClick: this.goBack },
-                    'back'
+                    'h1',
+                    null,
+                    'New Ticket'
                 ),
-                this.renderCustomerInfo()
+                _react2.default.createElement(
+                    'h3',
+                    null,
+                    'Ticket info'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'button__back-button' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.goBack },
+                        'back'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'ticket-info-view' },
+                        this.renderCustomerInfo(),
+                        _react2.default.createElement(_new_ticket_form2.default, null)
+                    )
+                )
             );
         }
     }]);

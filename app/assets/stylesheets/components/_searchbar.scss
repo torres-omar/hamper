@@ -16,8 +16,17 @@
     background-color: $palette-2;
 }
 
-
 .customer-search-bar{
     width: 40%;
     margin-right: 2rem;
 }
+
+.searchbar__scope-options-container{
+    color: white;
+    margin-top: .5rem;
+}
+
+.scope-option{
+    margin-right: 1rem;
+}
+
