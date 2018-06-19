@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.currentUser) {
         const preloadedState = { session: { current_user: window.currentUser },
                                  ui: { current_business_id: window.currentUser.startup_business_id,
-                                       current_ticket_status: 'Unfulfilled'}};
+                                       current_ticket_status: 'unfulfilled'}};
         store = configureStore(preloadedState);
         delete window.currentUser;
     } else {

@@ -3,6 +3,8 @@ import { logout } from '../../actions/session_actions';
 import { fetchStatusTickets, changeTicketStatus } from '../../actions/tickets_actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
+// var classNames = require('classnames');
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout()),
@@ -59,11 +61,12 @@ class TicketsControl extends React.Component {
     }
 
     render() {
+
         return (
             <div className="tickets-control">
-                <button onClick={(e) => this.handleStatusChange(e, "unfulfilled")} className="tickets-control__button">Unfulfilled</button>
-                <button onClick={(e) => this.handleStatusChange(e, "notified")} className="tickets-control__button">Notified</button>
-                <button onClick={(e) => this.handleStatusChange(e, "fulfilled")} className="tickets-control__button">Fulfilled</button>
+                <button className={classNames({'tickets-control__active-button': this.props.current_ticket_status == "unfulfilled", "tickets-control__button": true})} onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>Unfulfilled</button>
+                <button className={classNames({ 'tickets-control__active-button': this.props.current_ticket_status == "notified", "tickets-control__button": true })} onClick={(e) => this.handleStatusChange(e, "notified")}>Notified</button>
+                <button className={classNames({ 'tickets-control__active-button': this.props.current_ticket_status == "fulfilled", "tickets-control__button": true })}onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
                 <div className="tickets-control__new-ticket-area">
                     <div className="tickets-control__new-ticket-button" onClick={this.handleNewTicketRedirect}><i className="fas fa-plus"></i></div>
                     <p>new ticket</p>

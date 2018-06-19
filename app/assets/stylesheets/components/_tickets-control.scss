@@ -8,12 +8,26 @@
 
 .tickets-control__button{
     margin-bottom: 1rem;
+    color: white;
+    background-color: transparent;
+    width: fit-content;
+    padding-left: 2.5rem;
+}
+
+.tickets-control__button:hover{
+    cursor: pointer;
+}
+
+.tickets-control__active-button{
+    border-left: .3rem solid white;
 }
 
 .tickets-control__new-ticket-area{
     display: flex;
     align-items: center;
     color: white;
+    justify-content: center;
+    margin-top: 4rem;
 }
 
 .tickets-control__new-ticket-button{

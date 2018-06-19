@@ -4,13 +4,16 @@
     font-size: 2em;
     color: white;
     background-color: $sidebar-background-color;
-    padding: 1rem;
 }
 
 .sidebar__button{
-    margin-bottom: 2rem;
+    padding: 1rem;
 }
 
 .sidebar__button:hover{
     cursor: pointer;
+}
+
+.sidebar__button-active{
+    background-color: $palette-1;
 }

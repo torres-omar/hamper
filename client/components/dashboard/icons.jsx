@@ -2,6 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logout} from '../../actions/session_actions';
+import classNames from 'classnames';
 
 const mapDispatchToProps = (dispatch) => ({
     logout: () => dispatch(logout())
@@ -31,8 +32,8 @@ class Icons extends React.Component{
     render(){
         return(
             <div className="sidebar">
-                <i className="fas fa-ticket-alt sidebar__button" onClick={this.toTickets}></i>
-                <i className="fas fa-briefcase sidebar__button" onClick={this.toBusinesses}></i>
+                <i className={classNames({ "sidebar__button": true, 'fa-ticket-alt':true, 'fas': true, 'sidebar__button-active': this.props.location.pathname.includes('tickets')})} onClick={this.toTickets}></i>
+                <i className={classNames({ "fas fa-ticket-alt sidebar__button": true, 'sidebar__button-active': this.props.location.pathname.includes('businesses')})} onClick={this.toBusinesses}></i>
                 <i className="fas fa-power-off sidebar__button" onClick={this.handleSignOut}></i>
             </div>
         )

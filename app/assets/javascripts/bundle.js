@@ -858,6 +858,10 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _session_actions = __webpack_require__(/*! ../../actions/session_actions */ "./client/actions/session_actions.js");
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -909,8 +913,8 @@ var Icons = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 { className: 'sidebar' },
-                _react2.default.createElement('i', { className: 'fas fa-ticket-alt sidebar__button', onClick: this.toTickets }),
-                _react2.default.createElement('i', { className: 'fas fa-briefcase sidebar__button', onClick: this.toBusinesses }),
+                _react2.default.createElement('i', { className: (0, _classnames2.default)({ "sidebar__button": true, 'fa-ticket-alt': true, 'fas': true, 'sidebar__button-active': this.props.location.pathname.includes('tickets') }), onClick: this.toTickets }),
+                _react2.default.createElement('i', { className: (0, _classnames2.default)({ "fas fa-ticket-alt sidebar__button": true, 'sidebar__button-active': this.props.location.pathname.includes('businesses') }), onClick: this.toBusinesses }),
                 _react2.default.createElement('i', { className: 'fas fa-power-off sidebar__button', onClick: this.handleSignOut })
             );
         }
@@ -1931,6 +1935,10 @@ var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-r
 
 var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1938,6 +1946,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// var classNames = require('classnames');
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
@@ -2026,23 +2036,23 @@ var TicketsControl = function (_React$Component) {
                 { className: 'tickets-control' },
                 _react2.default.createElement(
                     'button',
-                    { onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "unfulfilled", "tickets-control__button": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "unfulfilled");
-                        }, className: 'tickets-control__button' },
+                        } },
                     'Unfulfilled'
                 ),
                 _react2.default.createElement(
                     'button',
-                    { onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "notified", "tickets-control__button": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "notified");
-                        }, className: 'tickets-control__button' },
+                        } },
                     'Notified'
                 ),
                 _react2.default.createElement(
                     'button',
-                    { onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "fulfilled", "tickets-control__button": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "fulfilled");
-                        }, className: 'tickets-control__button' },
+                        } },
                     'Fulfilled'
                 ),
                 _react2.default.createElement(
@@ -3185,7 +3195,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (window.currentUser) {
         var preloadedState = { session: { current_user: window.currentUser },
             ui: { current_business_id: window.currentUser.startup_business_id,
-                current_ticket_status: 'Unfulfilled' } };
+                current_ticket_status: 'unfulfilled' } };
         store = (0, _store2.default)(preloadedState);
         delete window.currentUser;
     } else {
@@ -4551,6 +4561,68 @@ var createChangeEmitter = exports.createChangeEmitter = function createChangeEmi
     emit: emit
   };
 };
+
+/***/ }),
+
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
 
 /***/ }),
 
