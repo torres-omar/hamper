@@ -2051,21 +2051,21 @@ var TicketsControl = function (_React$Component) {
                 { className: 'tickets-control' },
                 _react2.default.createElement(
                     'button',
-                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "unfulfilled", "tickets-control__button": true }), onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "unfulfilled", "button__basic-inactive": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "unfulfilled");
                         } },
                     'Unfulfilled'
                 ),
                 _react2.default.createElement(
                     'button',
-                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "notified", "tickets-control__button": true }), onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "notified", "button__basic-inactive": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "notified");
                         } },
                     'Notified'
                 ),
                 _react2.default.createElement(
                     'button',
-                    { className: (0, _classnames2.default)({ 'tickets-control__active-button': this.props.current_ticket_status == "fulfilled", "tickets-control__button": true }), onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "fulfilled", "button__basic-inactive": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "fulfilled");
                         } },
                     'Fulfilled'
@@ -2738,9 +2738,9 @@ var _businesses_actions = __webpack_require__(/*! ../../actions/businesses_actio
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
-var _icons = __webpack_require__(/*! ../dashboard/icons */ "./client/components/dashboard/icons.jsx");
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
-var _icons2 = _interopRequireDefault(_icons);
+var _classnames2 = _interopRequireDefault(_classnames);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2821,7 +2821,8 @@ var SettingsTab = function (_React$Component) {
             this.props.businesses.forEach(function (business) {
                 businesses.push(_react2.default.createElement(
                     'button',
-                    { className: 'button-styles', onClick: function onClick(e) {
+                    { className: (0, _classnames2.default)({ 'button__basic-active': _this3.props.business_on_map && _this3.props.business_on_map.name == business.name, "button__basic-inactive": true }),
+                        onClick: function onClick(e) {
                             return _this3.handleBusinessChange(e, business);
                         } },
                     business.name
@@ -2853,6 +2854,7 @@ var SettingsTab = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'businesses__list' },
+                    'Your businesses',
                     this.renderBusinessesList(),
                     _react2.default.createElement(
                         'p',

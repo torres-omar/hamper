@@ -2,7 +2,7 @@ import React from 'react';
 import Map  from '../dashboard/map';
 import {fetchBusinesses, setBusinessOnMap} from '../../actions/businesses_actions';
 import {connect} from 'react-redux';
-import Icons from '../dashboard/icons';
+import classNames from 'classnames';
 
 const mapStateToProps = (state) => ({
     current_user: state.session.current_user,
@@ -52,7 +52,8 @@ class SettingsTab extends React.Component{
         let businesses = []
         this.props.businesses.forEach((business) => {
             businesses.push(
-                <button className="button-styles" onClick={(e) => this.handleBusinessChange(e,business)}>{business.name}</button>
+                <button className={classNames({ 'button__basic-active': this.props.business_on_map && (this.props.business_on_map.name == business.name), "button__basic-inactive": true })} 
+                        onClick={(e) => this.handleBusinessChange(e,business)}>{business.name}</button>
             )
         })
         return businesses
@@ -74,6 +75,7 @@ class SettingsTab extends React.Component{
         return(
             <div className="dashboard__main-view dashboard__businesses-view">
                 <div className="businesses__list"> 
+                    Your businesses
                     {this.renderBusinessesList()}
                     <p>{business_on_map_name}</p>
                     {this.renderGoToButton()}
