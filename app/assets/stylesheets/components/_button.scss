@@ -3,17 +3,23 @@
 }
 
 .button__basic-inactive{
-    margin-bottom: 1rem;
     color: white;
     background-color: transparent;
     width: fit-content;
-    padding-left: 2.5rem;
+    padding: .8rem;
 }
 
 .button__basic-inactive:hover{
     cursor: pointer;
 }
 
+.button__container{
+    // border: .5rem solid transparent;
+    padding-left: .5rem;
+    margin-bottom: 1rem;
+}
+
 .button__basic-active{
-    border-left: .3rem solid white;
+    border-left: .5rem solid white;
+    padding-left: 0;
 }

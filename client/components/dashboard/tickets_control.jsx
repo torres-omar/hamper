@@ -64,9 +64,15 @@ class TicketsControl extends React.Component {
 
         return (
             <div className="tickets-control">
-                <button className={classNames({'button__basic-active': this.props.current_ticket_status == "unfulfilled", "button__basic-inactive": true})} onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>Unfulfilled</button>
-                <button className={classNames({'button__basic-active': this.props.current_ticket_status == "notified", "button__basic-inactive": true })} onClick={(e) => this.handleStatusChange(e, "notified")}>Notified</button>
-                <button className={classNames({'button__basic-active': this.props.current_ticket_status == "fulfilled", "button__basic-inactive": true })}onClick={(e) => this.handleStatusChange(e, "fulfilled")}>Fulfilled</button>
+                <div className={classNames({ 'button__basic-active': this.props.current_ticket_status == "unfulfilled", "button__container": true})} onClick={(e) => this.handleStatusChange(e, "unfulfilled")}>
+                    <button className="button__basic-inactive">Unfulfilled</button>
+                </div>
+                <div className={classNames({ 'button__basic-active': this.props.current_ticket_status == "notified", "button__container": true })} onClick={(e) => this.handleStatusChange(e, "notified")}>
+                    <button className="button__basic-inactive">Notified</button>
+                </div>
+                <div className={classNames({ 'button__basic-active': this.props.current_ticket_status == "fulfilled", "button__container": true })} onClick={(e) => this.handleStatusChange(e, "fulfilled")}>
+                    <button className="button__basic-inactive">Fulfilled</button>
+                </div>
                 <div className="tickets-control__new-ticket-area">
                     <div className="tickets-control__new-ticket-button" onClick={this.handleNewTicketRedirect}><i className="fas fa-plus"></i></div>
                     <p>new ticket</p>

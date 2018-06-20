@@ -2050,25 +2050,37 @@ var TicketsControl = function (_React$Component) {
                 'div',
                 { className: 'tickets-control' },
                 _react2.default.createElement(
-                    'button',
-                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "unfulfilled", "button__basic-inactive": true }), onClick: function onClick(e) {
+                    'div',
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "unfulfilled", "button__container": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "unfulfilled");
                         } },
-                    'Unfulfilled'
+                    _react2.default.createElement(
+                        'button',
+                        { className: 'button__basic-inactive' },
+                        'Unfulfilled'
+                    )
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "notified", "button__basic-inactive": true }), onClick: function onClick(e) {
+                    'div',
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "notified", "button__container": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "notified");
                         } },
-                    'Notified'
+                    _react2.default.createElement(
+                        'button',
+                        { className: 'button__basic-inactive' },
+                        'Notified'
+                    )
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "fulfilled", "button__basic-inactive": true }), onClick: function onClick(e) {
+                    'div',
+                    { className: (0, _classnames2.default)({ 'button__basic-active': this.props.current_ticket_status == "fulfilled", "button__container": true }), onClick: function onClick(e) {
                             return _this2.handleStatusChange(e, "fulfilled");
                         } },
-                    'Fulfilled'
+                    _react2.default.createElement(
+                        'button',
+                        { className: 'button__basic-inactive' },
+                        'Fulfilled'
+                    )
                 ),
                 _react2.default.createElement(
                     'div',
