@@ -47,7 +47,7 @@ class NewTicketForm extends React.Component{
             grand_total: this.state.total_price
         }
         this.props.createNewTicket(data, this.props.current_business_id).then(
-            () => this.props.history.push('/tickets')
+            () => this.props.history.push('/dashboard/tickets')
         )
     }
     render(){

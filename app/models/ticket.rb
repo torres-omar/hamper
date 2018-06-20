@@ -101,7 +101,7 @@ class Ticket < ApplicationRecord
         return Ticket.where("business_id = ? AND status_id = ?", business_id, status.id)
                      .limit(ticket_per_page)
                      .offset(tickets_offset)
-                     .order(time_dropped_off: :desc)
+                     .order(created_at: :desc)
     end
 
     def set_to_unfulfilled!

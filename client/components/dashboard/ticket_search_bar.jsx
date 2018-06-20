@@ -150,7 +150,7 @@ class TicketSearchBar extends React.Component{
                         items = {this.props.search_tickets}
                         renderItem={(item, isHighlighted) =>
                             <div style={{ background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }} key={item.id}>
-                                {item.date_dropped_off}
+                                {item.id} | {item.customer_first_name} {item.customer_last_name}
                             </div>
                         }
                         value={this.state.query}

@@ -20,14 +20,14 @@ class Map extends React.PureComponent {
         this.state = {
             isMarkerShown: false
         }
-        this.renderGoToButton = this.renderGoToButton.bind(this)
+        // this.renderGoToButton = this.renderGoToButton.bind(this)
         this.handleRedirect = this.handleRedirect.bind(this)
     }
 
     componentDidMount() {
         this.delayedShowMarker()
     }
-
+    
     delayedShowMarker(){
         setTimeout(() => {
             this.setState({ isMarkerShown: true })
@@ -40,20 +40,10 @@ class Map extends React.PureComponent {
         this.props.history.push('/tickets')
     }
 
-    renderGoToButton(){
-        if(this.props.current_business_id != this.props.business_on_map.id){
-            return(
-                <button onClick={this.handleRedirect}>Go to this location</button>
-            )
-        }
-    }
-
     render() {
         if(this.props.business_on_map){
             return (
                 <div>
-                    <p>{this.props.business_on_map.name}</p>
-                    {this.renderGoToButton()}
                     <Gmap
                         isMarkerShown={this.state.isMarkerShown}
                         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw"

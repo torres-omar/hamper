@@ -7,7 +7,8 @@ import Icons from '../dashboard/icons';
 const mapStateToProps = (state) => ({
     current_user: state.session.current_user,
     businesses: state.entities.businesses,
-    current_business_id: state.ui.current_business_id
+    current_business_id: state.ui.current_business_id,
+    business_on_map: state.ui.business_on_map
 })
 
 const mapDispathToProps = (dispatch) => ({
@@ -21,13 +22,15 @@ class SettingsTab extends React.Component{
         super(props)
         this.handleBusinessChange = this.handleBusinessChange.bind(this)
         this.renderBusinessesList = this.renderBusinessesList.bind(this)
+        this.renderGoToButton = this.renderGoToButton.bind(this)
+        this.setInitialBusinessOnMap = this.setInitialBusinessOnMap.bind(this)
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.businesses.length > 0){
-            for(let i = 0; i<this.props.businesses.length; i++){
-                if(this.props.businesses[i].id == this.props.current_business_id){
-                    this.props.setBusinessOnMap(this.props.businesses[i])
+    setInitialBusinessOnMap(businesses){
+        if (businesses.length > 0) {
+            for(let i = 0; i<businesses.length; i++){
+                if(businesses[i].id == this.props.current_business_id){
+                    this.props.setBusinessOnMap(businesses[i])
                     break;
                 }
             }
@@ -35,7 +38,9 @@ class SettingsTab extends React.Component{
     }
 
     componentDidMount(){
-        this.props.fetchBusinesses(this.props.current_user.id)
+        this.props.fetchBusinesses(this.props.current_user.id).then(
+            (response) => this.setInitialBusinessOnMap(response.businesses)
+        )
     }
 
     handleBusinessChange(e, business){
@@ -52,11 +57,26 @@ class SettingsTab extends React.Component{
         })
         return businesses
     }
+
+    renderGoToButton() {
+        if (this.props.business_on_map && (this.props.current_business_id != this.props.business_on_map.id)) {
+            return (
+                <button onClick={this.handleRedirect}>Go to this location</button>
+            )
+        }
+    }
+
     render(){
+        let business_on_map_name;
+        if(this.props.business_on_map){
+            business_on_map_name = this.props.business_on_map.name;
+        }
         return(
-            <div>
-                <div> 
+            <div className="dashboard__main-view dashboard__businesses-view">
+                <div className="businesses__list"> 
                     {this.renderBusinessesList()}
+                    <p>{business_on_map_name}</p>
+                    {this.renderGoToButton()}
                 </div>
                 <Map />
             </div>

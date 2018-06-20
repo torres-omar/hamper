@@ -990,9 +990,8 @@ var Map = function (_React$PureComponent) {
 
         _this.state = {
             isMarkerShown: false
-        };
-        _this.renderGoToButton = _this.renderGoToButton.bind(_this);
-        _this.handleRedirect = _this.handleRedirect.bind(_this);
+            // this.renderGoToButton = this.renderGoToButton.bind(this)
+        };_this.handleRedirect = _this.handleRedirect.bind(_this);
         return _this;
     }
 
@@ -1018,29 +1017,12 @@ var Map = function (_React$PureComponent) {
             this.props.history.push('/tickets');
         }
     }, {
-        key: 'renderGoToButton',
-        value: function renderGoToButton() {
-            if (this.props.current_business_id != this.props.business_on_map.id) {
-                return _react2.default.createElement(
-                    'button',
-                    { onClick: this.handleRedirect },
-                    'Go to this location'
-                );
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
             if (this.props.business_on_map) {
                 return _react2.default.createElement(
                     'div',
                     null,
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        this.props.business_on_map.name
-                    ),
-                    this.renderGoToButton(),
                     _react2.default.createElement(_gmap2.default, {
                         isMarkerShown: this.state.isMarkerShown,
                         googleMapURL: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlSl5E7PM9Y53o0ocaXvYoemswM3CpmLw',
@@ -1204,7 +1186,7 @@ var NewCustomerForm = function (_React$Component) {
             // and should redirect to next step in process 
             debugger;
             this.props.createNewCustomer(this.state).then(function () {
-                return _this2.props.history.push('/tickets/new/s2');
+                return _this2.props.history.push('/dashboard/new-ticket-s2');
             });
         }
     }, {
@@ -1416,7 +1398,7 @@ var NewTicketForm = function (_React$Component) {
                 grand_total: this.state.total_price
             };
             this.props.createNewTicket(data, this.props.current_business_id).then(function () {
-                return _this2.props.history.push('/tickets');
+                return _this2.props.history.push('/dashboard/tickets');
             });
         }
     }, {
@@ -1679,7 +1661,11 @@ var TicketSearchBar = function (_React$Component) {
                             return _react2.default.createElement(
                                 'div',
                                 { style: { background: isHighlighted ? 'rgb(223, 223, 223)' : 'white', fontFamily: 'sans-serif', fontWeight: '200', padding: '.5rem .5rem', fontSize: '.9rem' }, key: item.id },
-                                item.date_dropped_off
+                                item.id,
+                                ' | ',
+                                item.customer_first_name,
+                                ' ',
+                                item.customer_last_name
                             );
                         },
                         value: this.state.query,
@@ -2768,7 +2754,8 @@ var mapStateToProps = function mapStateToProps(state) {
     return {
         current_user: state.session.current_user,
         businesses: state.entities.businesses,
-        current_business_id: state.ui.current_business_id
+        current_business_id: state.ui.current_business_id,
+        business_on_map: state.ui.business_on_map
     };
 };
 
@@ -2793,16 +2780,18 @@ var SettingsTab = function (_React$Component) {
 
         _this.handleBusinessChange = _this.handleBusinessChange.bind(_this);
         _this.renderBusinessesList = _this.renderBusinessesList.bind(_this);
+        _this.renderGoToButton = _this.renderGoToButton.bind(_this);
+        _this.setInitialBusinessOnMap = _this.setInitialBusinessOnMap.bind(_this);
         return _this;
     }
 
     _createClass(SettingsTab, [{
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps) {
-            if (this.props.businesses.length > 0) {
-                for (var i = 0; i < this.props.businesses.length; i++) {
-                    if (this.props.businesses[i].id == this.props.current_business_id) {
-                        this.props.setBusinessOnMap(this.props.businesses[i]);
+        key: 'setInitialBusinessOnMap',
+        value: function setInitialBusinessOnMap(businesses) {
+            if (businesses.length > 0) {
+                for (var i = 0; i < businesses.length; i++) {
+                    if (businesses[i].id == this.props.current_business_id) {
+                        this.props.setBusinessOnMap(businesses[i]);
                         break;
                     }
                 }
@@ -2811,7 +2800,11 @@ var SettingsTab = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.props.fetchBusinesses(this.props.current_user.id);
+            var _this2 = this;
+
+            this.props.fetchBusinesses(this.props.current_user.id).then(function (response) {
+                return _this2.setInitialBusinessOnMap(response.businesses);
+            });
         }
     }, {
         key: 'handleBusinessChange',
@@ -2822,14 +2815,14 @@ var SettingsTab = function (_React$Component) {
     }, {
         key: 'renderBusinessesList',
         value: function renderBusinessesList() {
-            var _this2 = this;
+            var _this3 = this;
 
             var businesses = [];
             this.props.businesses.forEach(function (business) {
                 businesses.push(_react2.default.createElement(
                     'button',
                     { className: 'button-styles', onClick: function onClick(e) {
-                            return _this2.handleBusinessChange(e, business);
+                            return _this3.handleBusinessChange(e, business);
                         } },
                     business.name
                 ));
@@ -2837,15 +2830,36 @@ var SettingsTab = function (_React$Component) {
             return businesses;
         }
     }, {
+        key: 'renderGoToButton',
+        value: function renderGoToButton() {
+            if (this.props.business_on_map && this.props.current_business_id != this.props.business_on_map.id) {
+                return _react2.default.createElement(
+                    'button',
+                    { onClick: this.handleRedirect },
+                    'Go to this location'
+                );
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var business_on_map_name = void 0;
+            if (this.props.business_on_map) {
+                business_on_map_name = this.props.business_on_map.name;
+            }
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'dashboard__main-view dashboard__businesses-view' },
                 _react2.default.createElement(
                     'div',
-                    null,
-                    this.renderBusinessesList()
+                    { className: 'businesses__list' },
+                    this.renderBusinessesList(),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        business_on_map_name
+                    ),
+                    this.renderGoToButton()
                 ),
                 _react2.default.createElement(_map2.default, null)
             );

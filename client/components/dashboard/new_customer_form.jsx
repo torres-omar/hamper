@@ -32,7 +32,7 @@ class NewCustomerForm extends React.Component{
         // and should redirect to next step in process 
         debugger
         this.props.createNewCustomer(this.state).then(
-            () => this.props.history.push('/tickets/new/s2')
+            () => this.props.history.push('/dashboard/new-ticket-s2')
         )
     }
 
