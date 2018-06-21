@@ -58,7 +58,7 @@ class NewTicketForm extends React.Component{
                         <input type="number" value={this.state.bag_weight} name="bag_weight" onChange={this.handleChange} />
                 </label>
                 <label className="form__label-and-field">
-                    Total
+                    Grand Total
                         <h2>{this.state.total_price}</h2>
                 </label>
                 <input type="submit" />
